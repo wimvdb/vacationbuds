@@ -1,0 +1,16 @@
+body{
+	background: #94C5EB url(images/background-grad.png) repeat-x;
+}
+
+#login{
+	float: right;
+}
+#login label{
+	  float: left;
+}
+
+#menu a {
+  display: block;
+  padding: 5px;
+  width: 130px;
+}

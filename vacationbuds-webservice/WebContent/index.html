@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<script type="text/javascript" src="./javascript/jquery-1.8.3-min.js"></script>
+	</head>
+
+	<body>
+		SSN: <input type="text" id="ssn"/><p>
+		<input type="button" onclick="sendRequest();" value="Send"></button><p>
+		Result:<p>
+		<textarea id="result" rows="10" cols="100"></textarea>
+		</div>
+	
+		<script>
+			function sendRequest(){
+				$.ajax({
+			    	url: './rest/hello/getUserById/'+ $("#ssn").val(), 
+				    type: "POST",
+				    success: function(data){
+				    	 	$("#result").val(data.username);
+			    		}, 
+				    error: function(data){
+			    			alert(data);
+			    		}
+				});
+			}
+		</script>
+	</body>
+</html>

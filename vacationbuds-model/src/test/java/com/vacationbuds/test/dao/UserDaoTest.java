@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import com.vacationbuds.model.User;
 
 @Test
-@ContextConfiguration(locations = { "/applicationContext.xml" })
+@ContextConfiguration(locations = { "/applicationContext-vacationbuds-model.xml" })
 public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 
 	@Autowired

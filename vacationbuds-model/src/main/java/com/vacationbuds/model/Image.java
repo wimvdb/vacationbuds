@@ -11,7 +11,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonSubTypes;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -20,22 +27,36 @@ import org.hibernate.annotations.GenericGenerator;
     name="discriminator",
     discriminatorType=DiscriminatorType.STRING
 )
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = ProfileImage.class, name = "profileImage"),
+    @JsonSubTypes.Type(value = AdImage.class, name = "adImage")
+})
 public abstract class Image {
 
 	
 	@Id
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
+	@JsonProperty
 	private Long id;
 	
 	@Column(length = 100)
+	@JsonProperty
 	private String title;
 
 	@Column(columnDefinition = "text")
+	@JsonProperty
 	private String text;
 	
 	private byte[] image;
 
+	@ManyToOne
+	@JoinColumn(name = "ad_image", nullable = false)
+	@JsonBackReference
+	private Ad ad;
+	
+	
 	public String getTitle() {
 		return title;
 	}
@@ -66,6 +87,14 @@ public abstract class Image {
 
 	public void setImage(byte[] image) {
 		this.image = image;
+	}
+
+	public Ad getAd() {
+		return ad;
+	}
+
+	public void setAd(Ad ad) {
+		this.ad = ad;
 	}
 
 	

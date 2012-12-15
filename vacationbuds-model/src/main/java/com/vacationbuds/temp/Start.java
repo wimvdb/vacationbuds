@@ -50,12 +50,15 @@ Start start = new Start();
 		
 		AdImage adImage = new AdImage();
 		adImage.setTitle("ad image title");
+		adImage.setAd(ad);
 		
-		session.save(adImage);
+		
+		
+		ad.getImages().add(adImage);
 		
 		session.save(ad);
 		
-		
+		session.save(adImage);
 		
 		session.save(sender);
 		

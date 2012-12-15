@@ -4,22 +4,39 @@
 	</head>
 
 	<body>
-		SSN: <input type="text" id="ssn"/><p>
-		<input type="button" onclick="sendRequest();" value="Send"></button><p>
+		SSN: <input type="text" id="userId"/><p>
+		<input type="button" onclick="sendRequest();" value="Send"><p>
 		Result:<p>
 		<textarea id="result" rows="10" cols="100"></textarea>
-		</div>
+		<input type="button" onclick="sendSaveRequest();" value="Save">
 	
 		<script>
+		var user;
 			function sendRequest(){
 				$.ajax({
-			    	url: './rest/hello/getUserById/'+ $("#ssn").val(), 
+			    	url: './rest/dao/getUserById/'+ $("#userId").val(), 
 				    type: "POST",
 				    success: function(data){
+				    	user = data;
 				    	 	$("#result").val(data.username);
 			    		}, 
 				    error: function(data){
 			    			alert(data);
+			    		}
+				});
+			}
+			
+			function sendSaveRequest(){
+				$.ajax({
+			    	url: './rest/dao/saveOrUpdate', 
+			    	contentType: 'application/json',
+			    	data : JSON.stringify(user),
+				    type: "POST",
+				    success: function(data){
+				    	 	$("#result").val(data);
+			    		}, 
+				    error: function(data){
+				    	$("#result").val(data.responseText);
 			    		}
 				});
 			}

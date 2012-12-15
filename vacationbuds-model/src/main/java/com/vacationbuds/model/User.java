@@ -14,47 +14,64 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
 @Table(name="buduser")
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class User {
 
 	@Id
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
+	@JsonProperty
 	private Long id;
 	
 	@Column(length=25)
+	@JsonProperty
 	private String username;
 	@Column(length=25)
+	@JsonProperty
 	private String password;
 	@Column(length=50)
+	@JsonProperty
 	private String email;
+	@JsonProperty
 	private Date dateOfBirth;
 	private byte[] avatar;
 	
 	@Column(columnDefinition="text")
+	@JsonProperty
 	private String description;
 	
 	@Column(length=1)
+	@JsonProperty
 	private String gender;
 	
+
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private Profile profile;
 	
 	@OneToMany(mappedBy = "sender")
+	@JsonManagedReference(value="sender")
 	private Set<Message> messagesInbox = new HashSet<Message>();
 	
 	@OneToMany(mappedBy = "recipiant")
+	@JsonManagedReference(value="recipiant")
 	private Set<Message> messagesOutbox = new HashSet<Message>();
 	
 	
 	@OneToMany(mappedBy = "writer")
+	@JsonManagedReference(value="writer")
 	private Set<Review> reviewsGiven = new HashSet<Review>();
 	
 	@OneToMany(mappedBy = "recipiant")
+	@JsonManagedReference(value="recipiant")
 	private Set<Review> reviewsReceived = new HashSet<Review>();
 	
 	public Long getId() {

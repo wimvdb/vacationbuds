@@ -2,15 +2,29 @@ package com.vacationbuds.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+
+import org.codehaus.jackson.annotate.JsonProperty;
 
 @Entity
 public class VacationAd extends Ad {
 
+	@Column(length=50)
+	@JsonProperty
 	private String destionationCountry;
+	
+	@Column(length=50)
+	@JsonProperty
 	private String destionationCity;
+	
+	@JsonProperty
 	private Date dateOfDeparture;
+	
+	@JsonProperty
 	private int duration;
+	
+	@JsonProperty
 	private Date dateOfExpiration;
 	
 	public String getDestionationCountry() {

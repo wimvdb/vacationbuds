@@ -11,25 +11,37 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import org.hibernate.annotations.GenericGenerator;
+
 
 @Entity
 @Table(name="budprofile")
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class Profile {
 
 	
 	@Id
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
+	@JsonProperty
 	private Long id;
 	
+	@JsonProperty
 	private String text;
+	
 	
 	@OneToOne
 	@PrimaryKeyJoinColumn
+	@JsonBackReference
 	private User user;
 
 	@OneToMany(mappedBy = "profile")
+	@JsonManagedReference
 	private Set<Ad> ads = new HashSet<Ad>();
 	
 	

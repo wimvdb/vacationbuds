@@ -3,16 +3,21 @@ package com.vacationbuds.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 @Entity
 public class HostingAd extends Ad {
 
 	@Column(length=50)
+	@JsonProperty
 	private String country;
 	
 	@Column(length=50)
+	@JsonProperty
 	private String city;
 	
 	@Column(length=50)
+	@JsonProperty
 	private String area;
 	
 	public String getCountry() {

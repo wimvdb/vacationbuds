@@ -36,21 +36,21 @@ Start start = new Start();
 		Profile senderProfile = new Profile();
 		senderProfile.setText("senderprofile text...");
 		sender.setProfile(senderProfile);
-		senderProfile.setUser(sender);
+		//senderProfile.setUser(sender);
 		
 		VacationAd ad = new VacationAd();
 		ad.setTitle("ad title");
 		ad.setDestionationCountry("Egypt");
 		senderProfile.getAds().add(ad);
 		
-		ad.setProfile(senderProfile);
+		//ad.setProfile(senderProfile);
 		
 		session.save(senderProfile);
 		
 		
 		AdImage adImage = new AdImage();
 		adImage.setTitle("ad image title");
-		adImage.setAd(ad);
+		//adImage.setAd(ad);
 		
 		
 		
@@ -69,7 +69,7 @@ Start start = new Start();
 		Profile recipiantProfile = new Profile();
 		recipiantProfile.setText("recipiantprofile text...");
 		recipiant.setProfile(recipiantProfile);
-		recipiantProfile.setUser(recipiant);
+		//recipiantProfile.setUser(recipiant);
 		
 		session.save(recipiantProfile);
 		

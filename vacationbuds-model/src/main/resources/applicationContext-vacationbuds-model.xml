@@ -31,8 +31,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.cache.use_query_cache">true</prop>
-				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
-				</prop>
+				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</prop>
 				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
@@ -57,6 +56,25 @@
 			</list>
 		</property>
 
+	</bean>
+	
+	<bean id="adDaoImpl" class="com.vacationbuds.dao.AdDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="imageDaoImpl" class="com.vacationbuds.dao.ImageDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="messageDaoImpl" class="com.vacationbuds.dao.MessageDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="profileDaoImpl" class="com.vacationbuds.dao.ProfileDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="reviewDaoImpl" class="com.vacationbuds.dao.ReviewDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userDaoImpl" class="com.vacationbuds.dao.UserDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
 

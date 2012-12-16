@@ -10,9 +10,7 @@
 	<import resource="applicationContext-vacationbuds-model.xml" />
 	<context:annotation-config />
 
-	<bean id="userDaoImpl" class="com.vacationbuds.dao.UserDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+	
 
 	<bean class="com.vacationbuds.rest.DaoService">
 		

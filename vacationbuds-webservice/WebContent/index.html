@@ -15,20 +15,20 @@
 			function sendRequest(){
 				$.ajax({
 			    	url: './rest/dao/getUserById/'+ $("#userId").val(), 
-				    type: "POST",
+				    type: "GET",
 				    success: function(data){
 				    	user = data;
 				    	 	$("#result").val(data.username);
 			    		}, 
 				    error: function(data){
-			    			alert(data);
+				    	$("#result").val(data.responseText);
 			    		}
 				});
 			}
 			
 			function sendSaveRequest(){
 				$.ajax({
-			    	url: './rest/dao/saveOrUpdate', 
+			    	url: './rest/dao/saveOrUpdateUser', 
 			    	contentType: 'application/json',
 			    	data : JSON.stringify(user),
 				    type: "POST",

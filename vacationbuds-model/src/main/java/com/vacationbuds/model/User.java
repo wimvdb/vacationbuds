@@ -1,8 +1,6 @@
 package com.vacationbuds.model;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,69 +8,65 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonManagedReference;
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
 @Table(name="buduser")
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class User {
 
 	@Id
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
-	@JsonProperty
+	//@JsonProperty
 	private Long id;
 	
 	@Column(length=25)
-	@JsonProperty
+	//@JsonProperty
 	private String username;
 	@Column(length=25)
-	@JsonProperty
+	//@JsonProperty
 	private String password;
 	@Column(length=50)
-	@JsonProperty
+	//@JsonProperty
 	private String email;
-	@JsonProperty
+	//@JsonProperty
 	private Date dateOfBirth;
 	private byte[] avatar;
 	
 	@Column(columnDefinition="text")
-	@JsonProperty
+	//@JsonProperty
 	private String description;
 	
 	@Column(length=1)
-	@JsonProperty
+	//@JsonProperty
 	private String gender;
 	
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-	@JsonManagedReference
+	@OneToOne(fetch = FetchType.EAGER/*, mappedBy = "user"*/, cascade = CascadeType.ALL)
+	//@JsonManagedReference
 	private Profile profile;
 	
-	@OneToMany(mappedBy = "sender")
-	@JsonManagedReference(value="sender")
+	/*@OneToMany(mappedBy = "sender")
+	//@JsonManagedReference(value="sender")
 	private Set<Message> messagesInbox = new HashSet<Message>();
 	
 	@OneToMany(mappedBy = "recipiant")
-	@JsonManagedReference(value="recipiant")
+	//@JsonManagedReference(value="recipiant")
 	private Set<Message> messagesOutbox = new HashSet<Message>();
 	
 	
 	@OneToMany(mappedBy = "writer")
-	@JsonManagedReference(value="writer")
+	//@JsonManagedReference(value="writer")
 	private Set<Review> reviewsGiven = new HashSet<Review>();
 	
 	@OneToMany(mappedBy = "recipiant")
-	@JsonManagedReference(value="recipiant")
-	private Set<Review> reviewsReceived = new HashSet<Review>();
+	//@JsonManagedReference(value="recipiant")
+	private Set<Review> reviewsReceived = new HashSet<Review>();*/
 	
 	public Long getId() {
 		return id;
@@ -138,7 +132,7 @@ public class User {
 		this.gender = gender;
 	}
 
-	public Set<Message> getMessagesInbox() {
+	/*public Set<Message> getMessagesInbox() {
 		return messagesInbox;
 	}
 
@@ -152,7 +146,7 @@ public class User {
 
 	public void setMessagesOutbox(Set<Message> messagesOutbox) {
 		this.messagesOutbox = messagesOutbox;
-	}
+	}*/
 
 	public Profile getProfile() {
 		return profile;
@@ -162,7 +156,7 @@ public class User {
 		this.profile = profile;
 	}
 
-	public Set<Review> getReviewsGiven() {
+	/*public Set<Review> getReviewsGiven() {
 		return reviewsGiven;
 	}
 
@@ -176,7 +170,7 @@ public class User {
 
 	public void setReviewsReceived(Set<Review> reviewsReceived) {
 		this.reviewsReceived = reviewsReceived;
-	}
+	}*/
 
 	
 

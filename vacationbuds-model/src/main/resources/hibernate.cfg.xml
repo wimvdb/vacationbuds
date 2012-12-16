@@ -8,7 +8,7 @@
 		
 		<property name="connection.url">jdbc:postgresql://127.0.0.1/vacationbuds</property>
 		<property name="connection.username">postgres</property>
-		<property name="connection.password"></property>
+		<property name="connection.password">vacationpost</property>
 		<property name="connection.driver_class">org.postgresql.Driver</property>
 		<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 		

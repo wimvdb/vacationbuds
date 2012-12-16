@@ -9,15 +9,15 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class HostingAd extends Ad {
 
 	@Column(length=50)
-	@JsonProperty
+	//@JsonProperty
 	private String country;
 	
 	@Column(length=50)
-	@JsonProperty
+	//@JsonProperty
 	private String city;
 	
 	@Column(length=50)
-	@JsonProperty
+	//@JsonProperty
 	private String area;
 	
 	public String getCountry() {

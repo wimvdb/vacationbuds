@@ -8,21 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.vacationbuds.model.User;
+import com.vacationbuds.model.Profile;
+import com.vacationbuds.model.Review;
 
 @Transactional
-public class UserDaoImpl extends HibernateTemplate implements UserDao {
+public class ReviewDaoImpl extends HibernateTemplate implements ReviewDao {
 
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public User getUserById(Long id) {
+	public Review getReviewById(Long id) {
+
 		try {
-			List<User> users = sessionFactory.getCurrentSession()
-					.createCriteria(User.class).add(Restrictions.idEq(id))
+			List<Review> reviews = sessionFactory.getCurrentSession()
+					.createCriteria(Review.class).add(Restrictions.idEq(id))
 					.list();
-			if (users.size() > 0) {
-				return users.get(0);
+			if (reviews.size() > 0) {
+				return reviews.get(0);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -31,9 +33,9 @@ public class UserDaoImpl extends HibernateTemplate implements UserDao {
 
 	}
 
-	public boolean saveOrUpdate(User user) {
+	public boolean saveOrUpdate(Review review) {
 		try {
-			sessionFactory.getCurrentSession().saveOrUpdate(user);
+			sessionFactory.getCurrentSession().saveOrUpdate(review);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -41,17 +43,15 @@ public class UserDaoImpl extends HibernateTemplate implements UserDao {
 		return true;
 	}
 
-	public boolean validateUser(String username, String password) {
+	public boolean delete(Review review) {
 		try {
-			return sessionFactory.getCurrentSession()
-					.createCriteria(User.class, "user")
-					.add(Restrictions.eq("user.username", username))
-					.add(Restrictions.eq("user.password", password)).list()
-					.size() > 0;
+			sessionFactory.getCurrentSession().delete(review);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
+		return true;
 	}
+
 
 }

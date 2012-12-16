@@ -11,20 +11,20 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class VacationAd extends Ad {
 
 	@Column(length=50)
-	@JsonProperty
+	//@JsonProperty
 	private String destionationCountry;
 	
 	@Column(length=50)
-	@JsonProperty
+	//@JsonProperty
 	private String destionationCity;
 	
-	@JsonProperty
+	//@JsonProperty
 	private Date dateOfDeparture;
 	
-	@JsonProperty
+	//@JsonProperty
 	private int duration;
 	
-	@JsonProperty
+	//@JsonProperty
 	private Date dateOfExpiration;
 	
 	public String getDestionationCountry() {

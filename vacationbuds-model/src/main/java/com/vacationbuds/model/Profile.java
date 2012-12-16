@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -21,27 +22,28 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name="budprofile")
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class Profile {
 
 	
 	@Id
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
-	@JsonProperty
+	//@JsonProperty
 	private Long id;
 	
-	@JsonProperty
+	//@JsonProperty
 	private String text;
 	
 	
-	@OneToOne
-	@PrimaryKeyJoinColumn
-	@JsonBackReference
-	private User user;
+	//@OneToOne
+	//@PrimaryKeyJoinColumn
+	//@JsonBackReference
+	//private User user;
 
-	@OneToMany(mappedBy = "profile")
-	@JsonManagedReference
+	
+	@OneToMany(fetch = FetchType.EAGER /*mappedBy = "profile"*/ )
+	//@JsonManagedReference
 	private Set<Ad> ads = new HashSet<Ad>();
 	
 	
@@ -61,13 +63,13 @@ public class Profile {
 		this.text = text;
 	}
 
-	public User getUser() {
+	/*public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
-	}
+	}*/
 
 	public Set<Ad> getAds() {
 		return ads;

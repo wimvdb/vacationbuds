@@ -27,35 +27,35 @@ import org.hibernate.annotations.GenericGenerator;
     name="discriminator",
     discriminatorType=DiscriminatorType.STRING
 )
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
-@JsonSubTypes({
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
+/*@JsonSubTypes({
     @JsonSubTypes.Type(value = ProfileImage.class, name = "profileImage"),
     @JsonSubTypes.Type(value = AdImage.class, name = "adImage")
-})
+})*/
 public abstract class Image {
 
 	
 	@Id
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
-	@JsonProperty
+	//@JsonProperty
 	private Long id;
 	
 	@Column(length = 100)
-	@JsonProperty
+	//@JsonProperty
 	private String title;
 
 	@Column(columnDefinition = "text")
-	@JsonProperty
+	//@JsonProperty
 	private String text;
 	
 	private byte[] image;
 
-	@ManyToOne
+	/*@ManyToOne
 	@JoinColumn(name = "ad_image", nullable = false)
-	@JsonBackReference
+	//@JsonBackReference
 	private Ad ad;
-	
+	*/
 	
 	public String getTitle() {
 		return title;
@@ -89,13 +89,13 @@ public abstract class Image {
 		this.image = image;
 	}
 
-	public Ad getAd() {
+	/*public Ad getAd() {
 		return ad;
 	}
 
 	public void setAd(Ad ad) {
 		this.ad = ad;
-	}
+	}*/
 
 	
 	

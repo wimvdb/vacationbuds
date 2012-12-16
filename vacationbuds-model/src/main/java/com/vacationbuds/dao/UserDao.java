@@ -9,4 +9,6 @@ public interface UserDao {
 	boolean saveOrUpdate(User user);
 
 	User getUserById(Long id);
+	
+	boolean validateUser(String username,String password);
 }

@@ -72,14 +72,14 @@ public class DaoService {
 	@GET
 	@Path("getReviewsByWriterId/{writerId}")
 	@Produces("application/json")
-	public List<Review> getReviewsByWriterId(@PathParam("userId") Long writerId) {
+	public List<Review> getReviewsByWriterId(@PathParam("writerId") Long writerId) {
 		return reviewDao.getReviewsByWriterId(writerId);
 	}
 	
 	@GET
 	@Path("getReviewsByRecipiantId/{recipiantId}")
 	@Produces("application/json")
-	public List<Review> getReviewsByRecipiantId(@PathParam("userId") Long recipiantId) {
+	public List<Review> getReviewsByRecipiantId(@PathParam("recipiantId") Long recipiantId) {
 		return reviewDao.getReviewsByRecipiantId(recipiantId);
 	}
 

@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonSubTypes;
@@ -58,6 +59,7 @@ public abstract class Ad {
 	
 	@OneToMany(fetch = FetchType.EAGER/*mappedBy = "ad"*/)
 	//@JsonManagedReference
+	@JsonIgnore
 	private Set<Image> images = new HashSet<Image>();
 
 	public Long getId() {

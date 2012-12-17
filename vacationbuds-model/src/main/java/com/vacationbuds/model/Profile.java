@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -46,6 +47,11 @@ public class Profile {
 	//@JsonManagedReference
 	//private Set<Ad> ads = new HashSet<Ad>();
 	
+	@OneToMany(fetch = FetchType.EAGER/*mappedBy = "ad"*/)
+	//@JsonManagedReference
+	@JsonIgnore
+	private Set<Image> images = new HashSet<Image>();
+	
 	
 	public Long getId() {
 		return id;
@@ -63,6 +69,14 @@ public class Profile {
 		this.text = text;
 	}
 
+	public Set<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<Image> images) {
+		this.images = images;
+	}
+
 	/*public User getUser() {
 		return user;
 	}
@@ -78,6 +92,8 @@ public class Profile {
 	public void setAds(Set<Ad> ads) {
 		this.ads = ads;
 	}*/
+	
+	
 	
 	
 	

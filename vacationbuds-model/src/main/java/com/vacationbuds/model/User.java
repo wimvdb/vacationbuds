@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 
@@ -29,13 +30,14 @@ public class User {
 	//@JsonProperty
 	private String username;
 	@Column(length=25)
-	//@JsonProperty
+	@JsonIgnore
 	private String password;
 	@Column(length=50)
 	//@JsonProperty
 	private String email;
 	//@JsonProperty
 	private Date dateOfBirth;
+	@JsonIgnore
 	private byte[] avatar;
 	
 	@Column(columnDefinition="text")

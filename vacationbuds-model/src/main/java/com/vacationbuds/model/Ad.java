@@ -34,6 +34,7 @@ import org.hibernate.annotations.GenericGenerator;
     @JsonSubTypes.Type(value = VacationAd.class, name = "vacationAd")
 })*/
 //@XmlSeeAlso({ HostingAd.class, VacationAd.class })
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public abstract class Ad {
 
 	@Id
@@ -50,10 +51,10 @@ public abstract class Ad {
 	//@JsonProperty
 	private String text;
 
-	/*@ManyToOne
+	@ManyToOne
 	@JoinColumn(name = "profile", nullable = false)
 	//@JsonBackReference
-	private Profile profile;*/
+	private Profile profile;
 	
 	@OneToMany(fetch = FetchType.EAGER/*mappedBy = "ad"*/)
 	//@JsonManagedReference
@@ -83,13 +84,13 @@ public abstract class Ad {
 		this.text = text;
 	}
 
-	/*public Profile getProfile() {
+	public Profile getProfile() {
 		return profile;
 	}
 
 	public void setProfile(Profile profile) {
 		this.profile = profile;
-	}*/
+	}
 
 	public Set<Image> getImages() {
 		return images;

@@ -46,7 +46,7 @@ public class AdDaoImpl extends HibernateTemplate implements AdDao {
 	public List<Ad> getAdsByUserId(Long id) {
 		return sessionFactory.getCurrentSession()
 				.createCriteria(Ad.class,"ad")
-				.add(Restrictions.eq("ad.profile.user.id", id)).list();
+				.add(Restrictions.eq("ad.profile.id", id)).list();
 	}
 
 	

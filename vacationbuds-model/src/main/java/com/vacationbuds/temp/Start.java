@@ -41,9 +41,9 @@ Start start = new Start();
 		VacationAd ad = new VacationAd();
 		ad.setTitle("ad title");
 		ad.setDestionationCountry("Egypt");
-		senderProfile.getAds().add(ad);
+		//senderProfile.getAds().add(ad);
 		
-		//ad.setProfile(senderProfile);
+		ad.setProfile(senderProfile);
 		
 		session.save(senderProfile);
 		

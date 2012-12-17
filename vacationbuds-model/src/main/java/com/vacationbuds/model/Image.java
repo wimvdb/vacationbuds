@@ -32,6 +32,7 @@ import org.hibernate.annotations.GenericGenerator;
     @JsonSubTypes.Type(value = ProfileImage.class, name = "profileImage"),
     @JsonSubTypes.Type(value = AdImage.class, name = "adImage")
 })*/
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public abstract class Image {
 
 	

@@ -68,6 +68,20 @@ public class DaoService {
 	public boolean validateUser(String username, String password) {
 		return userDao.validateUser(username, password);
 	}
+	
+	@GET
+	@Path("getReviewsByWriterId/{writerId}")
+	@Produces("application/json")
+	public List<Review> getReviewsByWriterId(@PathParam("userId") Long writerId) {
+		return reviewDao.getReviewsByWriterId(writerId);
+	}
+	
+	@GET
+	@Path("getReviewsByRecipiantId/{recipiantId}")
+	@Produces("application/json")
+	public List<Review> getReviewsByRecipiantId(@PathParam("userId") Long recipiantId) {
+		return reviewDao.getReviewsByRecipiantId(recipiantId);
+	}
 
 	@POST
 	@Path("saveOrUpdateReview")
@@ -81,6 +95,7 @@ public class DaoService {
 	@Consumes("application/json")
 	public boolean deleteReview(Review review) {
 		return reviewDao.delete(review);
+		
 	}
 
 	@GET

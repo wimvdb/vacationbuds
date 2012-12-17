@@ -42,9 +42,9 @@ public class Profile {
 	//private User user;
 
 	
-	@OneToMany(fetch = FetchType.EAGER /*mappedBy = "profile"*/ )
+	//@OneToMany(fetch = FetchType.EAGER /*mappedBy = "profile"*/ )
 	//@JsonManagedReference
-	private Set<Ad> ads = new HashSet<Ad>();
+	//private Set<Ad> ads = new HashSet<Ad>();
 	
 	
 	public Long getId() {
@@ -71,13 +71,13 @@ public class Profile {
 		this.user = user;
 	}*/
 
-	public Set<Ad> getAds() {
+	/*public Set<Ad> getAds() {
 		return ads;
 	}
 
 	public void setAds(Set<Ad> ads) {
 		this.ads = ads;
-	}
+	}*/
 	
 	
 	

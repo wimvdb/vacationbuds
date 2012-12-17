@@ -1,45 +1,175 @@
 <html>
-	<head>
-		<script type="text/javascript" src="./javascript/jquery-1.8.3-min.js"></script>
-	</head>
+<head>
+<script type="text/javascript" src="./javascript/jquery-1.8.3-min.js"></script>
+</head>
 
-	<body>
-		SSN: <input type="text" id="userId"/><p>
-		<input type="button" onclick="sendRequest();" value="Send"><p>
-		Result:<p>
+<body>
+	User ID:
+	<input type="text" id="userId" />
+	<p>
+		<input type="button" onclick="getUserInfo();" value="getUserById">
+		<input type="button" onclick="getInboxMessagesByUserId();" value="getInboxMessagesByUserId">
+		<input type="button" onclick="getOutboxMessagesByUserId();" value="getOutboxMessagesByUserId">
+		<input type="button" onclick="getReviewsByWriterId();" value="getReviewsByWriterId">
+		<input type="button" onclick="getReviewsByRecipiantId();" value="getReviewsByRecipiantId">
+		<input type="button" onclick="getAdsByUserId();" value="getAdsByUserId">
+		<input type="button" onclick="saveOrUpdateUser();" value="saveOrUpdateUser">
+	<p>Result:
+	<p>
 		<textarea id="result" rows="10" cols="100"></textarea>
-		<input type="button" onclick="sendSaveRequest();" value="Save">
-	
+		<textarea id="json_text" rows="10" cols="100"></textarea>
+
+
 		<script>
-		var user;
-			function sendRequest(){
+			var user = {"id":1,"username":"sender","password":null,"email":"sender@vacationbuds.be","dateOfBirth":null,"avatar":null,"description":null,"gender":null,"profile":{"id":1,"text":"adjusted senderprofile text..."}}
+			function getUserInfo() {
 				$.ajax({
-			    	url: './rest/dao/getUserById/'+ $("#userId").val(), 
-				    type: "GET",
-				    success: function(data){
-				    	user = data;
-				    	 	$("#result").val(data.username);
-			    		}, 
-				    error: function(data){
-				    	$("#result").val(data.responseText);
-			    		}
+					url : './rest/dao/getUserById/' + $("#userId").val(),
+					type : "GET",
+					success : function(data) {
+						user = data;
+						$("#result").val(
+								"username : " + data.username + "\npassword : "
+										+ data.password + "\nemail : "
+										+ data.email + "\ndescription "
+										+ data.description + "\ngender : "
+										+ data.gender + "\nprofiletext : "
+										+ data.profile.text);
+						$("#json_text").val(JSON.stringify(data));
+						
+					},
+					error : function(data) {
+						$("#result").val(data.responseText);
+					}
 				});
 			}
-			
-			function sendSaveRequest(){
+
+			function saveOrUpdateUser() {
 				$.ajax({
-			    	url: './rest/dao/saveOrUpdateUser', 
-			    	contentType: 'application/json',
-			    	data : JSON.stringify(user),
-				    type: "POST",
-				    success: function(data){
-				    	 	$("#result").val(data);
-			    		}, 
-				    error: function(data){
-				    	$("#result").val(data.responseText);
-			    		}
+					url : './rest/dao/saveOrUpdateUser',
+					contentType : 'application/json',
+					//data : JSON.stringify(JSON.parse($("#json_text").val())),
+					data : $("#json_text").val(),
+					//data : JSON.stringify(user),
+					type : "POST",
+					success : function(data) {
+						$("#result").val(data);
+						$("#json_text").val(JSON.stringify(data));
+					},
+					error : function(data) {
+						$("#result").val(data.responseText);
+					}
+				});
+			}
+
+			function getInboxMessagesByUserId() {
+				$.ajax({
+					url : './rest/dao/getInboxMessagesByUserId/'
+							+ $("#userId").val(),
+					type : "GET",
+					success : function(data) {
+						var result;
+						for (i = 0; i < data.length; i++) {
+							result += "title : " + data[i].title + "\ntext : "
+									+ data[i].text + "\nsendDate : "
+									+ data[i].sendDate + "\nsender "
+									+ data[i].sender + "\nrecipiant : "
+									+ data[i].recipiant + "\n";
+						}
+						$("#result").val(result);
+						$("#json_text").val(JSON.stringify(data));
+					},
+					error : function(data) {
+						$("#result").val(data.responseText);
+					}
+				});
+			}
+			function getOutboxMessagesByUserId() {
+				$.ajax({
+					url : './rest/dao/getOutboxMessagesByUserId/'
+							+ $("#userId").val(),
+					type : "GET",
+					success : function(data) {
+						var result;
+						for (i = 0; i < data.length; i++) {
+							result += "title : " + data[i].title + "\ntext : "
+									+ data[i].text + "\nsendDate : "
+									+ data[i].sendDate + "\nsender "
+									+ data[i].sender + "\nrecipiant : "
+									+ data[i].recipiant + "\n";
+						}
+						$("#result").val(result);
+						$("#json_text").val(JSON.stringify(data));
+					},
+					error : function(data) {
+						$("#result").val(data.responseText);
+					}
+				});
+			}
+			function getAdsByUserId() {
+				$.ajax({
+					url : './rest/dao/getAdsByUserId/' + $("#userId").val(),
+					type : "GET",
+					success : function(data) {
+						var result;
+						for (i = 0; i < data.length; i++) {
+							result += "title : " + data[i].title + "\ntext : "
+									+ data[i].text + "\nprofile : "
+									+ data[i].profile + "\nimages : "
+									+ data[i].images + "\n";
+						}
+						$("#result").val(result);
+						$("#json_text").val(JSON.stringify(data));
+					},
+					error : function(data) {
+						$("#result").val(data.responseText);
+					}
+				});
+			}
+			function getReviewsByWriterId() {
+				$.ajax({
+					url : './rest/dao/getReviewsByWriterId/'
+							+ $("#userId").val(),
+					type : "GET",
+					success : function(data) {
+						var result;
+						for (i = 0; i < data.length; i++) {
+							result += "title : " + data[i].title + "\ntext : "
+									+ data[i].text + "\ntype : "
+									+ data[i].type + "\nwriter "
+									+ data[i].writer + "\nrecipiant : "
+									+ data[i].recipiant + "\n";
+						}
+						$("#result").val(result);
+						$("#json_text").val(JSON.stringify(data));
+					},
+					error : function(data) {
+						$("#result").val(data.responseText);
+					}
+				});
+			}
+			function getReviewsByRecipiantId() {
+				$.ajax({
+					url : './rest/dao/getReviewsByRecipiantId/'
+							+ $("#userId").val(),
+					type : "GET",
+					success : function(data) {
+						var result;
+						for (i = 0; i < data.length; i++) {
+							result += "title : " + data[i].title + "\ntext : "
+									+ data[i].text + "\ntype : "
+									+ data[i].type + "\nwriter "
+									+ data[i].writer + "\nrecipiant : "
+									+ data[i].recipiant + "\n";
+						}
+						$("#result").val(result);
+						$("#json_text").val(JSON.stringify(data));
+					},
+					error : function(data) {
+						$("#result").val(data.responseText);
+					}
 				});
 			}
 		</script>
-	</body>
+</body>
 </html>

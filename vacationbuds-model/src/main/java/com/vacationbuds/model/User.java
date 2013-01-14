@@ -12,6 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.hibernate.annotations.GenericGenerator;
 
 
@@ -30,14 +31,16 @@ public class User {
 	//@JsonProperty
 	private String username;
 	@Column(length=25)
-	@JsonIgnore
+	
 	private String password;
 	@Column(length=50)
 	//@JsonProperty
 	private String email;
+	
+	private String country;
 	//@JsonProperty
-	private Date dateOfBirth;
-	@JsonIgnore
+	private int age;
+	//@JsonIgnore
 	private byte[] avatar;
 	
 	@Column(columnDefinition="text")
@@ -86,10 +89,11 @@ public class User {
 		this.username = username;
 	}
 
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
-
+	@JsonProperty
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -102,12 +106,20 @@ public class User {
 		this.email = email;
 	}
 
-	public Date getDateOfBirth() {
-		return dateOfBirth;
+	public String getCountry() {
+		return country;
 	}
 
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
 	}
 
 	public byte[] getAvatar() {

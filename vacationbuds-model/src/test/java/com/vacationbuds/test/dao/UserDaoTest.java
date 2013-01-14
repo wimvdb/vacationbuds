@@ -53,7 +53,7 @@ public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 		byte[] avatar = null;
 		User sender = new User();
 		sender.setPassword("secretpassword");
-		sender.setDateOfBirth(new Date(1983, 2, 14));
+		sender.setAge(22);
 		sender.setUsername("sender");
 		sender.setDescription("Sender description");
 		sender.setEmail("sender@vacationbuds.be");

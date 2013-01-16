@@ -41,16 +41,15 @@ public class UserDaoImpl extends HibernateTemplate implements UserDao {
 		return true;
 	}
 
-	public boolean validateUser(String username, String password) {
-		try {
-			return sessionFactory.getCurrentSession()
-					.createCriteria(User.class, "user")
-					.add(Restrictions.eq("user.username", username))
-					.add(Restrictions.eq("user.password", password)).list()
-					.size() > 0;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
+	public long validateUser(String username, String password) throws Exception {
+		List<User> users = sessionFactory.getCurrentSession()
+				.createCriteria(User.class, "user")
+				.add(Restrictions.eq("user.username", username))
+				.add(Restrictions.eq("user.password", password)).list();
+		if (users.size() > 0) {
+			return users.get(0).getId();
+		} else {
+			throw new Exception("Bad credentials");
 		}
 	}
 

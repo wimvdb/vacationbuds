@@ -1,14 +1,20 @@
 package com.vacationbuds.rest;
 
+import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -20,6 +26,7 @@ import com.vacationbuds.dao.ProfileDao;
 import com.vacationbuds.dao.ReviewDao;
 import com.vacationbuds.dao.UserDao;
 import com.vacationbuds.model.Ad;
+import com.vacationbuds.model.Image;
 import com.vacationbuds.model.Message;
 import com.vacationbuds.model.Review;
 import com.vacationbuds.model.User;
@@ -60,26 +67,39 @@ public class DaoService {
 	@Path("saveOrUpdateUser")
 	@Consumes("application/json")
 	public void saveOrUpdateUser(User user) {
-
+		Set<Image> images = user.getProfile().getImages();
+		for (Image image : images) {
+			imageDao.saveOrUpdate(image);
+		}
 		userDao.saveOrUpdate(user);
 	}
+	
 
-	
-	public boolean validateUser(String username, String password) {
-		return userDao.validateUser(username, password);
+	@POST
+	@Path("login")
+	@Consumes("application/json")
+	@Produces("application/json")
+	public long login(String credentials) throws Exception {
+		//Response.temporaryRedirect(new URI("http://www.google.com"));
+		String[] loginData =credentials.split("&");
+		return userDao.validateUser(loginData[0].split("=")[1], loginData[1].split("=")[1]);
+		
 	}
-	
+
+
 	@GET
 	@Path("getReviewsByWriterId/{writerId}")
 	@Produces("application/json")
-	public List<Review> getReviewsByWriterId(@PathParam("writerId") Long writerId) {
+	public List<Review> getReviewsByWriterId(
+			@PathParam("writerId") Long writerId) {
 		return reviewDao.getReviewsByWriterId(writerId);
 	}
-	
+
 	@GET
 	@Path("getReviewsByRecipiantId/{recipiantId}")
 	@Produces("application/json")
-	public List<Review> getReviewsByRecipiantId(@PathParam("recipiantId") Long recipiantId) {
+	public List<Review> getReviewsByRecipiantId(
+			@PathParam("recipiantId") Long recipiantId) {
 		return reviewDao.getReviewsByRecipiantId(recipiantId);
 	}
 
@@ -95,20 +115,22 @@ public class DaoService {
 	@Consumes("application/json")
 	public boolean deleteReview(Review review) {
 		return reviewDao.delete(review);
-		
+
 	}
 
 	@GET
 	@Path("getInboxMessagesByUserId/{userId}")
 	@Produces("application/json")
-	public List<Message> getInboxMessagesByUserId(@PathParam("userId") Long userId) {
+	public List<Message> getInboxMessagesByUserId(
+			@PathParam("userId") Long userId) {
 		return messageDao.getInboxMessagesByUserId(userId);
 	}
 
 	@GET
 	@Path("getOutboxMessagesByUserId/{userId}")
 	@Produces("application/json")
-	public List<Message> getOutboxMessagesByUserId(@PathParam("userId") Long userId) {
+	public List<Message> getOutboxMessagesByUserId(
+			@PathParam("userId") Long userId) {
 		return messageDao.getOutboxMessagesByUserId(userId);
 	}
 
@@ -147,8 +169,7 @@ public class DaoService {
 	public Ad getAdById(@PathParam("id") Long id) {
 		return adDao.getAdById(id);
 	}
-	
-	
+
 	@PostConstruct
 	public void init() {
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
@@ -201,8 +222,6 @@ public class DaoService {
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
-
-	
 
 	// String getAdsBySearchCriteria(String jsonSearchCriteria);
 

@@ -58,6 +58,7 @@ public abstract class Ad {
 	private Profile profile;
 	
 	@OneToMany(fetch = FetchType.EAGER/*mappedBy = "ad"*/)
+	@JoinColumn(name="ad")
 	//@JsonManagedReference
 	@JsonIgnore
 	private Set<Image> images = new HashSet<Image>();

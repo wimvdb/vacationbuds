@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -49,7 +50,8 @@ public class Profile {
 	
 	@OneToMany(fetch = FetchType.EAGER/*mappedBy = "ad"*/)
 	//@JsonManagedReference
-	@JsonIgnore
+	//@JsonIgnore
+	@JoinColumn(name="profile")
 	private Set<Image> images = new HashSet<Image>();
 	
 	

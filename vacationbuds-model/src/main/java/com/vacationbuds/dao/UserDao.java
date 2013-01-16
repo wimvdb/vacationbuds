@@ -10,5 +10,5 @@ public interface UserDao {
 
 	User getUserById(Long id);
 	
-	boolean validateUser(String username,String password);
+	long validateUser(String username,String password) throws Exception;
 }

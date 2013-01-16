@@ -1,43 +1,14 @@
-var user = {};
-var profile ={};
-profile.images =[];
+
 $(document).ready(function() {
-	// init tabs
-	$('#create-profile div.tab:not(:first)').hide();
-	$('#create-profile-nav li').click(function(event) {
-		event.preventDefault();
-		$('#create-profile div.tab').hide();
-		$('#create-profile-nav .current').removeClass("current");
-		$(this).addClass('current');
+	
 
-		var clicked = $(this).find('a:first').attr('href');
-		$('#create-profile ' + clicked).fadeIn('fast');
-	}).eq(0).addClass('current');
+	
+$.param();
+	
 
-	// setup avatar
-	$('#avatar-drop-zone').on('dragover', handleDragOver);
-	$('#avatar-drop-zone').on('drop', handleAvatarSelect);
+	
 
-	// setup image dropzonez
-	$('.image-drop-zone-right').on('dragover', handleDragOver);
-	$('.image-drop-zone-right').on('drop', handleImageSelect);
-	$('.image-drop-zone-left').on('dragover', handleDragOver);
-	$('.image-drop-zone-left').on('drop', handleImageSelect);
-
-	markForInlineEditing($('.editable-text'), true);
-
-	$('#image-drop-zone-left').hide();
-	$('#image-drop-zone-right').hide();
-
-	addPicture($('#image-drop-zone-left'));
-
-	$('.trash').droppable({
-		activeClass : 'trash-highlight',
-		hoverClass : 'highlight-accept',
-		drop : function(event, ui) {
-			puffRemove($(ui.draggable));
-		}
-	});
+	
 
 });
 

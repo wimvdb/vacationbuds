@@ -1,10 +1,15 @@
 package com.vacationbuds.rest;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -62,6 +67,35 @@ public class DaoService {
 		// Hibernate.initialize(user);
 		return user;
 	}
+	
+	@GET
+	@Path("getImageById/{id}")
+	@Produces("application/json")
+	public String getImageById(@PathParam("id") Long id) {
+		// UserDao dao = new UserDaoImpl();
+		// User user =dao.getUserById(id);
+		Image image = imageDao.getImageById(id);
+		// Hibernate.initialize(user);
+		return image.getImage();
+	}
+	
+	/*@GET
+	@Path("getImageById2/{id}")
+	@Produces("application/json")
+	public Response getImageById2(@PathParam("id") Long id) throws FileNotFoundException {
+		// UserDao dao = new UserDaoImpl();
+		// User user =dao.getUserById(id);
+		// Hibernate.initialize(user);
+		File f = new File("C:\\Users\\Wim\\git\\vacationbuds\\vacationbuds-webservice\\src\\main\\resources\\avatar.jpg");
+		//return f;
+		//BufferedImage image = ...;
+	    //ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    //ImageIO.write(image, "png", baos);
+	    //byte[] imageData = baos.toByteArray();
+	    //return Response.ok(imageData).build();
+	    return Response.ok(new FileInputStream(f)).build();
+	}*/
+
 
 	@POST
 	@Path("saveOrUpdateUser")

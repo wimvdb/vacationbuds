@@ -2,11 +2,9 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Edit Profile</title>
-<link rel="stylesheet" href="../css/profile/edit.css">
-
+<title>Insert title here</title>
 </head>
 <body>
-	
+
 </body>
 </html>

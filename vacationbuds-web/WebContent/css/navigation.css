@@ -1,0 +1,42 @@
+#navigation{
+	float : left;
+	margin-left : 0;
+}
+
+#accordion {
+	width:200px;
+	padding-top: 0;
+	margin-top :0;
+	padding-left : 0;
+}
+#accordion li{
+	cursor: pointer;
+	background-color : white;
+	font-weight:bold;
+	color:#015287;
+	border:1px solid #b2b2b2;
+	margin-bottom:2px;
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	padding: 4px 8px;
+}
+
+#accordion li.active{
+	color:#D15600
+}
+#accordion li ul{
+	padding:0;
+	margin:10px 0 0 0;
+}
+
+#accordion li.active li{
+	text-indent:0;
+}
+#accordion li li{
+	font-weight: normal;
+	background:none;
+	border:0;
+}

@@ -1,13 +1,6 @@
-#menu, #menu ul {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-
 html,body,#content,#create-profile,#drag-area {
-	min-height: 99%;
-	height: 99%
+	min-height: 95%;
+	height: 95%
 
 }
 
@@ -17,10 +10,38 @@ html,body,#content,#create-profile,#drag-area {
 	margin-right: auto;
 }
 
+#create-profile {
+	min-height: 100%;
+}
 
+.tab {
+	min-height: 700px;
+}
 
+#create-profile-nav {
+	margin-bottom: 0px;
+	width: 100%;
+	list-style: none;
+	width: 100%;
+}
 
+#create-profile-nav li {
+	display: inline;
+	background: #ccc;
+	border: 1px solid #888;
+	border-bottom: 0;
+	margin-right: 2px;
+	padding: 3px;
+}
 
+#create-profile-nav li a:hover {
+	color: #d15600;
+}
+
+#create-profile-nav li.current {
+	background: #fff;
+	padding-bottom: 4px;
+}
 
 .highlight {
 	background-color: #FFFACD;
@@ -32,7 +53,17 @@ html,body,#content,#create-profile,#drag-area {
 	min-height: 1.6em;
 }
 
+#image-drop-zone-left .picture-text div div {
+	margin-left: 7.5em;
+}
 
+#image-drop-zone-right .picture-text div div {
+	margin-right: 7.5em;
+}
+
+#drag-area{
+	height : 100%;
+}
 
 .profile-text {
 	min-height: 26px;
@@ -52,7 +83,10 @@ html,body,#content,#create-profile,#drag-area {
 	min-height: 5.9em;
 }
 
-
+#pictures .editable-text .description-label {
+	margin-left: 0px;
+	min-height: 6.4em;
+}
 
 label {
 	vertical-align: top;
@@ -65,12 +99,57 @@ label {
 	width: 100%
 }
 
-#avatar-div {
+#avatar-drop-zone {
 	float: right;
 	margin-bottom: 15px;
 }
 
+.image-drop-zone-right {
+	float: right;
+	margin-bottom: 15px;
+}
 
+#image-drop-zone-right .picture-text {
+	clear: left;
+}
+
+.image-drop-zone-left {
+	float: left;
+	min-width: 220px;
+	margin-bottom: 15px;
+}
+
+.image-drop-zone-right img {
+	-moz-transform: rotate(2deg);
+	-o-transform: rotate(2deg);
+	-webkit-transform: rotate(2deg);
+	transform: rotate(2deg);
+}
+
+.image-drop-zone-left img {
+	-moz-transform: rotate(-2deg);
+	-o-transform: rotate(-2deg);
+	-webkit-transform: rotate(-2deg);
+	transform: rotate(-2deg);
+}
+
+.image-drop-zone-right div {
+	-moz-transform: rotate(4deg);
+	-webkit-transform: rotate(4deg);
+	-o-transform: rotate(4deg);
+	transform: rotate(4deg);
+}
+
+.image-drop-zone-left div {
+	-moz-transform: rotate(-4deg);
+	-webkit-transform: rotate(-4deg);
+	-o-transform: rotate(-4deg);
+	transform: rotate(-4deg);
+}
+
+#pictures {
+	clear: both;
+}
 
 .profile-text ul {
 	display: block;
@@ -89,20 +168,23 @@ body {
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
-	
 }
 
+#save {
+	float: right;
+	margin-right: 58px;
+	padding: 10px;
+	font-size: 1em;
+}
 
-
-.paper {
-	min-height: 700px;
+.tab {
 	font-family: 'Crafty Girls', cursive;
-	/*float: left;*/ /* float containment */
+	float: left; /* float containment */
 	min-width: 600px;
 	max-width: 80em;
 	padding: 3.2em 1.6em 1.6em 1.6em;
-	margin-left: 240px;
-	margin-right: 240px;
+	margin-left: 40px;
+	margin-right: 40px;
 	border-width: 0 0 0 50px;
 	-moz-border-image: url(../images/edge.png) 0 0 0 50 round;
 	-webkit-border-image: url(../images/edge.png) 0 0 0 50 round;
@@ -152,7 +234,17 @@ textarea {
 	border: 1px solid #666;
 }
 
-
+img[src*=photos] {
+	padding: 5px 5px 30px 5px;
+	background: #fff;
+	-moz-box-shadow: 3px 6px 8px -4px #999;
+	-webkit-box-shadow: 3px 6px 8px -4px #999;
+	box-shadow: 3px 6px 8px -4px #999;
+	-moz-transform: rotate(2deg);
+	-o-transform: rotate(2deg);
+	-webkit-transform: rotate(2deg);
+	transform: rotate(2deg);
+}
 
 .hidden {
 	display: none;
@@ -205,10 +297,10 @@ textarea {
 	-moz-box-shadow: 3px 6px 8px -4px #999;
 	-webkit-box-shadow: 3px 6px 8px -4px #999;
 	box-shadow: 3px 6px 8px -4px #999;
-	-moz-transform: rotate(8deg);
-	-o-transform: rotate(8deg);
-	-webkit-transform: rotate(8deg);
-	transform: rotate(8deg);
+	-moz-transform: rotate(2deg);
+	-o-transform: rotate(2deg);
+	-webkit-transform: rotate(2deg);
+	transform: rotate(2deg);
 }
 
 .image {
@@ -218,35 +310,34 @@ textarea {
 	-webkit-box-shadow: 3px 6px 8px -4px #999;
 	box-shadow: 3px 6px 8px -4px #999;
 	cursor: move;
-	margin-right: 100px;
 }
 
-.image-right  {
-	margin-top : -40px;
-	-moz-transform: rotate(10deg);
-	-o-transform: rotate(10deg);
-	-webkit-transform: rotate(10deg);
-	transform: rotate(10deg);
+.puff {
+	border: none;
 }
 
-.image-left  {
-	margin-top : -40px;
-	-moz-transform: rotate(-10deg);
-	-o-transform: rotate(-10deg);
-	-webkit-transform: rotate(-10deg);
-	transform: rotate(-10deg);
+#trashbin {
+	border: none;
 }
 
 
-#photos-right{
-	float : right;
-	width :200px;
-	
+
+.trash {
+	text-align: center;
+	color: white;
+		position: fixed;
+	bottom: 50px;
+	right: 50px;
 }
-#photos-left{
-	/*z-index : -1;*/
-	width :200px;
-	padding-left :50px;
+.trash-highlight {
+border: 1px solid white;
+
+
 	
 }
 
+.highlight-accept {
+	border: 1px solid black;
+	background: white;
+	color: black;
+}

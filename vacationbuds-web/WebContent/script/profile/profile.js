@@ -1,16 +1,134 @@
-
 $(document).ready(function() {
+	var userid = getURLParameter('userid');
+	initProfile(userid);
 	
-
 	
-$.param();
+	$('body').scroll(function(){
+		$(this).css('overflow','auto');
+	});
 	
-
-	
-
-	
+	$('body').bind('mousewheel', function(event, delta) {
+		$(this).css('overflow','auto');
+    });
 
 });
+
+
+
+function initProfilePage(user) {
+
+	$('#username-container').append('<div>' + user.username + '</div>');
+	$('#age-container').append('<div>' + user.age + '</div>');
+	$('#country-container').append('<div>' + user.country + '</div>');
+
+	if (user.gender == 'M') {
+		$('#gender-container').append('<div>Male</div>');
+	} else {
+		$('#gender-container').append('<div>Female</div>');
+	}
+
+	$('#short-description-container').append(
+			'<div>' + user.description + '</div>');
+	$('#long-description-container').append(
+			'<div>' + user.profile.text + '</div>');
+
+	$('#avatar').get(0).src = user.avatar;
+
+
+
+	var images = user.profile.images;
+	var right = 0;
+	var left = 0;
+	var move = '320px';
+	for ( var i = 0; i < images.length; i++) {
+		var css = {};
+		var rotation = 10;// Math.floor((Math.random()*11));
+		if (i != 0 && i != 1) {
+			$.extend(css, {
+				'margin-top' : '-40px'
+			});
+		}
+		if (right > left) {
+			
+			if (right % 2 == 1) {
+				rotation *= -1;
+			}
+		} else {
+			if (left % 2 == 1) {
+				rotation *= -1;
+			}
+		}
+		$.extend(css, {
+			'-moz-transform' : 'rotate(' + rotation + 'deg)',
+			'-o-transform' : 'rotate(' + rotation + 'deg)',
+			'-webkit-transform' : 'rotate(' + rotation + 'deg)',
+			'-transform' : 'rotate(' + rotation + 'deg)',
+			'position' : 'relative',
+			'z-index' : '10'
+			
+		});
+		var photo = $('<img>').attr({
+			'src' : images[i].image,
+			'height' : '120',
+			'title' : images[i].title,
+			'class' : 'image'
+
+		}).css(css);
+		if (i % 2 == 0) {
+			right++;
+			$(photo).hover(function() {
+				$('body').css('overflow','hidden');
+				$(this).stop().animate({
+					'height' : 500,
+					'right' : move 
+				}, 1000,'easeInOutExpo');
+			}, function() {
+				
+				$(this).stop().animate({
+					'height' : 100,
+					'right' : '0px'
+				}, 800,'easeInOutExpo');
+				//$('body').css('overflow','scroll');
+			});
+			$(photo).appendTo('#photos-right');
+		} else {
+			left++;
+			$(photo).hover(function() {
+				$('body').css('overflow','hidden');
+				$(this).stop().animate({
+					'height' : 500,
+					'left' : '50px' 
+				}, 1000,'easeInOutExpo');
+			}, function() {
+				
+				$(this).stop().animate({
+					'height' : 100,
+					'left' : '0px'
+				}, 800,'easeInOutExpo');
+				//$('body').css('overflow','scroll');
+			});
+			$(photo).appendTo('#photos-left');
+		}
+	}
+
+	
+
+}
+
+/*function convertCanvasToImage(user, canvas) {
+	var image = new Image();
+	image.src = canvas.toDataURL("image/png");
+	return image;
+}*/
+
+/*function convertImageToCanvas(image) {
+	var canvas = document.createElement("canvas");
+	canvas.width = image.width;
+	canvas.height = image.height;
+	canvas.getContext("2d").drawImage(image, 0, 0);
+
+	return canvas;
+}*/
 
 function handleAvatarSelect(evt) {
 	evt.stopPropagation();
@@ -22,16 +140,16 @@ function handleAvatarSelect(evt) {
 			return function(evt) {
 				theImg.src = evt.target.result;
 				var canvas = $('<canvas>');
-				canvas.width = theImg.width; 
-			    canvas.height = theImg.height;
-			    var ctx = canvas[0].getContext("2d"); 
-			    ctx.drawImage(theImg, 0, 0); 
-			    user.avatar =  stringToBytes(canvas[0].toDataURL("image/png"));
+				canvas.width = theImg.width;
+				canvas.height = theImg.height;
+				var ctx = canvas[0].getContext("2d");
+				ctx.drawImage(theImg, 0, 0);
+				user.avatar = stringToBytes(canvas[0].toDataURL("image/png"));
 			};
 		}($('#avatar')[0]));
 		reader.readAsDataURL(files[0]);
-		//user.avatar = reader.readAsArrayBuffer(files[0]);
-		
+		// user.avatar = reader.readAsArrayBuffer(files[0]);
+
 	}
 	$('#avatar').removeClass('hidden');
 	$('#avatar-postit').addClass('hidden');
@@ -43,36 +161,13 @@ function handleAvatarSelect(evt) {
 	});
 }
 
-function stringToBytes(str) {
-	  var ch, st, re = [];
-	  for (var i = 0; i < str.length; i++ ) {
-		ch = str.charCodeAt(i);  // get char 
-		st = [];                 // set up "stack"
-		do {
-		  st.push( ch & 0xFF );  // push byte to stack
-		  ch = ch >> 8;          // shift value down by 1 byte
-		}  
-		while ( ch );
-		// add stack contents to result
-		// done because chars have "wrong" endianness
-		re = re.concat( st.reverse() );
-	  }
-	  // return an array of bytes
-	  return re;
-	}
-
-
-
-/*function getBase64Image(){     
-    p=document.getElementById("fileUpload").value;
-    img1.setAttribute('src', p); 
-    canvas.width = img1.width; 
-    canvas.height = img1.height; 
-    var ctx = canvas.getContext("2d"); 
-    ctx.drawImage(img1, 0, 0); 
-    var dataURL = canvas.toDataURL("image/png");alert("from getbase64 function"+dataURL );    
-    return dataURL;
-} */
+/*
+ * function getBase64Image(){ p=document.getElementById("fileUpload").value;
+ * img1.setAttribute('src', p); canvas.width = img1.width; canvas.height =
+ * img1.height; var ctx = canvas.getContext("2d"); ctx.drawImage(img1, 0, 0);
+ * var dataURL = canvas.toDataURL("image/png");alert("from getbase64
+ * function"+dataURL ); return dataURL; }
+ */
 
 function handleDragOver(evt) {
 	evt.stopPropagation();
@@ -93,8 +188,7 @@ function handleImageSelect(evt) {
 			};
 		}(img[0]));
 		reader.readAsDataURL(files[0]);
-		
-		
+
 		if ($(img).hasClass('hidden')) {
 			if ($('#pictures .postit:visible').size() == 1) {
 				addPicture($(this));
@@ -163,18 +257,6 @@ function markForInlineEditing(elements, showEditFields) {
 
 }
 
-/*
- * $(function() { $('#slides').slides({ preload : true, preloadImage :
- * '../images/loading.gif', hoverPause : true, animationStart :
- * function(current) { $('.caption').animate({ bottom : -35 }, 100); if
- * (window.console && console.log) { // example return of current slide number
- * console.log('animationStart on slide: ', current); } ; }, animationComplete :
- * function(current) { $('.caption').animate({ bottom : 0 }, 200); if
- * (window.console && console.log) { // example return of current slide number
- * console.log('animationComplete on slide: ', current); } ; }, slidesLoaded :
- * function() { $('.caption').animate({ bottom : 0 }, 200); } }); });
- */
-
 function puffRemove(which, remove) {
 	var $this = $(which), image_width = 128, scale_factor = $this.outerWidth()
 			/ image_width, frame_count = 5, $trash, $puff;
@@ -199,13 +281,7 @@ function puffRemove(which, remove) {
 	$this.addClass('hidden');
 	$this.attr('style', 'position : relative');
 	$this.siblings('div').removeClass('hidden');
-	/*
-	 * } else { $this.parent().parent().remove(); $('#pictures >
-	 * div:even').attr('id','image-drop-zone-right'); $('#pictures >
-	 * div:odd').attr('id','image-drop-zone-left'); $('#pictures > div:even >
-	 * div:first').removeClass().addClass('image-drop-zone-right'); $('#pictures >
-	 * div:odd > div:first').removeClass().addClass('image-drop-zone-left'); }
-	 */
+	
 
 	(function animate() {
 
@@ -232,23 +308,29 @@ function puffRemove(which, remove) {
 
 function saveOrUpdateUser() {
 
-	$.extend(profile,  {'text' : $('div[data-for="#long-description"]').text()});
+	$.extend(profile, {
+		'text' : $('div[data-for="#long-description"]').text()
+	});
 	var pictures = $.find('#pictures img.ui-draggable');
-	for(var i =0; i < pictures.length; i++){
+	for ( var i = 0; i < pictures.length; i++) {
 		var canvas = $('<canvas>');
-		canvas.width = pictures[i].width; 
-	    canvas.height = pictures[i].height;
-	    var ctx = canvas[0].getContext("2d"); 
-	    
-	    ctx.drawImage(pictures[i], 0, 0); 
-	    var pictureContainer = $(pictures[i]).parent().parent();
-	    profile.images.push({'@type':'com.vacationbuds.model.ProfileImage', 'title':pictureContainer.find('div[data-type=editable]').eq(0).text(),'text':pictureContainer.find('div[data-type=editable]').eq(1).text(),'image':stringToBytes(canvas[0].toDataURL("image/png"))});
+		canvas.width = pictures[i].width;
+		canvas.height = pictures[i].height;
+		var ctx = canvas[0].getContext("2d");
+
+		ctx.drawImage(pictures[i], 0, 0);
+		var pictureContainer = $(pictures[i]).parent().parent();
+		profile.images.push({
+			'@type' : 'com.vacationbuds.model.ProfileImage',
+			'title' : pictureContainer.find('div[data-type=editable]').eq(0)
+					.text(),
+			'text' : pictureContainer.find('div[data-type=editable]').eq(1)
+					.text(),
+			'image' : stringToBytes(canvas[0].toDataURL("image/png"))
+		});
 	}
-	
-	
-	
-	
-	$.extend(user,  {
+
+	$.extend(user, {
 		'username' : $('div[data-for="#username"]').text(),
 		'password' : $('div[data-for="#password"]').text(),
 		'email' : $('div[data-for="#email"]').text(),
@@ -258,39 +340,23 @@ function saveOrUpdateUser() {
 		'description' : $('div[data-for="#short-description"]').text(),
 		'profile' : profile
 	});
-	
 
-	$.ajax({
-		url : 'http://localhost:8080/vacationbuds-webservice/rest/dao/saveOrUpdateUser',
-		contentType : 'application/json',
-		// data : JSON.stringify(JSON.parse($("#json_text").val())),
-		//data : user,
-		data : JSON.stringify(user),
-		type : "POST",
-		success : function(data) {
-			alert('succes : ' + JSON.stringify(data));
-			// $("#result").val(data);
-			// $("#json_text").val(JSON.stringify(data));
-		},
-		error : function(data) {
-			alert('error : ' + data.responseText);
-			// $("#result").val(data.responseText);
-		}
-	});
+	$
+			.ajax({
+				url : 'http://localhost:8080/vacationbuds-webservice/rest/dao/saveOrUpdateUser',
+				contentType : 'application/json',
+				// data : JSON.stringify(JSON.parse($("#json_text").val())),
+				// data : user,
+				data : JSON.stringify(user),
+				type : "POST",
+				success : function(data) {
+					alert('succes : ' + JSON.stringify(data));
+					// $("#result").val(data);
+					// $("#json_text").val(JSON.stringify(data));
+				},
+				error : function(data) {
+					alert('error : ' + data.responseText);
+					// $("#result").val(data.responseText);
+				}
+			});
 }
-
-/*function getUserInfo() {
-	$.ajax({
-		url : 'http://localhost:8080/vacationbuds-webservice/rest/dao/getUserById/1',
-		//url : 'http://http://gumball.wickedlysmart.com/',
-		type : "GET",
-		success : function(data) {
-			alert('suc ' +JSON.stringify(data));
-		},
-		error : function(data) {
-			alert(data);
-		}
-	});
-}*/
-
-

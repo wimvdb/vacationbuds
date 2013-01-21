@@ -50,7 +50,9 @@ public abstract class Image {
 	//@JsonProperty
 	private String text;
 	
-	private byte[] image;
+	//private byte[] image;
+	@Column(columnDefinition = "text")
+	private String image;
 
 	/*@ManyToOne
 	@JoinColumn(name = "ad_image", nullable = false)
@@ -82,14 +84,24 @@ public abstract class Image {
 		this.id = id;
 	}
 
-	public byte[] getImage() {
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	/*public byte[] getImage() {
 		return image;
 	}
 
 	public void setImage(byte[] image) {
 		this.image = image;
-	}
+	}*/
 
+	
+	
 	/*public Ad getAd() {
 		return ad;
 	}

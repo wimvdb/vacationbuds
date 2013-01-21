@@ -65,7 +65,7 @@ public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 			avatar = new byte[(int) f.length()];
 			f.read(avatar);
 
-			sender.setAvatar(avatar);
+			sender.setAvatar("abc");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -78,7 +78,7 @@ public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 		
 		
 		Image profileImage = new ProfileImage();
-		profileImage.setImage(avatar);
+		profileImage.setImage("abc");
 		profileImage.setText("Me in Thailand!");
 		profileImage.setTitle("Picture of Me");
 
@@ -102,7 +102,7 @@ public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 
 		Image adImage = new AdImage();
 		adImage.setTitle("ad image title");
-		adImage.setImage(avatar);
+		adImage.setImage("abc");
 		ad.getImages().add(adImage);
 		
 		

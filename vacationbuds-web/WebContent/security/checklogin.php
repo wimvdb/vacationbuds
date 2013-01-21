@@ -13,7 +13,7 @@ $data = array('username' => $username, 'password' => $password);
 $options = array('http' => array('header'  => "Content-Type: application/json", 'method'  => 'POST','content' => http_build_query($data)));
 $context  = stream_context_create($options);
 
-$json = file_get_contents($url, false, $context);
+$user_id = file_get_contents($url, false, $context);
 
 
 
@@ -22,19 +22,18 @@ $json = file_get_contents($url, false, $context);
 
 
 
-if($json != null){
+if($user_id != null){
 session_start();
+$_SESSION['userid'] = $user_id;
 $_SESSION['username'] = $username;
 $_SESSION['password'] = $password;
-$_SESSION['userId'] = $json;
-//session_register("username");
-//session_register("password"); 
 
-header("location:../profile/profile.php?userid=" . $json);
+header("location:../profile/profile.php?userid=" . $user_id);
 
 }
 else {
 echo "Wrong Username or Password";
+header("location:../index.html");
 }
 
 ob_end_flush();

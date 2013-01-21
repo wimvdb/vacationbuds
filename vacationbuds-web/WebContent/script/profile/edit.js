@@ -1,5 +1,11 @@
+var userid = getURLParameter('userid');
+
 $(document).ready(function() {
-markForInlineEditing($('.editable-text'), true);
+
+	initProfile(userid);
+	if ($('#avatar').src != '#') {
+		showAvatar();
+	}
 
 });
 
@@ -7,8 +13,24 @@ markForInlineEditing($('.editable-text'), true);
 
 
 
-function saveOrUpdateUser() {
 
+function initProfilePage(user) {
+
+	$('div[data-for=#email]').text(user.email);
+	$('div[data-for=#age]').text(user.age);
+	$('div[data-for=#country]').text(user.country);
+	$(':radio[value=' + user.gender + ']').get(0).checked = true;
+
+	$('div[data-for=#short-description]').text(user.description);
+	$('div[data-for=#long-description]').text(user.profile.text);
+
+	markForInlineEditing($('.editable-text'), false);
+
+	$('#avatar').get(0).src = user.avatar;
+
+}
+
+function saveOrUpdateUser() {
 	$.extend(profile, {
 		'text' : $('div[data-for="#long-description"]').text()
 	});
@@ -24,10 +46,8 @@ function saveOrUpdateUser() {
 			'image' : pictures[i].src
 		});
 	}
-
 	$.extend(user, {
-		'username' : $('div[data-for="#username"]').text(),
-		'password' : $('div[data-for="#password"]').text(),
+		'id' : userid,
 		'email' : $('div[data-for="#email"]').text(),
 		'age' : $('div[data-for="#age"]').text(),
 		'country' : $('div[data-for="#country"]').text(),
@@ -36,26 +56,7 @@ function saveOrUpdateUser() {
 		'profile' : profile
 	});
 
-	$
-			.ajax({
-				url : 'http://localhost:8080/vacationbuds-webservice/rest/dao/saveOrUpdateUser',
-				contentType : 'application/json',
-				// data : JSON.stringify(JSON.parse($("#json_text").val())),
-				//data : user,
-				data : JSON.stringify(user),
-				type : "POST",
-				success : function(data) {
-					//login and redirecto to profile page.
-					post_to_url('../security/checklogin.php', {
-						'username' : user.username,
-						'password' : user.password
-					}, 'post');
-
-				},
-				error : function(data) {
-					alert('error : ' + data.responseText);
-					// $("#result").val(data.responseText);
-				}
-			});
+	post_to_url('../security/updateUser.php?userid=' + userid, {
+		'user' : JSON.stringify(user)
+	}, 'post');
 }
-

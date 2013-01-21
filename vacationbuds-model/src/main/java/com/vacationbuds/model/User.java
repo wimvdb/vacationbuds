@@ -41,7 +41,9 @@ public class User {
 	//@JsonProperty
 	private int age;
 	//@JsonIgnore
-	private byte[] avatar;
+	//private byte[] avatar;
+	@Column(columnDefinition = "text")
+	private String avatar;
 	
 	@Column(columnDefinition="text")
 	//@JsonProperty
@@ -122,16 +124,26 @@ public class User {
 		this.age = age;
 	}
 
-	public byte[] getAvatar() {
+	/*public byte[] getAvatar() {
 		return avatar;
 	}
 
 	public void setAvatar(byte[] avatar) {
 		this.avatar = avatar;
-	}
+	}*/
 
+	
+	
 	public String getDescription() {
 		return description;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 
 	public void setDescription(String description) {

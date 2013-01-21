@@ -24,12 +24,19 @@ $(document).ready(function() {
 	$('.image-drop-zone-left').on('dragover', handleDragOver);
 	$('.image-drop-zone-left').on('drop', handleImageSelect);
 
-	//markForInlineEditing($('.editable-text'), true);
+	$('body').on('dragover', function handleDragOver(evt) {
+		evt.stopPropagation();
+		evt.preventDefault();
+		//evt.dataTransfer.dropEffect = 'move';
+	});
+	$('body').on('drop', function(evt) {
+		return false;
+	});
+
+
 
 	$('#image-drop-zone-left').hide();
 	$('#image-drop-zone-right').hide();
-
-	addPicture($('#image-drop-zone-left'));
 
 	$('.trash').droppable({
 		activeClass : 'trash-highlight',
@@ -65,34 +72,15 @@ function handleAvatarSelect(evt) {
 
 		}($('#avatar')[0]));
 		reader.readAsDataURL(files[0]);
-		//user.avatar = reader.readAsArrayBuffer(files[0]);
-
 	}
-	/*$('#avatar').removeClass('hidden');
-	$('#avatar-postit').addClass('hidden');
 
-	$('#avatar').draggable({
-		revert : 'invalid',
-		appendTo: 'body',
-		containment : '#drag-area',
-		scroll: false,
-		start : function() {
-			$('body').css('overflow', 'hidden');
-		},
-		stop : function() {
-			$('body').css('overflow', 'auto');
-		}
-	});*/
 	showAvatar();
 }
-
-
-
 
 function handleDragOver(evt) {
 	evt.stopPropagation();
 	evt.preventDefault();
-	// evt.dataTransfer.dropEffect = 'copy';
+	// evt.dataTransfer.dropEffect = 'move';
 }
 
 function handleImageSelect(evt) {
@@ -121,48 +109,23 @@ function handleImageSelect(evt) {
 
 	img.draggable({
 		revert : 'invalid',
-		containment : '#drag-area',
 		sroll : false
 	});
-}
-
-
-
-function addPicture(imageDropZone) {
-	var dropzone;
-	if (imageDropZone.hasClass('image-drop-zone-left')) {
-		dropzone = $('#image-drop-zone-right').clone();
-	} else {
-		dropzone = $('#image-drop-zone-left').clone();
-	}
-	dropzone.children(0).on('dragover', handleDragOver);
-	dropzone.children(0).on('drop', handleImageSelect);
-	var count = $('#pictures > div').size() - 1;
-
-	var title_label = dropzone.children(1).find('div[data-for=#title]');
-	title_label.attr('data-for', '#title' + count);
-	dropzone.children(1).find('input').attr('id', 'title' + count);
-
-	var description_label = dropzone.children(1).find(
-			'div[data-for=#description]');
-	description_label.attr('data-for', '#description' + count);
-	dropzone.children(1).find('textarea').attr('id', 'description' + count);
-
-	$('#pictures').append(dropzone.show());
-
-	markForInlineEditing(dropzone.children(1).find('.editable-text'), false);
-
 }
 
 function markForInlineEditing(elements, showEditFields) {
 	elements.editables({
 		beforeEdit : function(field) {
-			if (this.data('updatable'))
+			if (this.data('updatable') && $(this).text() != 'Description')
 				field.val(this.text());
 		},
 		beforeFreeze : function(display) {
-			if (display.data('updatable'))
+			if (display.data('updatable')) {
 				display.text(this.val());
+			}
+			if (this.is('textarea') && this.val() == '') {
+				display.text('Description');
+			}
 		}
 	});
 
@@ -248,5 +211,3 @@ function post_to_url(path, params, method) {
 	document.body.appendChild(form);
 	form.submit();
 }
-
-

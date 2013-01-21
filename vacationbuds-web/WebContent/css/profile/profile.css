@@ -4,6 +4,9 @@
   list-style: none;
 }
 
+.marginTop{
+	margin-top: 26px;
+}
 
 html,body,#content,#create-profile,#drag-area {
 	min-height: 99%;

@@ -36,3 +36,30 @@ function initProfile(id) {
 				}
 			});
 }
+
+function addPicture(imageDropZone) {
+	var dropzone;
+	if (imageDropZone.hasClass('image-drop-zone-left')) {
+		dropzone = $('#image-drop-zone-right').clone();
+	} else {
+		dropzone = $('#image-drop-zone-left').clone();
+	}
+	dropzone.children(0).on('dragover', handleDragOver);
+	dropzone.children(0).on('drop', handleImageSelect);
+	var count = $('#pictures > div').size() - 1;
+
+	var title_label = dropzone.children(1).find('div[data-for=#title]');
+	title_label.attr('data-for', '#title' + count);
+	dropzone.children(1).find('input').attr('id', 'title' + count);
+
+	var description_label = dropzone.children(1).find(
+			'div[data-for=#description]');
+	description_label.attr('data-for', '#description' + count);
+	dropzone.children(1).find('textarea').attr('id', 'description' + count);
+
+	$('#pictures').append(dropzone.show());
+
+	markForInlineEditing(dropzone.children(1).find('.editable-text'), false);
+	return dropzone;
+
+}

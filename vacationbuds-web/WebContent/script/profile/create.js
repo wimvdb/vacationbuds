@@ -1,25 +1,18 @@
 $(document).ready(function() {
 markForInlineEditing($('.editable-text'), true);
-
+addPicture($('#image-drop-zone-left').children(0));
 });
-
-
-
 
 
 function saveOrUpdateUser() {
 
-	$.extend(profile, {
-		'text' : $('div[data-for="#long-description"]').text()
-	});
+	
 	var pictures = $.find('#pictures img.ui-draggable');
 	for ( var i = 0; i < pictures.length; i++) {
 		var pictureContainer = $(pictures[i]).parent().parent();
 		profile.images.push({
 			'@type' : 'com.vacationbuds.model.ProfileImage',
-			'title' : pictureContainer.find('div[data-type=editable]').eq(0)
-					.text(),
-			'text' : pictureContainer.find('div[data-type=editable]').eq(1)
+			'description' : pictureContainer.find('div[data-type=editable]').eq(0)
 					.text(),
 			'image' : pictures[i].src
 		});
@@ -36,26 +29,12 @@ function saveOrUpdateUser() {
 		'profile' : profile
 	});
 
-	$
-			.ajax({
-				url : 'http://localhost:8080/vacationbuds-webservice/rest/dao/saveOrUpdateUser',
-				contentType : 'application/json',
-				// data : JSON.stringify(JSON.parse($("#json_text").val())),
-				//data : user,
-				data : JSON.stringify(user),
-				type : "POST",
-				success : function(data) {
-					//login and redirecto to profile page.
-					post_to_url('../security/checklogin.php', {
-						'username' : user.username,
-						'password' : user.password
-					}, 'post');
-
-				},
-				error : function(data) {
-					alert('error : ' + data.responseText);
-					// $("#result").val(data.responseText);
-				}
-			});
+	post_to_url('../security/createUser.php', {
+		'user' : JSON.stringify(user)
+	}, 'post');
 }
+
+
+
+
 

@@ -4,8 +4,9 @@ html,body,#content,#create-profile,#drag-area {
 
 }
 
+
+
 #content {
-	width: 1200px;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -80,7 +81,8 @@ html,body,#content,#create-profile,#drag-area {
 
 .editable-text .description-label {
 	margin-left: 0px;
-	min-height: 5.9em;
+	min-height: 18em;
+	max-width: 600px;
 }
 
 #pictures .editable-text .description-label {
@@ -93,6 +95,10 @@ label {
 	float: left;
 	width: 7.7em;
 	margin-right: 1em;
+}
+
+.moveUp{
+	bottom :60px;
 }
 
 .text-area-label {
@@ -109,8 +115,10 @@ label {
 	margin-bottom: 15px;
 }
 
-#image-drop-zone-right .picture-text {
-	clear: left;
+
+
+#image-drop-zone-right, #image-drop-zone-left {
+	clear: both;
 }
 
 .image-drop-zone-left {
@@ -297,10 +305,11 @@ img[src*=photos] {
 	-moz-box-shadow: 3px 6px 8px -4px #999;
 	-webkit-box-shadow: 3px 6px 8px -4px #999;
 	box-shadow: 3px 6px 8px -4px #999;
-	-moz-transform: rotate(2deg);
-	-o-transform: rotate(2deg);
-	-webkit-transform: rotate(2deg);
-	transform: rotate(2deg);
+	-moz-transform: rotate(8deg);
+	-o-transform: rotate(8deg);
+	-webkit-transform: rotate(8deg);
+	transform: rotate(8deg);
+	cursor : move;
 }
 
 .image {

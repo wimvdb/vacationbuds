@@ -24,7 +24,7 @@ header("location:../index.html");
 		<div id="photos-right"></div>
 		<div id="profile" class="paper">
 			<div id="avatar-div">
-				<img id="avatar" src="#" title="" height="187">
+				<img id="avatar" src="" title="" height="187">
 
 			</div>
 			<h1>Profile</h1>
@@ -36,24 +36,14 @@ header("location:../index.html");
 
 			</div>
 			<div id="country-container" class="profile-text">
-				<label>Country :</label>
-
-			</div>
-			<div id="gender-container" class="profile-text">
-				<label>I am :</label>
-
+				<label>Lives in :</label>
 
 			</div>
 			<div id="short-description-container" class="profile-textarea">
-				<label class="text-area-label">Describe yourself in a few
-					words :</label>
+				<label class="text-area-label"></label>
 
 			</div>
-			<div id="long-description-container" class="profile-textarea">
-				<label class="text-area-label">Describe yourself in more
-					than a few words :</label>
-
-			</div>
+			
 		</div>
 	</div>
 	<script

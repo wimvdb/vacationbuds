@@ -42,13 +42,11 @@ public abstract class Image {
 	//@JsonProperty
 	private Long id;
 	
-	@Column(length = 100)
-	//@JsonProperty
-	private String title;
+	
 
 	@Column(columnDefinition = "text")
 	//@JsonProperty
-	private String text;
+	private String description;
 	
 	//private byte[] image;
 	@Column(columnDefinition = "text")
@@ -60,21 +58,9 @@ public abstract class Image {
 	private Ad ad;
 	*/
 	
-	public String getTitle() {
-		return title;
-	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
 
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
+	
 
 	public Long getId() {
 		return id;
@@ -82,6 +68,13 @@ public abstract class Image {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getImage() {

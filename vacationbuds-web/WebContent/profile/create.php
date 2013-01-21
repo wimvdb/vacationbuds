@@ -24,7 +24,6 @@
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
 	<script
 		src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-	<script src="../script/slides.min.jquery.js"></script>
 	<script src="../script/profile/profile-func.js"></script>
 	<script src="../script/profile/create.js"></script>
 	<script src="../script/profile/edit-profile.js"></script>

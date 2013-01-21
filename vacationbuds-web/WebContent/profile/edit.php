@@ -33,7 +33,7 @@ header("location:../index.html");
 					<div id="avatar-drop-zone">
 						<div id="avatar-postit" class="postit">Drag &amp; drop your
 							photo here!</div>
-						<img id="avatar" src="#" title="Drag your picture here!"
+						<img id="avatar" src="" title="Drag your picture here!"
 							height="187" class="hidden">
 
 					</div>
@@ -44,8 +44,8 @@ header("location:../index.html");
 							<div>
 								<div data-type="editable" data-updatable='true'
 									data-for="#email"></div>
-								<input class="hidden" id="email" type="text" title="You email address"
-									name="email" />
+								<input class="hidden" id="email" type="text"
+									title="You email address" name="email" />
 							</div>
 						</div>
 					</div>
@@ -54,7 +54,8 @@ header("location:../index.html");
 						<div class="editable-text">
 							<div>
 								<div data-type="editable" data-updatable='true' data-for="#age"></div>
-								<input class="hidden"  id="age" type="text" title="Your age" name="age" />
+								<input class="hidden" id="age" type="text" title="Your age"
+									name="age" />
 							</div>
 						</div>
 					</div>
@@ -64,14 +65,13 @@ header("location:../index.html");
 							<div>
 								<div data-type="editable" data-updatable='true'
 									data-for="#country"></div>
-								<input class="hidden"  id="country" type="text"
+								<input class="hidden" id="country" type="text"
 									title="The country you're currently living in" name="country" />
 							</div>
 						</div>
 					</div>
 					<div class="profile-text">
-						<label>I am :</label>
-						 <input type="radio" name="gender" value="M">Male
+						<label>I am :</label> <input type="radio" name="gender" value="M">Male
 						<input type="radio" name="gender" value="F">Female
 
 					</div>
@@ -82,44 +82,25 @@ header("location:../index.html");
 							<div>
 								<div data-type="editable" data-updatable='true'
 									data-for="#short-description" class="description-label"></div>
-								<textarea class="hidden"  id="short-description" rows="3"
+								<textarea class="hidden" id="short-description" rows="15"
 									name="user-description"
 									title="A short description of yourself. This description will be viewable by others when the find one of your ads."></textarea>
 							</div>
 						</div>
 					</div>
-					<div class="profile-textarea">
-						<label class="text-area-label">Describe yourself in more
-							than a few words :</label>
-						<div class="editable-text">
-							<div>
-								<div data-type="editable" data-updatable='true'
-									data-for="#long-description" class="description-label"></div>
-								<textarea class="hidden"  id="long-description" rows="10" name="profile-text"
-									title="A more elaborate description of yourself. This description will be viewable by others when they look at your profile."></textarea>
-							</div>
-						</div>
-					</div>
+
 				</div>
 				<div id="pictures-frame" class="tab">
 					<div id="pictures">
 						<h1>Pictures</h1>
 						<div id="image-drop-zone-left">
 							<div class="image-drop-zone-left">
-								<div class="postit">Drag &amp; drop your photo here!</div>
-								<img src="#" title="Drag your picture here!" height="187"
-									class="hidden image">
+								<div class="postit moveUp">Drag &amp; drop your photo
+									here!</div>
+								<img src="" title="Drag your picture here!" height="187"
+									class="hidden image moveUp">
 							</div>
-							<div class="picture-text">
 
-								<div class="editable-text">
-									<div>
-										<div data-type="editable" data-updatable='true'
-											data-for="#title">Title</div>
-										<input type="text" name="title" />
-									</div>
-								</div>
-							</div>
 							<div class="picture-text">
 
 								<div class="editable-text">
@@ -134,20 +115,12 @@ header("location:../index.html");
 						</div>
 						<div id="image-drop-zone-right">
 							<div class="image-drop-zone-right">
-								<div class="postit">Drag &amp; drop your photo here!</div>
-								<img src="#" title="Drag your picture here!" height="187"
-									class="hidden image">
+								<div class="postit moveUp">Drag &amp; drop your photo
+									here!</div>
+								<img src="" title="Drag your picture here!" height="187"
+									class="hidden image moveUp">
 							</div>
-							<div class="picture-text">
 
-								<div class="editable-text">
-									<div>
-										<div data-type="editable" data-updatable='true'
-											data-for="#title">Title</div>
-										<input type="text" name="title" />
-									</div>
-								</div>
-							</div>
 							<div class="picture-text">
 
 								<div class="editable-text">
@@ -179,7 +152,6 @@ header("location:../index.html");
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
 	<script
 		src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-	<script src="../script/slides.min.jquery.js"></script>
 	<script src="../script/navigation.js"></script>
 	<script src="../script/profile/profile-func.js"></script>
 	<script src="../script/profile/edit.js"></script>

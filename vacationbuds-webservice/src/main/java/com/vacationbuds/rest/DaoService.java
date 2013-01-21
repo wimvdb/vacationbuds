@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.net.URI;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
@@ -22,6 +23,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.vacationbuds.dao.AdDao;
@@ -36,9 +38,17 @@ import com.vacationbuds.model.Message;
 import com.vacationbuds.model.Review;
 import com.vacationbuds.model.User;
 
+
+
+
 @Path("/dao")
 public class DaoService {
 
+	private static final Pattern rfc2822 = Pattern.compile(
+	        "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+	);
+	
+	
 	@Autowired
 	private AdDao adDao;
 
@@ -97,16 +107,55 @@ public class DaoService {
 	}*/
 
 
+	
+
+	
+	
+	
 	@POST
 	@Path("saveOrUpdateUser")
 	@Consumes("application/json")
-	public void saveOrUpdateUser(User user) {
+	public void saveOrUpdateUser(User user) throws Exception {	
+		if(user.getUsername() == null || ! (user.getUsername().length() > 2)){
+			throw new Exception("Invalid username. minimun 3 characters required.");
+		}
+		if(user.getPassword() == null || ! (user.getPassword().length() > 2)){
+			throw new Exception("Invalid password. minimun 3 characters required.");
+		}
+		if(user.getEmail() == null || !rfc2822.matcher(user.getEmail()).matches()) {
+			throw new Exception("Invalid email.");
+		}
+		if(user.getGender() == null || ! (user.getGender().length() == 1)){
+			throw new Exception("Gender is a required field.");
+		}
 		Set<Image> images = user.getProfile().getImages();
 		for (Image image : images) {
 			imageDao.saveOrUpdate(image);
 		}
 		userDao.saveOrUpdate(user);
 	}
+	
+	/*public String saveOrUpdateUser(User user) throws Exception {	
+		
+		if(user.getUsername() == null || ! (user.getUsername().length() > 2)){
+			return "Invalid username. minimun 3 characters required.";
+		}
+		if(user.getPassword() == null || ! (user.getPassword().length() > 2)){
+			return "Invalid password. minimun 3 characters required.";
+		}
+		if(user.getEmail() == null || !rfc2822.matcher(user.getEmail()).matches()) {
+			return "Invalid email.";
+		}
+		if(user.getGender() == null || ! (user.getGender().length() == 1)){
+			return "Gender is a required field.";
+		}
+		Set<Image> images = user.getProfile().getImages();
+		for (Image image : images) {
+			imageDao.saveOrUpdate(image);
+		}
+		userDao.saveOrUpdate(user);
+		return "ok";
+	}*/
 	
 
 	@POST

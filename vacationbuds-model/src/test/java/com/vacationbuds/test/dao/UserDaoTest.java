@@ -79,11 +79,10 @@ public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 		
 		Image profileImage = new ProfileImage();
 		profileImage.setImage("abc");
-		profileImage.setText("Me in Thailand!");
-		profileImage.setTitle("Picture of Me");
-
+		profileImage.setDescription("Me in Thailand!");
+		
 		Profile senderProfile = new Profile();
-		senderProfile.setText("senderprofile text...");
+		
 		senderProfile.getImages().add(profileImage);
 		sender.setProfile(senderProfile);
 
@@ -101,7 +100,7 @@ public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 		ad.setProfile(senderProfile);
 
 		Image adImage = new AdImage();
-		adImage.setTitle("ad image title");
+		
 		adImage.setImage("abc");
 		ad.getImages().add(adImage);
 		
@@ -122,7 +121,7 @@ public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 		recipiant.setEmail("recipiant@vacationbuds.be");
 
 		Profile recipiantProfile = new Profile();
-		recipiantProfile.setText("recipiantprofile text...");
+		
 		recipiant.setProfile(recipiantProfile);
 
 		Message sendMessage = new Message();

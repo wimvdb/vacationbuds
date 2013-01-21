@@ -35,9 +35,7 @@ public class Profile {
 	//@JsonProperty
 	private Long id;
 	
-	@Column(columnDefinition = "text")
-	//@JsonProperty
-	private String text;
+	
 	
 	
 	//@OneToOne
@@ -65,13 +63,7 @@ public class Profile {
 		this.id = id;
 	}
 
-	public String getText() {
-		return text;
-	}
 
-	public void setText(String text) {
-		this.text = text;
-	}
 
 	public Set<Image> getImages() {
 		return images;

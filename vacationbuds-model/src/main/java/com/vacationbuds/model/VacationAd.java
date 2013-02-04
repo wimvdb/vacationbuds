@@ -3,60 +3,36 @@ package com.vacationbuds.model;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
 @Entity
+@DiscriminatorValue("V")
 public class VacationAd extends Ad {
 
-	@Column(length=50)
-	//@JsonProperty
-	private String destionationCountry;
+	private String departure;
 	
-	@Column(length=50)
-	//@JsonProperty
-	private String destionationCity;
+	private String duration;
 	
-	//@JsonProperty
-	private Date dateOfDeparture;
-	
-	//@JsonProperty
-	private int duration;
-	
-	//@JsonProperty
-	private Date dateOfExpiration;
-	
-	public String getDestionationCountry() {
-		return destionationCountry;
+	public String getDeparture() {
+		return departure;
 	}
-	public void setDestionationCountry(String destionationCountry) {
-		this.destionationCountry = destionationCountry;
+
+	public void setDeparture(String departure) {
+		this.departure = departure;
 	}
-	public String getDestionationCity() {
-		return destionationCity;
-	}
-	public void setDestionationCity(String destionationCity) {
-		this.destionationCity = destionationCity;
-	}
-	public Date getDateOfDeparture() {
-		return dateOfDeparture;
-	}
-	public void setDateOfDeparture(Date dateOfDeparture) {
-		this.dateOfDeparture = dateOfDeparture;
-	}
-	public int getDuration() {
+
+	public String getDuration() {
 		return duration;
 	}
-	public void setDuration(int duration) {
+
+	public void setDuration(String duration) {
 		this.duration = duration;
 	}
-	public Date getDateOfExpiration() {
-		return dateOfExpiration;
-	}
-	public void setDateOfExpiration(Date dateOfExpiration) {
-		this.dateOfExpiration = dateOfExpiration;
-	}
+	
+	
 	
 	
 	

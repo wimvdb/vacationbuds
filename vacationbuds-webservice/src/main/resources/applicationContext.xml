@@ -10,9 +10,10 @@
 	<import resource="applicationContext-vacationbuds-model.xml" />
 	<context:annotation-config />
 
-	
-
 	<bean class="com.vacationbuds.rest.DaoService">
+		
+	</bean>
+	<bean class="com.vacationbuds.util.UserDeSerializer">
 		
 	</bean>
 

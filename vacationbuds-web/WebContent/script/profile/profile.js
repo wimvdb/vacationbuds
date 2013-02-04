@@ -16,7 +16,9 @@ $(document).ready(function() {
 
 
 function initProfilePage(user) {
-
+	if(!user.profile){
+ user = JSON.parse(user);
+	}
 	$('#username-container').append('<div>' + user.username + '</div>');
 	$('#age-container').append('<div>' + user.age + '</div>');
 	$('#country-container').append('<div>' + user.country + '</div>');

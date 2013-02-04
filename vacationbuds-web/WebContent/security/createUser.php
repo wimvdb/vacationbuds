@@ -5,7 +5,7 @@ ob_start();
 session_start();
 
 $data=$_POST['user']; 
-$user= json_decode($data,true);
+$user= json_decode(utf8_encode($data),true);
 
 
 

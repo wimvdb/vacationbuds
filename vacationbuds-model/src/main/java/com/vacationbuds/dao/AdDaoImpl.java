@@ -33,14 +33,14 @@ public class AdDaoImpl extends HibernateTemplate implements AdDao {
 
 	}
 
-	public boolean saveOrUpdate(Ad ad) {
+	public long saveOrUpdate(Ad ad) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(ad);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return -1;
 		}
-		return true;
+		return ad.getId();
 	}
 
 	public List<Ad> getAdsByUserId(Long id) {

@@ -1,5 +1,6 @@
 package com.vacationbuds.model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,51 +17,66 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlSeeAlso;
 
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonManagedReference;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonSubTypes;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.hibernate.annotations.GenericGenerator;
 
+import com.vacationbuds.util.CustomDateDeSerializer;
+import com.vacationbuds.util.UserDeSerializer;
+
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
-/*@JsonSubTypes({
-    @JsonSubTypes.Type(value = HostingAd.class, name = "hostingAd"),
-    @JsonSubTypes.Type(value = VacationAd.class, name = "vacationAd")
-})*/
-//@XmlSeeAlso({ HostingAd.class, VacationAd.class })
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@type")
-public abstract class Ad {
+@DiscriminatorColumn(
+	    name="adtype",
+	    discriminatorType=DiscriminatorType.CHAR
+	)
+@DiscriminatorValue("H")
+public class Ad {
 
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
-	//@JsonProperty
+	// @JsonProperty
 	private Long id;
 
 	@Column(length = 100)
-	//@JsonProperty
+	// @JsonProperty
 	private String title;
 
+	@Column(length = 50)
+	// @JsonProperty
+	private String country;
+
+	@Column(length = 50)
+	// @JsonProperty
+	private String city;
+	
+	private int expenses;
+
 	@Column(columnDefinition = "text")
-	//@JsonProperty
 	private String text;
 
-	@ManyToOne
-	@JoinColumn(name = "profile", nullable = false)
-	//@JsonBackReference
-	private Profile profile;
+	/*@JsonSerialize(using = CustomDateSerializer.class)*/
+	@JsonDeserialize(using = CustomDateDeSerializer.class)
+	private Date placeOn;
 	
-	@OneToMany(fetch = FetchType.EAGER/*mappedBy = "ad"*/)
-	@JoinColumn(name="ad")
-	//@JsonManagedReference
-	@JsonIgnore
+	/*@JsonSerialize(using = CustomDateSerializer.class)*/
+	@JsonDeserialize(using = CustomDateDeSerializer.class)
+	private Date expireOn;
+	
+	private boolean active;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	// @JsonBackReference
+	private User user;
+
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ad")
+	// @JsonManagedReference
 	private Set<Image> images = new HashSet<Image>();
 
 	public Long getId() {
@@ -79,6 +95,22 @@ public abstract class Ad {
 		this.title = title;
 	}
 
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
 	public String getText() {
 		return text;
 	}
@@ -87,22 +119,55 @@ public abstract class Ad {
 		this.text = text;
 	}
 
-	public Profile getProfile() {
-		return profile;
+
+	public Date getPlaceOn() {
+		return placeOn;
 	}
 
-	public void setProfile(Profile profile) {
-		this.profile = profile;
+	public void setPlaceOn(Date placeOn) {
+		this.placeOn = placeOn;
+	}
+
+	
+	public Date getExpireOn() {
+		return expireOn;
+	}
+
+	public void setExpireOn(Date expireOn) {
+		this.expireOn = expireOn;
+	}
+	
+	public int getExpenses() {
+		return expenses;
+	}
+
+	public void setExpenses(int expenses) {
+		this.expenses = expenses;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Set<Image> getImages() {
 		return images;
 	}
 
+	@JsonIgnore
 	public void setImages(Set<Image> images) {
 		this.images = images;
 	}
-	
-	
 
 }

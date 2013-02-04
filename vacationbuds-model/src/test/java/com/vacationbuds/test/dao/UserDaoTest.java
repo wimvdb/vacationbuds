@@ -16,12 +16,12 @@ import com.vacationbuds.dao.MessageDao;
 import com.vacationbuds.dao.ProfileDao;
 import com.vacationbuds.dao.ReviewDao;
 import com.vacationbuds.dao.UserDao;
-import com.vacationbuds.model.AdImage;
-import com.vacationbuds.model.HostingAd;
+import com.vacationbuds.model.Ad;
+
 import com.vacationbuds.model.Image;
 import com.vacationbuds.model.Message;
 import com.vacationbuds.model.Profile;
-import com.vacationbuds.model.ProfileImage;
+
 import com.vacationbuds.model.Review;
 import com.vacationbuds.model.User;
 import com.vacationbuds.model.VacationAd;
@@ -77,7 +77,7 @@ public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 
 		
 		
-		Image profileImage = new ProfileImage();
+		Image profileImage = new Image('P');
 		profileImage.setImage("abc");
 		profileImage.setDescription("Me in Thailand!");
 		
@@ -91,28 +91,28 @@ public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 		
 		VacationAd ad = new VacationAd();
 		ad.setTitle("ad title");
-		ad.setDestionationCountry("Egypt");
-		ad.setDateOfDeparture(new Date(2013, 1, 1));
-		ad.setDateOfExpiration(new Date(2014, 1, 1));
-		ad.setDestionationCity("Hongkong");
-		ad.setDuration(14);
+		ad.setCountry("Egypt");
+		ad.setPlaceOn(new Date(2013, 1, 1));
+		ad.setExpireOn(new Date(2014, 1, 1));
+		ad.setCity("Hongkong");
+		ad.setDuration("14 days");
 		ad.setText("Looking for someone to travel through Egypt");
-		ad.setProfile(senderProfile);
+		ad.setUser(sender);
 
-		Image adImage = new AdImage();
+		Image adImage = new Image('A');
 		
 		adImage.setImage("abc");
-		ad.getImages().add(adImage);
+		adImage.setAd(ad);
 		
 		
 		
-		HostingAd hostingAd = new HostingAd();
+		Ad hostingAd = new Ad();
 		hostingAd.setTitle("ad title");
-		hostingAd.setArea("Fun area");
+		
 		hostingAd.setCity("Washington");
 		hostingAd.setCountry("USA");
 		hostingAd.setText("Looking for someone to show around Washington");
-		hostingAd.setProfile(senderProfile);
+		hostingAd.setUser(sender);
 		
 		
 

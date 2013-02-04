@@ -6,7 +6,7 @@ import com.vacationbuds.model.Ad;
 
 public interface AdDao {
 
-	boolean saveOrUpdate(Ad ad);
+	long saveOrUpdate(Ad ad);
 
 	Ad getAdById(Long id);
 	

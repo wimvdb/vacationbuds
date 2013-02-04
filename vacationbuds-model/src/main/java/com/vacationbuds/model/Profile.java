@@ -19,6 +19,7 @@ import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonValue;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -55,6 +56,7 @@ public class Profile {
 	private Set<Image> images = new HashSet<Image>();
 	
 	
+	/*@JsonValue*/
 	public Long getId() {
 		return id;
 	}

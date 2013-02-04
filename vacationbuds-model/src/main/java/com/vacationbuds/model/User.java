@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonValue;
 import org.hibernate.annotations.GenericGenerator;
 
 
@@ -74,6 +75,7 @@ public class User {
 	@OneToMany(mappedBy = "recipiant")
 	//@JsonManagedReference(value="recipiant")
 	private Set<Review> reviewsReceived = new HashSet<Review>();*/
+	
 	
 	public Long getId() {
 		return id;

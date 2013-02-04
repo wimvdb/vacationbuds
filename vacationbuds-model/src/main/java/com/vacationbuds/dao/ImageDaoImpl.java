@@ -33,14 +33,14 @@ public class ImageDaoImpl extends HibernateTemplate implements ImageDao {
 
 	}
 
-	public boolean saveOrUpdate(Image image) {
+	public long saveOrUpdate(Image image) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(image);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return -1;
 		}
-		return true;
+		return image.getId();
 	}
 
 	

@@ -1,29 +1,19 @@
 package com.vacationbuds.rest;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.net.URI;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.vacationbuds.dao.AdDao;
@@ -38,17 +28,12 @@ import com.vacationbuds.model.Message;
 import com.vacationbuds.model.Review;
 import com.vacationbuds.model.User;
 
-
-
-
 @Path("/dao")
 public class DaoService {
 
-	private static final Pattern rfc2822 = Pattern.compile(
-	        "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
-	);
-	
-	
+	private static final Pattern rfc2822 = Pattern
+			.compile("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
+
 	@Autowired
 	private AdDao adDao;
 
@@ -77,7 +62,7 @@ public class DaoService {
 		// Hibernate.initialize(user);
 		return user;
 	}
-	
+
 	@GET
 	@Path("getImageById/{id}")
 	@Produces("application/json")
@@ -88,44 +73,41 @@ public class DaoService {
 		// Hibernate.initialize(user);
 		return image.getImage();
 	}
-	
-	/*@GET
-	@Path("getImageById2/{id}")
-	@Produces("application/json")
-	public Response getImageById2(@PathParam("id") Long id) throws FileNotFoundException {
-		// UserDao dao = new UserDaoImpl();
-		// User user =dao.getUserById(id);
-		// Hibernate.initialize(user);
-		File f = new File("C:\\Users\\Wim\\git\\vacationbuds\\vacationbuds-webservice\\src\\main\\resources\\avatar.jpg");
-		//return f;
-		//BufferedImage image = ...;
-	    //ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	    //ImageIO.write(image, "png", baos);
-	    //byte[] imageData = baos.toByteArray();
-	    //return Response.ok(imageData).build();
-	    return Response.ok(new FileInputStream(f)).build();
-	}*/
 
+	/*
+	 * @GET
+	 * 
+	 * @Path("getImageById2/{id}")
+	 * 
+	 * @Produces("application/json") public Response
+	 * getImageById2(@PathParam("id") Long id) throws FileNotFoundException { //
+	 * UserDao dao = new UserDaoImpl(); // User user =dao.getUserById(id); //
+	 * Hibernate.initialize(user); File f = new File(
+	 * "C:\\Users\\Wim\\git\\vacationbuds\\vacationbuds-webservice\\src\\main\\resources\\avatar.jpg"
+	 * ); //return f; //BufferedImage image = ...; //ByteArrayOutputStream baos
+	 * = new ByteArrayOutputStream(); //ImageIO.write(image, "png", baos);
+	 * //byte[] imageData = baos.toByteArray(); //return
+	 * Response.ok(imageData).build(); return Response.ok(new
+	 * FileInputStream(f)).build(); }
+	 */
 
-	
-
-	
-	
-	
 	@POST
 	@Path("saveOrUpdateUser")
 	@Consumes("application/json")
-	public void saveOrUpdateUser(User user) throws Exception {	
-		if(user.getUsername() == null || ! (user.getUsername().length() > 2)){
-			throw new Exception("Invalid username. minimun 3 characters required.");
+	public void saveOrUpdateUser(User user) throws Exception {
+		if (user.getUsername() == null || !(user.getUsername().length() > 2)) {
+			throw new Exception(
+					"Invalid username. minimun 3 characters required.");
 		}
-		if(user.getPassword() == null || ! (user.getPassword().length() > 2)){
-			throw new Exception("Invalid password. minimun 3 characters required.");
+		if (user.getPassword() == null || !(user.getPassword().length() > 2)) {
+			throw new Exception(
+					"Invalid password. minimun 3 characters required.");
 		}
-		if(user.getEmail() == null || !rfc2822.matcher(user.getEmail()).matches()) {
+		if (user.getEmail() == null
+				|| !rfc2822.matcher(user.getEmail()).matches()) {
 			throw new Exception("Invalid email.");
 		}
-		if(user.getGender() == null || ! (user.getGender().length() == 1)){
+		if (user.getGender() == null || !(user.getGender().length() == 1)) {
 			throw new Exception("Gender is a required field.");
 		}
 		Set<Image> images = user.getProfile().getImages();
@@ -134,41 +116,59 @@ public class DaoService {
 		}
 		userDao.saveOrUpdate(user);
 	}
-	
-	/*public String saveOrUpdateUser(User user) throws Exception {	
-		
-		if(user.getUsername() == null || ! (user.getUsername().length() > 2)){
-			return "Invalid username. minimun 3 characters required.";
-		}
-		if(user.getPassword() == null || ! (user.getPassword().length() > 2)){
-			return "Invalid password. minimun 3 characters required.";
-		}
-		if(user.getEmail() == null || !rfc2822.matcher(user.getEmail()).matches()) {
-			return "Invalid email.";
-		}
-		if(user.getGender() == null || ! (user.getGender().length() == 1)){
-			return "Gender is a required field.";
-		}
-		Set<Image> images = user.getProfile().getImages();
-		for (Image image : images) {
-			imageDao.saveOrUpdate(image);
-		}
-		userDao.saveOrUpdate(user);
-		return "ok";
-	}*/
-	
+
+	@POST
+	@Path("saveOrUpdateAd")
+	@Consumes("application/json")
+	public void saveOrUpdateAd(Ad ad) throws Exception {
+		ad.setActive(true);
+		adDao.saveOrUpdate(ad);
+	}
+
+	@POST
+	@Path("saveAdImage")
+	@Consumes("application/json")
+	@Produces("application/json")
+	public String saveAdImage(Image image) throws Exception {
+		long adId = -1;
+		image.setDiscriminator('A');
+		Ad ad = image.getAd();
+		//ad.setPlaceOn(new Date());
+		//ad.setExpireOn(new Date());
+		ad.setActive(false);
+		image.setAd(ad);
+		adId = adDao.saveOrUpdate(ad);
+		imageDao.saveOrUpdate(image);
+		return  ""+adId ;
+	}
+
+	/*
+	 * public String saveOrUpdateUser(User user) throws Exception {
+	 * 
+	 * if(user.getUsername() == null || ! (user.getUsername().length() > 2)){
+	 * return "Invalid username. minimun 3 characters required."; }
+	 * if(user.getPassword() == null || ! (user.getPassword().length() > 2)){
+	 * return "Invalid password. minimun 3 characters required."; }
+	 * if(user.getEmail() == null ||
+	 * !rfc2822.matcher(user.getEmail()).matches()) { return "Invalid email."; }
+	 * if(user.getGender() == null || ! (user.getGender().length() == 1)){
+	 * return "Gender is a required field."; } Set<Image> images =
+	 * user.getProfile().getImages(); for (Image image : images) {
+	 * imageDao.saveOrUpdate(image); } userDao.saveOrUpdate(user); return "ok";
+	 * }
+	 */
 
 	@POST
 	@Path("login")
 	@Consumes("application/json")
 	@Produces("application/json")
 	public long login(String credentials) throws Exception {
-		//Response.temporaryRedirect(new URI("http://www.google.com"));
-		String[] loginData =credentials.split("&");
-		return userDao.validateUser(loginData[0].split("=")[1], loginData[1].split("=")[1]);
-		
-	}
+		// Response.temporaryRedirect(new URI("http://www.google.com"));
+		String[] loginData = credentials.split("&");
+		return userDao.validateUser(loginData[0].split("=")[1],
+				loginData[1].split("=")[1]);
 
+	}
 
 	@GET
 	@Path("getReviewsByWriterId/{writerId}")

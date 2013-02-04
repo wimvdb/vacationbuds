@@ -46,9 +46,13 @@ header("location:../index.html");
 			
 		</div>
 	</div>
-	<script
+	 <script
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+		
+		
+
 	<script src="../script/jquery.easing.1.3.js"></script>
+	<script src="../script/general.js"></script>
 	<script src="../script/profile/profile-func.js"></script>
 	<script src="../script/navigation.js"></script>
 	<script src="../script/profile/profile.js"></script>

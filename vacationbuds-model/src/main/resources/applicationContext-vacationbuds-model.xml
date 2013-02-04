@@ -49,10 +49,7 @@
 				<value>com.vacationbuds.model.Profile</value>
 				<value>com.vacationbuds.model.Ad</value>
 				<value>com.vacationbuds.model.VacationAd</value>
-				<value>com.vacationbuds.model.HostingAd</value>
 				<value>com.vacationbuds.model.Image</value>
-				<value>com.vacationbuds.model.ProfileImage</value>
-				<value>com.vacationbuds.model.AdImage</value>
 			</list>
 		</property>
 
@@ -76,7 +73,10 @@
 	<bean id="userDaoImpl" class="com.vacationbuds.dao.UserDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 
+	
+	
 
 
 

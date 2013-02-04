@@ -22,19 +22,22 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+/*@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(
     name="discriminator",
     discriminatorType=DiscriminatorType.STRING
 )
-//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
-/*@JsonSubTypes({
-    @JsonSubTypes.Type(value = ProfileImage.class, name = "profileImage"),
-    @JsonSubTypes.Type(value = AdImage.class, name = "adImage")
-})*/
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@type")
-public abstract class Image {
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@type")*/
+public class Image {
 
+	public Image(){
+		discriminator = 'P';
+	}
+	
+	public Image(char discriminator){
+		this.discriminator = discriminator;
+	}
+	
 	
 	@Id
 	@GeneratedValue(generator="increment")
@@ -42,7 +45,7 @@ public abstract class Image {
 	//@JsonProperty
 	private Long id;
 	
-	
+	private char discriminator;
 
 	@Column(columnDefinition = "text")
 	//@JsonProperty
@@ -52,11 +55,10 @@ public abstract class Image {
 	@Column(columnDefinition = "text")
 	private String image;
 
-	/*@ManyToOne
-	@JoinColumn(name = "ad_image", nullable = false)
-	//@JsonBackReference
+	@ManyToOne
+	@JoinColumn(name = "ad", nullable = false)
 	private Ad ad;
-	*/
+	
 	
 
 
@@ -69,6 +71,16 @@ public abstract class Image {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+
+	public char getDiscriminator() {
+		return discriminator;
+	}
+
+	public void setDiscriminator(char discriminator) {
+		this.discriminator = discriminator;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -95,13 +107,13 @@ public abstract class Image {
 
 	
 	
-	/*public Ad getAd() {
+	public Ad getAd() {
 		return ad;
 	}
 
 	public void setAd(Ad ad) {
 		this.ad = ad;
-	}*/
+	}
 
 	
 	

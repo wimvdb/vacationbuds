@@ -9,7 +9,7 @@ header("location:../index.html");
 
 
 $data=$_POST['user']; 
-$user= json_decode($data,true);
+$user= json_decode(utf8_encode($data),true);
 
 if($user['id'] == $_SESSION['userid']){
 $user['username'] = $_SESSION['username'];

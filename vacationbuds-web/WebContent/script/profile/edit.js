@@ -57,7 +57,6 @@ function saveOrUpdateUser() {
 	for ( var i = 0; i < pictures.length; i++) {
 		var pictureContainer = $(pictures[i]).parent().parent();
 		profile.images.push({
-			'@type' : 'com.vacationbuds.model.ProfileImage',
 			'description' : pictureContainer.find('div[data-type=editable]')
 					.eq(0).text(),
 			'image' : pictures[i].src

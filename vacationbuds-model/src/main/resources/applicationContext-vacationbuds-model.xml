@@ -11,11 +11,19 @@
 
 	<tx:annotation-driven/>
 	
-	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager"
-		lazy-init="true">
-		<property name="sessionFactory" ref="sessionFactory" />
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory"/>
 	</bean>
+
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="persistenceUnitName" value="persistenceUnit" />
+	</bean>
+	
+
+	
+	
+	
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		lazy-init="true">
@@ -24,54 +32,23 @@
 		<property name="username" value="postgres" />
 		<property name="password" value="vacationpost" />
 	</bean>
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
-		scope="singleton">
-		<property name="dataSource" ref="dataSource" />
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.cache.use_query_cache">true</prop>
-				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</prop>
-				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
-				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
-
-				<prop key="hibernate.jdbc.fetch_size">100</prop>
-				<prop key="hibernate.max_fetch_depth">3</prop>
-				<prop key="hibernate.jdbc.batch_size">10</prop>
-			</props>
-		</property>
-		<property name="annotatedClasses">
-			<list>
-				<value>com.vacationbuds.model.User</value>
-				<value>com.vacationbuds.model.Message</value>
-				<value>com.vacationbuds.model.Review</value>
-				<value>com.vacationbuds.model.Profile</value>
-				<value>com.vacationbuds.model.Ad</value>
-				<value>com.vacationbuds.model.VacationAd</value>
-				<value>com.vacationbuds.model.Image</value>
-			</list>
-		</property>
-
-	</bean>
+	
 	
 	<bean id="adDaoImpl" class="com.vacationbuds.dao.AdDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
+		
 	</bean>
 	<bean id="imageDaoImpl" class="com.vacationbuds.dao.ImageDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
+		
 	</bean>
 	<bean id="messageDaoImpl" class="com.vacationbuds.dao.MessageDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
+	
 	</bean>
-	<bean id="profileDaoImpl" class="com.vacationbuds.dao.ProfileDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+	
 	<bean id="reviewDaoImpl" class="com.vacationbuds.dao.ReviewDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
+		
 	</bean>
 	<bean id="userDaoImpl" class="com.vacationbuds.dao.UserDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
+		
 	</bean>
 	
 

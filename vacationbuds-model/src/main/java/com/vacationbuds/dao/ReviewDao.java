@@ -7,7 +7,7 @@ import com.vacationbuds.model.Review;
 
 public interface ReviewDao {
 
-	boolean saveOrUpdate(Review review);
+	long saveOrUpdate(Review review);
 	
 	boolean delete(Review review);
 

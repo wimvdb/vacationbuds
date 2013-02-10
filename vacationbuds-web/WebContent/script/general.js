@@ -38,7 +38,8 @@ function markForInlineEditing(elements, showEditFields) {
 
 }
 
-function puffRemove(which, remove) {
+function puffRemoveProfile(which, remove) {
+	var imgId = which.attr('id').split('profile-image')[1];
 	var $this = $(which), image_width = 128, scale_factor = $this.outerWidth()
 			/ image_width, frame_count = 5, $trash, $puff;
 
@@ -81,6 +82,13 @@ function puffRemove(which, remove) {
 			$puff.parent().remove();
 		}
 	})();
+	
+	$.ajax({
+		url: "../security/deleteProfileImage.php",
+		async: true,
+		type : 'POST',
+		data : {'img' :JSON.stringify({'id' : imgId})}
+		});
 
 }
 

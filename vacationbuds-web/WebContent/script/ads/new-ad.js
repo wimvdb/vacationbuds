@@ -5,14 +5,12 @@ $(document)
 				function() {
 
 					markForInlineEditing($('.editable-text'), false);
-					$('body').on('dragover', function handleDragOver(evt) {
-						evt.stopPropagation();
-						evt.preventDefault();
-						// evt.dataTransfer.dropEffect = 'move';
-					});
-					$('body').on('drop', function(evt) {
-						return false;
-					});
+					/*
+					 * $('body').on('dragover', function handleDragOver(evt) {
+					 * evt.stopPropagation(); evt.preventDefault(); //
+					 * evt.dataTransfer.dropEffect = 'move'; });
+					 * $('body').on('drop', function(evt) { return false; });
+					 */
 
 					$('.trash').droppable({
 						activeClass : 'trash-highlight',
@@ -109,23 +107,21 @@ function handleImageSelect(evt) {
 	evt.preventDefault();
 	var files = evt.originalEvent.dataTransfer.files; // FileList object.
 	for ( var i = 0; i < files.length; i++) {
-		var img = $(this).children('#new-image').clone();
+		var img = $(this).children('#new-image').first().clone();
 		if (typeof FileReader !== "undefined" && (/image/i).test(files[i].type)) {
 			reader = new FileReader();
 			reader.onload = (function(theImg) {
 				return function(evt) {
 					theImg.src = evt.target.result;
-					saveAdImage(evt.target.result);
+					saveAdImage(evt.target.result, theImg);
 				};
 			}(img.get(0)));
 			$(img).removeClass('hidden');
 			$('img.images').addClass('hidden');
-			$(img).attr('id', 'new-image' + imageIndex);
-			imageIndex++;
 			$('#image-drop-zone').append(img);
 			reader.readAsDataURL(files[i]);
 
-			if (!$('postit').hasClass('hidden')) {
+			if (!$('.postit').hasClass('hidden')) {
 				$('.postit').addClass('hidden');
 				$('.arrow').removeClass('hidden');
 			}
@@ -147,6 +143,7 @@ function handleImageSelect(evt) {
 }
 
 function puffRemoveAd(which, remove) {
+	var imgId = which.attr('id').split('new-image')[1];
 	var $this = $(which), image_width = 128, scale_factor = $this.outerWidth()
 			/ image_width, frame_count = 5, $trash, $puff;
 
@@ -196,48 +193,58 @@ function puffRemoveAd(which, remove) {
 		}
 	})();
 
-}
-
-function saveAdImage(image) {
-	var adImage = {
-			'image' : image
-		};
 	$.ajax({
-		url: "../security/saveAdImage.php",
-		async: false,
+		url : "../security/deleteAdImage.php",
+		async : true,
 		type : 'POST',
-		data : {'adImg' : JSON.stringify(adImage)}
-		}).responseText;
-	
-	/*post_to_url('../security/test.php',{'adImg' : ''}, 'post');*/
-	
-	
-	
+		data : {
+			'img' : JSON.stringify({
+				'id' : imgId
+			})
+		}
+	});
+
 }
 
+function saveAdImage(image, imgHtml) {
+	var adImage = {
+		'image' : image
+	};
+	var response = $.ajax({
+		url : "../security/saveAdImage.php",
+		async : false,
+		type : 'POST',
+		data : {
+			'adImg' : JSON.stringify(adImage)
+		}
+	}).responseText;
+	$(imgHtml).attr('id', 'new-image' + JSON.parse(response).imgId);
+}
 
 function saveAd() {
 	var ad = {
 		'title' : $('div[data-for="#title"]').text(),
 		'text' : $('div[data-for="#description"]').text(),
-		'placeOn' :$('div[data-for="#placeOn"]').text(),
+		'placeOn' : $('div[data-for="#placeOn"]').text(),
 		'expireOn' : $('div[data-for="#expireOn"]').text(),
-		/*'images' : ($('img.images').length -1)*/
+	/* 'images' : ($('img.images').length -1) */
 	};
 	if ($('#type').val() == 'H') {
 		$.extend(ad, {
-			'@type' : 'com.vacationbuds.model.Ad',
+			/*'@type' : 'com.vacationbuds.model.Ad',*/
+			'adtype' : 'H',
 			'country' : $('div[data-for="#host-country"]').text(),
 			'city' : $('div[data-for="#host-city"]').text(),
 			'expenses' : $('#hosting-expenses').val()
 		});
 	} else {
 		$.extend(ad, {
-			'@type' : 'com.vacationbuds.model.VacationAd',
+			/*'@type' : 'com.vacationbuds.model.VacationAd',*/
+			'adtype' : 'V',
 			'country' : $('div[data-for="#country"]').text(),
 			'city' : $('div[data-for="#city"]').text(),
 			'duration' : $('div[data-for="#duration"]').text(),
-			'departure' : $('div[data-for="#departure"]').text(),
+			'departure' : $('div[data-for="#dateOfDeparture"]').text(),
 			'expenses' : $('#vacation-expenses').val()
 		});
 	}

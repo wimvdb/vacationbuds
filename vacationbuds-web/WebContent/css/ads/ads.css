@@ -52,7 +52,8 @@ fieldset{
 }
 .ad-text > label{
     display:table-cell;
-    width : 15%
+    /*width : 15%*/
+    width : 22%;
 }
 .ad-text > div{
     width: 40%;

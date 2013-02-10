@@ -2,49 +2,39 @@ package com.vacationbuds.dao;
 
 import java.util.List;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.transaction.annotation.Transactional;
 
-import com.vacationbuds.model.Image;
 import com.vacationbuds.model.Message;
 
 @Transactional
-public class MessageDaoImpl extends HibernateTemplate implements MessageDao {
+public class MessageDaoImpl  implements MessageDao {
 
-	@Autowired
-	private SessionFactory sessionFactory;
 
+	
+	
+	@PersistenceContext
+	private EntityManager entityManager;
+	
 	public Message getMessageById(Long id) {
 
-		try {
-			List<Message> messages = sessionFactory.getCurrentSession()
-					.createCriteria(Message.class).add(Restrictions.idEq(id))
-					.list();
-			if (messages.size() > 0) {
-				return messages.get(0);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		return entityManager.find(Message.class, id);
 	}
 
-	public boolean saveOrUpdate(Message message) {
-		try {
-			sessionFactory.getCurrentSession().saveOrUpdate(message);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
+	public long saveOrUpdate(Message message) {
+		if (message.getId() == null) {
+			entityManager.persist(message);
+			return message.getId();
+		} else {
+			return entityManager.merge(message).getId();
 		}
-		return true;
 	}
 
 	public boolean delete(Message message) {
 		try {
-			sessionFactory.getCurrentSession().delete(message);
+			entityManager.remove(message);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -53,17 +43,13 @@ public class MessageDaoImpl extends HibernateTemplate implements MessageDao {
 	}
 
 	public List<Message> getInboxMessagesByUserId(long id) {
-		return  (List<Message>)  sessionFactory.getCurrentSession()
-				.createCriteria(Message.class,"message")
-				.add(Restrictions.eq("message.recipiant.id",id)).list();
+		return entityManager.createQuery("select m from Message m where m.recipiant.id =:id").setParameter("id", id).getResultList();
+
 	}
 
 	public List<Message> getOutboxMessagesByUserId(long id) {
-		return  (List<Message>)  sessionFactory.getCurrentSession()
-				.createCriteria(Message.class,"message")
-				.add(Restrictions.eq("message.sender.id",id)).list();
+		return entityManager.createQuery("select m from Message m where m.sender.id =:id").setParameter("id", id).getResultList();
 	}
-	
 	
 
 

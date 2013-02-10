@@ -17,23 +17,29 @@ function initProfilePage(user) {
 	$(':radio[value=' + user.gender + ']').get(0).checked = true;
 
 	$('div[data-for=#short-description]').text(user.description);
-	$('div[data-for=#long-description]').text(user.profile.text);
+
 
 	markForInlineEditing($('.editable-text'), false);
 
 	$('#avatar').get(0).src = user.avatar;
 
-	var images = user.profile.images;
+	var response = $.ajax({
+		url: "../security/getProfileImages.php",
+		async: false,
+		type : 'Post',
+		data : {'userid' : user.id}
+		}).responseText;
+	var images = JSON.parse(response);
 
 	for ( var i = 0; i < images.length; i++) {
 		var dropzone;
-		if (i % 2 == 0) {
-			dropzone = addPicture($('#image-drop-zone-left').children(0));
-		} else {
-			dropzone = addPicture($('#image-drop-zone-right').children(0));
-		}
+		//if (i % 2 == 0) {
+			dropzone = addPicture();
+		//} else {
+		//	dropzone = addPicture($('.image-drop-zone-right-parent').get(0).children(0));
+		//}
 		var img =$(dropzone.find('img').get(0));
-		img.attr({'src':images[i].image}).removeClass('hidden');
+		img.attr({'src':images[i].image,'id':'profile-image'+images[i].id}).removeClass('hidden');
 		dropzone.find('div[data-type=editable]').eq(0).text(images[i].description);
 		$(dropzone.find('.postit').get(0)).addClass('hidden');
 		img.draggable({
@@ -42,26 +48,33 @@ function initProfilePage(user) {
 		});
 		
 	}
-	if (images.length % 2 == 0) {
-		dropzone = addPicture($('#image-drop-zone-left').children(0));
-	} else {
-		dropzone = addPicture($('#image-drop-zone-right').children(0));
-	}
+	
+		addPicture();
+	
 
 }
 
 function saveOrUpdateUser() {
 
 	
-	var pictures = $.find('#pictures img.ui-draggable:not(".hidden")');
+	var pictures = $.find('#pictures img.ui-draggable');
 	for ( var i = 0; i < pictures.length; i++) {
 		var pictureContainer = $(pictures[i]).parent().parent();
-		profile.images.push({
+		var profileImage = {
+			'id' : $(pictures[i]).attr('id').split('profile-image')[1],
 			'description' : pictureContainer.find('div[data-type=editable]')
-					.eq(0).text(),
-			'image' : pictures[i].src
+					.eq(0).text()
+		};
+		$.ajax({
+			url : "../security/saveProfileImage.php",
+			async : false,
+			type : 'POST',
+			data : {
+				'profileImg' : JSON.stringify(profileImage)
+			}
 		});
 	}
+	
 	$.extend(user, {
 		'id' : userid,
 		'email' : $('div[data-for="#email"]').text(),
@@ -69,8 +82,7 @@ function saveOrUpdateUser() {
 		'country' : $('div[data-for="#country"]').text(),
 		'gender' : $('input[name=gender]:radio:checked').val(),
 		'description' : $('div[data-for="#short-description"]').text(),
-		'avatar' : $('#avatar').get(0).src,
-		'profile' : profile
+		'avatar' : $('#avatar').get(0).src
 	});
 
 	post_to_url('../security/updateUser.php?userid=' + userid, {

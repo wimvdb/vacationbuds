@@ -16,9 +16,7 @@ $(document).ready(function() {
 
 
 function initProfilePage(user) {
-	if(!user.profile){
- user = JSON.parse(user);
-	}
+	
 	$('#username-container').append('<div>' + user.username + '</div>');
 	$('#age-container').append('<div>' + user.age + '</div>');
 	$('#country-container').append('<div>' + user.country + '</div>');
@@ -37,8 +35,14 @@ function initProfilePage(user) {
 	$('#avatar').get(0).src = user.avatar;
 
 
-
-	var images = user.profile.images;
+	var response = $.ajax({
+		url: "../security/getProfileImages.php",
+		async: false,
+		type : 'POST',
+		data : {'userid' : user.id}
+		}).responseText;
+	var images = JSON.parse(response);
+	
 	var right = 0;
 	var left = 0;
 	var move = '320px';

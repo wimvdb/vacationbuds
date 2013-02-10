@@ -6,7 +6,7 @@ import com.vacationbuds.model.User;
 public interface UserDao {
 	
 
-	boolean saveOrUpdate(User user);
+	long saveOrUpdate(User user);
 
 	User getUserById(Long id);
 	

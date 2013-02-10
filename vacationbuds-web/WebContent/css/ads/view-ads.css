@@ -1,0 +1,40 @@
+table{
+	width : 100%;
+	border-top:2px solid #015287;
+	border-collapse: collapse;
+}
+th{
+	text-align : left;
+}
+#type-label {
+	width : 15%;
+}
+
+#title-label {
+	
+}
+
+#placeOn-label {
+	width : 15%;
+}
+
+#removeOn-label {
+	width : 15%;
+}
+
+.zebra { 
+  background-color: #dddddd;
+  color: #666666;
+}
+
+tr.zebraHover {
+  background-color: #FFFACD;
+}
+
+th {
+	border-bottom: 2px solid #015287;
+}
+
+.overview{
+	min-height : 150px;
+}

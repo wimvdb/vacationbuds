@@ -2,51 +2,40 @@ package com.vacationbuds.dao;
 
 import java.util.List;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.transaction.annotation.Transactional;
 
-import com.vacationbuds.model.Message;
-import com.vacationbuds.model.Profile;
 import com.vacationbuds.model.Review;
 
 @Transactional
-public class ReviewDaoImpl extends HibernateTemplate implements ReviewDao {
+public class ReviewDaoImpl  implements ReviewDao {
 
-	@Autowired
-	private SessionFactory sessionFactory;
+	
+
+	
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	public Review getReviewById(Long id) {
 
-		try {
-			List<Review> reviews = sessionFactory.getCurrentSession()
-					.createCriteria(Review.class).add(Restrictions.idEq(id))
-					.list();
-			if (reviews.size() > 0) {
-				return reviews.get(0);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		return entityManager.find(Review.class, id);
 
 	}
 
-	public boolean saveOrUpdate(Review review) {
-		try {
-			sessionFactory.getCurrentSession().saveOrUpdate(review);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
+	public long saveOrUpdate(Review review) {
+		if (review.getId() == null) {
+			entityManager.persist(review);
+			return review.getId();
+		} else {
+			return entityManager.merge(review).getId();
 		}
-		return true;
 	}
 
 	public boolean delete(Review review) {
 		try {
-			sessionFactory.getCurrentSession().delete(review);
+			entityManager.remove(review);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -55,16 +44,12 @@ public class ReviewDaoImpl extends HibernateTemplate implements ReviewDao {
 	}
 
 	public List<Review> getReviewsByWriterId(Long writerId) {
-		return  (List<Review>)  sessionFactory.getCurrentSession()
-				.createCriteria(Review.class,"review")
-				.add(Restrictions.eq("review.writer.id",writerId)).list();
+		return entityManager.createQuery("select w from Message w where w.writer.id :=id").setParameter("id", writerId).getResultList();
 	}
 
 	public List<Review> getReviewsByRecipiantId(Long recipiantId) {
-		return  (List<Review>)  sessionFactory.getCurrentSession()
-				.createCriteria(Review.class,"review")
-				.add(Restrictions.eq("review.recipiant.id",recipiantId)).list();
+		return entityManager.createQuery("select w from Message w where w.recipiant.id :=id").setParameter("id", recipiantId).getResultList();	
 	}
-
+	
 
 }

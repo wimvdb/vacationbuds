@@ -13,18 +13,13 @@ import org.testng.annotations.Test;
 import com.vacationbuds.dao.AdDao;
 import com.vacationbuds.dao.ImageDao;
 import com.vacationbuds.dao.MessageDao;
-import com.vacationbuds.dao.ProfileDao;
 import com.vacationbuds.dao.ReviewDao;
 import com.vacationbuds.dao.UserDao;
 import com.vacationbuds.model.Ad;
-
 import com.vacationbuds.model.Image;
 import com.vacationbuds.model.Message;
-import com.vacationbuds.model.Profile;
-
 import com.vacationbuds.model.Review;
 import com.vacationbuds.model.User;
-import com.vacationbuds.model.VacationAd;
 
 @Test
 @ContextConfiguration(locations = { "/applicationContext-vacationbuds-model.xml" })
@@ -39,8 +34,7 @@ public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 	@Autowired
 	private MessageDao messageDao;
 
-	@Autowired
-	private ProfileDao profileDao;
+	
 
 	@Autowired
 	private ReviewDao reviewDao;
@@ -74,6 +68,7 @@ public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 				
 			}
 		}
+		
 
 		
 		
@@ -81,15 +76,13 @@ public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 		profileImage.setImage("abc");
 		profileImage.setDescription("Me in Thailand!");
 		
-		Profile senderProfile = new Profile();
 		
-		senderProfile.getImages().add(profileImage);
-		sender.setProfile(senderProfile);
-
+		profileImage.setUser(sender);
 		
 		
 		
-		VacationAd ad = new VacationAd();
+		
+		Ad ad = new Ad();
 		ad.setTitle("ad title");
 		ad.setCountry("Egypt");
 		ad.setPlaceOn(new Date(2013, 1, 1));
@@ -120,9 +113,7 @@ public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 		recipiant.setUsername("recipiant");
 		recipiant.setEmail("recipiant@vacationbuds.be");
 
-		Profile recipiantProfile = new Profile();
 		
-		recipiant.setProfile(recipiantProfile);
 
 		Message sendMessage = new Message();
 		sendMessage.setTitle("hello");

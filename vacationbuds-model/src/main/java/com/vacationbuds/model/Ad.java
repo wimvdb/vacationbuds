@@ -1,83 +1,77 @@
 package com.vacationbuds.model;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.vacationbuds.util.CustomDateDeSerializer;
-import com.vacationbuds.util.UserDeSerializer;
+import com.vacationbuds.util.CustomDateSerializer;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@type")
-@DiscriminatorColumn(
-	    name="adtype",
-	    discriminatorType=DiscriminatorType.CHAR
-	)
-@DiscriminatorValue("H")
+
 public class Ad {
 
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
-	// @JsonProperty
+
 	private Long id;
 
 	@Column(length = 100)
-	// @JsonProperty
+
 	private String title;
 
 	@Column(length = 50)
-	// @JsonProperty
+
 	private String country;
 
 	@Column(length = 50)
-	// @JsonProperty
+
 	private String city;
-	
+
 	private int expenses;
 
 	@Column(columnDefinition = "text")
 	private String text;
 
-	/*@JsonSerialize(using = CustomDateSerializer.class)*/
+	@JsonSerialize(using = CustomDateSerializer.class)
 	@JsonDeserialize(using = CustomDateDeSerializer.class)
 	private Date placeOn;
-	
-	/*@JsonSerialize(using = CustomDateSerializer.class)*/
+
+	@JsonSerialize(using = CustomDateSerializer.class)
 	@JsonDeserialize(using = CustomDateDeSerializer.class)
 	private Date expireOn;
-	
+
 	private boolean active;
+
+	@Column
+	private char adtype = 'H';
+
+	private String departure;
+
+	private String duration;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
-	// @JsonBackReference
+	
 	private User user;
 
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ad")
-	// @JsonManagedReference
-	private Set<Image> images = new HashSet<Image>();
+	
 
 	public Long getId() {
 		return id;
@@ -119,7 +113,6 @@ public class Ad {
 		this.text = text;
 	}
 
-
 	public Date getPlaceOn() {
 		return placeOn;
 	}
@@ -128,7 +121,6 @@ public class Ad {
 		this.placeOn = placeOn;
 	}
 
-	
 	public Date getExpireOn() {
 		return expireOn;
 	}
@@ -136,7 +128,7 @@ public class Ad {
 	public void setExpireOn(Date expireOn) {
 		this.expireOn = expireOn;
 	}
-	
+
 	public int getExpenses() {
 		return expenses;
 	}
@@ -153,6 +145,22 @@ public class Ad {
 		this.active = active;
 	}
 
+	public String getDeparture() {
+		return departure;
+	}
+
+	public void setDeparture(String departure) {
+		this.departure = departure;
+	}
+
+	public String getDuration() {
+		return duration;
+	}
+
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -161,13 +169,14 @@ public class Ad {
 		this.user = user;
 	}
 
-	public Set<Image> getImages() {
-		return images;
+	public char getAdtype() {
+		return adtype;
 	}
 
-	@JsonIgnore
-	public void setImages(Set<Image> images) {
-		this.images = images;
+	public void setAdtype(char adtype) {
+		this.adtype = adtype;
 	}
+
+	
 
 }

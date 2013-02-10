@@ -7,10 +7,13 @@ session_start();
 $data=$_POST['user']; 
 $user= json_decode(utf8_encode($data),true);
 
-
+if(isset($_SESSION['profileId'])){
+$user['id'] = $_SESSION['profileId'];
+}
 
 
 $url = 'http://localhost:8080/vacationbuds-webservice/rest/dao/saveOrUpdateUser';
+
 
 
        $content = json_encode($user);

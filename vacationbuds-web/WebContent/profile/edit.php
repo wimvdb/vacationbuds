@@ -4,6 +4,7 @@ session_start();
 if ( !isset( $_SESSION['userid']) || htmlspecialchars($_GET["userid"]) != $_SESSION['userid']){
 header("location:../index.html");
 }
+unset($_SESSION['profileId']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -93,7 +94,7 @@ header("location:../index.html");
 				<div id="pictures-frame" class="tab">
 					<div id="pictures">
 						<h1>Pictures</h1>
-						<div id="image-drop-zone-left">
+						<div class="image-drop-zone-left-parent">
 							<div class="image-drop-zone-left">
 								<div class="postit moveUp">Drag &amp; drop your photo
 									here!</div>
@@ -113,7 +114,7 @@ header("location:../index.html");
 							</div>
 
 						</div>
-						<div id="image-drop-zone-right">
+						<div class="image-drop-zone-right-parent">
 							<div class="image-drop-zone-right">
 								<div class="postit moveUp">Drag &amp; drop your photo
 									here!</div>

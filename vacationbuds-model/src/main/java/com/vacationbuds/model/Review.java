@@ -13,32 +13,32 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
+
 public class Review {
 
 	
 	@Id
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
-	//@JsonProperty
+	
 	private Long id;
 	
 	@Column(columnDefinition="text")
-	//@JsonProperty
+	
 	private String text;
 	
 	@Column(length=1)
-	//@JsonProperty
+	
 	private String type;
 	
 	@ManyToOne
 	@JoinColumn(name = "writer", nullable = false)
-	//@JsonBackReference(value="writer")
+	
 	private User writer;
 	
 	@ManyToOne
 	@JoinColumn(name = "recipiant", nullable = false)
-	//@JsonBackReference(value="recipiant")
+	
 	private User recipiant;
 
 	public Long getId() {

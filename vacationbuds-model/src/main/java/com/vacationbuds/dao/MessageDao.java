@@ -6,7 +6,7 @@ import com.vacationbuds.model.Message;
 
 public interface MessageDao {
 
-	boolean saveOrUpdate(Message message);
+	long saveOrUpdate(Message message);
 
 	Message getMessageById(Long id);
 	

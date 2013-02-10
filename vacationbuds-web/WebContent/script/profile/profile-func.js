@@ -1,12 +1,12 @@
-function showAvatar(){
+function showAvatar() {
 	$('#avatar').removeClass('hidden');
 	$('#avatar-postit').addClass('hidden');
 
 	$('#avatar').draggable({
 		revert : 'invalid',
-		appendTo: 'body',
+		appendTo : 'body',
 		containment : '#drag-area',
-		scroll: false,
+		scroll : false,
 		start : function() {
 			$('body').css('overflow', 'hidden');
 		},
@@ -29,6 +29,9 @@ function initProfile(id) {
 						+ id,
 				type : "GET",
 				success : function(user) {
+					if (!user.id) {
+						user = JSON.parse(user);
+					}
 					initProfilePage(user);
 				},
 				error : function(data) {
@@ -37,12 +40,12 @@ function initProfile(id) {
 			});
 }
 
-function addPicture(imageDropZone) {
+function addPicture() {
 	var dropzone;
-	if (imageDropZone.hasClass('image-drop-zone-left')) {
-		dropzone = $('#image-drop-zone-right').clone();
+	if ($('.image-drop-zone-right-parent').size() > $('.image-drop-zone-left-parent').size()) {
+		dropzone = $($('.image-drop-zone-left-parent').get(0)).clone();
 	} else {
-		dropzone = $('#image-drop-zone-left').clone();
+		dropzone = $($('.image-drop-zone-right-parent').get(0)).clone();
 	}
 	dropzone.children(0).on('dragover', handleDragOver);
 	dropzone.children(0).on('drop', handleImageSelect);

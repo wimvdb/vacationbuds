@@ -2,47 +2,76 @@ package com.vacationbuds.dao;
 
 import java.util.List;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.vacationbuds.model.Ad;
 import com.vacationbuds.model.Image;
 
 @Transactional
-public class ImageDaoImpl extends HibernateTemplate implements ImageDao {
+public class ImageDaoImpl  implements ImageDao {
 
-	@Autowired
-	private SessionFactory sessionFactory;
+	
+	
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	public Image getImageById(Long id) {
 
-		try {
-			List<Image> images = sessionFactory.getCurrentSession()
-					.createCriteria(Image.class).add(Restrictions.idEq(id))
-					.list();
-			if (images.size() > 0) {
-				return images.get(0);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		return entityManager.find(Image.class, id);
 
 	}
 
 	public long saveOrUpdate(Image image) {
-		try {
-			sessionFactory.getCurrentSession().saveOrUpdate(image);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return -1;
+		if (image.getId() == null) {
+			entityManager.persist(image);
+			return image.getId();
+		} else {
+			return entityManager.merge(image).getId();
 		}
-		return image.getId();
 	}
 
+	public void deleteAdImage(long imageId, long userId) {
+		
+		Query query = entityManager.createQuery("DELETE FROM Image i  where id in (select id from Image where id=:imageId and i.ad.user.id = :userId) ");
+		query.setParameter("imageId",imageId);
+		query.setParameter("userId", userId);
+		query.executeUpdate();
+
+	}
 	
+public void deleteProfileImage(long imageId, long userId) {
+		
+		Query query = entityManager.createQuery("DELETE FROM Image i where id=:imageId and i.user.id = :userId ");
+		query.setParameter("imageId",imageId);
+		query.setParameter("userId", userId);
+		query.executeUpdate();
+
+	}
+
+	public List<Image> getImagesByUserId(long id) {
+		
+		return entityManager
+				.createQuery("select i from Image i where i.user.id =:id")
+				.setParameter("id", id).getResultList();
+	}
+
+	public void setImageDescription(long imageId, String description) {
+		Query query = entityManager.createQuery("Update Image set description=:description where id=:imageId");
+		query.setParameter("imageId",imageId);
+		query.setParameter("description", description);
+		query.executeUpdate();
+		
+	}
+
+	public List<Image> getImagesByAdId(long id) {
+		return entityManager
+				.createQuery("select i from Image i where i.ad.id =:id")
+				.setParameter("id", id).getResultList();
+	
+	}
 
 }

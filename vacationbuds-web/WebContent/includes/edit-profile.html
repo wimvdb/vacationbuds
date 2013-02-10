@@ -9,7 +9,7 @@
 
 	<div id="profile" class="tab">
 		<div id="avatar-drop-zone">
-			<div   id="avatar-postit" class="postit">Drag &amp; drop your
+			<div id="avatar-postit" class="postit">Drag &amp; drop your
 				photo here!</div>
 			<img id="avatar" src="" title="Drag your picture here!" height="187"
 				class="hidden">
@@ -20,7 +20,7 @@
 			<label>Username :</label>
 			<div class="editable-text">
 				<div>
-					<div  class="hidden"  data-type="editable" data-updatable='true'
+					<div class="hidden" data-type="editable" data-updatable='true'
 						data-for="#username"></div>
 					<input id="username" type="text" title="Your username"
 						name="username" />
@@ -32,7 +32,7 @@
 			<label>Password :</label>
 			<div class="editable-text">
 				<div>
-					<div  class="hidden"  data-type="editable" data-updatable='true'
+					<div class="hidden" data-type="editable" data-updatable='true'
 						data-for="#password"></div>
 					<input id="password" type="password" title="A secure password"
 						name="password" />
@@ -43,7 +43,8 @@
 			<label>E-mail :</label>
 			<div class="editable-text">
 				<div>
-					<div  class="hidden"  data-type="editable" data-updatable='true' data-for="#email"></div>
+					<div class="hidden" data-type="editable" data-updatable='true'
+						data-for="#email"></div>
 					<input id="email" type="text" title="You email address"
 						name="email" />
 				</div>
@@ -53,7 +54,8 @@
 			<label>Age :</label>
 			<div class="editable-text">
 				<div>
-					<div  class="hidden"  data-type="editable" data-updatable='true' data-for="#age"></div>
+					<div class="hidden" data-type="editable" data-updatable='true'
+						data-for="#age"></div>
 					<input id="age" type="text" title="Your age" name="age" />
 				</div>
 			</div>
@@ -62,7 +64,8 @@
 			<label>Country :</label>
 			<div class="editable-text">
 				<div>
-					<div  class="hidden"  data-type="editable" data-updatable='true' data-for="#country"></div>
+					<div class="hidden" data-type="editable" data-updatable='true'
+						data-for="#country"></div>
 					<input id="country" type="text"
 						title="The country you're currently living in" name="country" />
 				</div>
@@ -78,7 +81,7 @@
 				words :</label>
 			<div class="editable-text">
 				<div>
-					<div  class="hidden"  data-type="editable" data-updatable='true'
+					<div class="hidden" data-type="editable" data-updatable='true'
 						data-for="#short-description" class="description-label"></div>
 					<textarea id="short-description" rows="15" name="user-description"
 						title="A short description of yourself. This description will be viewable by others when the find one of your ads."></textarea>
@@ -89,7 +92,7 @@
 	<div id="pictures-frame" class="tab">
 		<div id="pictures">
 			<h1>Pictures</h1>
-			<div id="image-drop-zone-left">
+			<div class="image-drop-zone-left-parent">
 				<div class="image-drop-zone-left">
 					<div class="postit moveUp">Drag &amp; drop your photo here!</div>
 					<img  src="" title="Drag your picture here!" height="187"
@@ -104,25 +107,26 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<div id="image-drop-zone-right">
-				<div class="image-drop-zone-right">
-					<div class="postit moveUp">Drag &amp; drop your photo here!</div>
-					<img  src="" title="Drag your picture here!" height="187"
-						class="hidden image moveUp">
-				</div>
-				<div class="picture-text">
+			</div> 
+			<div class="image-drop-zone-right-parent">
+					<div class="image-drop-zone-right">
+						<div class="postit moveUp">Drag &amp; drop your photo here!</div>
+						<img src="" title="Drag your picture here!" height="187"
+							class="hidden image moveUp">
+					</div>
+					<div class="picture-text">
 
-					<div class="editable-text">
-						<div>
-							<div data-type="editable" data-updatable='true'
-								data-for="#description" class="description-label">Description</div>
-							<textarea rows="5" cols="35" name="description"></textarea>
+						<div class="editable-text">
+							<div>
+								<div data-type="editable" data-updatable='true'
+									data-for="#description" class="description-label">Description</div>
+								<textarea rows="5" cols="35" name="description"></textarea>
+							</div>
 						</div>
 					</div>
-				</div>
 
-			</div>
+				</div>
+			
 		</div>
 
 	</div>

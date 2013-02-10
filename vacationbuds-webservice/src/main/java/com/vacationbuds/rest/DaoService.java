@@ -1,8 +1,13 @@
 package com.vacationbuds.rest;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
@@ -19,7 +24,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import com.vacationbuds.dao.AdDao;
 import com.vacationbuds.dao.ImageDao;
 import com.vacationbuds.dao.MessageDao;
-import com.vacationbuds.dao.ProfileDao;
+
 import com.vacationbuds.dao.ReviewDao;
 import com.vacationbuds.dao.UserDao;
 import com.vacationbuds.model.Ad;
@@ -43,8 +48,6 @@ public class DaoService {
 	@Autowired
 	private MessageDao messageDao;
 
-	@Autowired
-	private ProfileDao profileDao;
 
 	@Autowired
 	private ReviewDao reviewDao;
@@ -72,6 +75,30 @@ public class DaoService {
 		Image image = imageDao.getImageById(id);
 		// Hibernate.initialize(user);
 		return image.getImage();
+	}
+	
+	@POST
+	@Path("getProfileImages")
+	@Produces("application/json")
+	public List<Image> getProfileImages(Long id) {
+		// UserDao dao = new UserDaoImpl();
+		// User user =dao.getUserById(id);
+		return imageDao.getImagesByUserId(id);
+		
+		// Hibernate.initialize(user);
+		
+	}
+	
+	@POST
+	@Path("getAdImages")
+	@Produces("application/json")
+	public List<Image> getAdImages(Long id) {
+		// UserDao dao = new UserDaoImpl();
+		// User user =dao.getUserById(id);
+		return imageDao.getImagesByAdId(id);
+		
+		// Hibernate.initialize(user);
+		
 	}
 
 	/*
@@ -110,10 +137,11 @@ public class DaoService {
 		if (user.getGender() == null || !(user.getGender().length() == 1)) {
 			throw new Exception("Gender is a required field.");
 		}
-		Set<Image> images = user.getProfile().getImages();
+		user.setActive(true);
+		/*Set<Image> images = user.getProfile().getImages();
 		for (Image image : images) {
 			imageDao.saveOrUpdate(image);
-		}
+		}*/
 		userDao.saveOrUpdate(user);
 	}
 
@@ -133,13 +161,55 @@ public class DaoService {
 		long adId = -1;
 		image.setDiscriminator('A');
 		Ad ad = image.getAd();
-		//ad.setPlaceOn(new Date());
-		//ad.setExpireOn(new Date());
+		
 		ad.setActive(false);
-		image.setAd(ad);
+		//image.setAd(ad);
 		adId = adDao.saveOrUpdate(ad);
-		imageDao.saveOrUpdate(image);
-		return  ""+adId ;
+		long imgId = imageDao.saveOrUpdate(image);
+		return "{ \"adId\" : " + adId + " , \"imgId\" : " + imgId + " }";
+	}
+	
+	@POST
+	@Path("saveProfileImage")
+	@Consumes("application/json")
+	@Produces("application/json")
+	public String saveProfileImage(Image image) throws Exception {
+		long userId = -1;
+		long imgId = -1;
+		image.setDiscriminator('P');
+		User user = image.getUser();
+		if(user == null){
+			user = new User();
+			image.setUser(user);
+			user.setActive(false);
+			userId = userDao.saveOrUpdate(user);
+		}
+		else{
+			userId = user.getId();
+		}
+		if(image.getImage() == null){
+			imageDao.setImageDescription(image.getId(),image.getDescription());
+			imgId = image.getId();
+		}else{
+			imgId = imageDao.saveOrUpdate(image);
+		}
+		 
+		return "{ \"profileId\" : " + userId + " , \"imgId\" : " + imgId + " }";
+	}
+
+
+	@POST
+	@Path("deleteAdImage")
+	@Consumes("application/json")
+	public void deleteAdImage(Image image) {
+		imageDao.deleteAdImage(image.getId(),image.getAd().getUser().getId());
+	}
+	
+	@POST
+	@Path("deleteProfileImage")
+	@Consumes("application/json")
+	public void deleteProfileImage(Image image) {
+		imageDao.deleteProfileImage(image.getId(),image.getUser().getId());
 	}
 
 	/*
@@ -189,7 +259,7 @@ public class DaoService {
 	@POST
 	@Path("saveOrUpdateReview")
 	@Consumes("application/json")
-	public boolean saveOrUpdateReview(Review review) {
+	public long saveOrUpdateReview(Review review) {
 		return reviewDao.saveOrUpdate(review);
 	}
 
@@ -227,7 +297,7 @@ public class DaoService {
 	@POST
 	@Path("saveOrUpdateMessage")
 	@Consumes("application/json")
-	public boolean saveOrUpdateMessage(Message message) {
+	public long saveOrUpdateMessage(Message message) {
 		return messageDao.saveOrUpdate(message);
 	}
 
@@ -239,12 +309,24 @@ public class DaoService {
 		return messageDao.delete(message);
 	}
 
-	@GET
-	@Path("getAdsByUserId/{userId}")
+	@POST
+	@Path("getAdsByUserId")
 	@Produces("application/json")
-	public List<Ad> getAdsByUserId(@PathParam("userId") Long userId) {
+	public List<Ad> getAdsByUserId(Long userId) {
 		return adDao.getAdsByUserId(userId);
 	}
+	
+	/*@POST
+	@Path("getProfileImages/{id}")
+	@Produces("application/json")
+	public List<Image> getProfileImages(@PathParam("id") Long id) {
+		// UserDao dao = new UserDaoImpl();
+		// User user =dao.getUserById(id);
+		return imageDao.getImagesByUserId(id);
+		
+		// Hibernate.initialize(user);
+		
+	}*/
 
 	@GET
 	@Path("getAdById/{id}")
@@ -282,13 +364,7 @@ public class DaoService {
 		this.messageDao = messageDao;
 	}
 
-	public ProfileDao getProfileDao() {
-		return profileDao;
-	}
-
-	public void setProfileDao(ProfileDao profileDao) {
-		this.profileDao = profileDao;
-	}
+	
 
 	public ReviewDao getReviewDao() {
 		return reviewDao;

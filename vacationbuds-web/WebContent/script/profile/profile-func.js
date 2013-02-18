@@ -25,9 +25,13 @@ function initProfile(id) {
 	var user;
 	$
 			.ajax({
-				url : 'http://localhost:8080/vacationbuds-webservice/rest/dao/getUserById/'
-						+ id,
-				type : "GET",
+				url: "../security/getUserById.php",
+				type : "POST",
+				data : {
+					'user' : JSON.stringify({
+						'id' : id
+					})
+				},
 				success : function(user) {
 					if (!user.id) {
 						user = JSON.parse(user);

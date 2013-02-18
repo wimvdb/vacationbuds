@@ -227,11 +227,11 @@ function saveAd() {
 		'text' : $('div[data-for="#description"]').text(),
 		'placeOn' : $('div[data-for="#placeOn"]').text(),
 		'expireOn' : $('div[data-for="#expireOn"]').text(),
-	/* 'images' : ($('img.images').length -1) */
+	
 	};
 	if ($('#type').val() == 'H') {
 		$.extend(ad, {
-			/*'@type' : 'com.vacationbuds.model.Ad',*/
+			
 			'adtype' : 'H',
 			'country' : $('div[data-for="#host-country"]').text(),
 			'city' : $('div[data-for="#host-city"]').text(),
@@ -239,7 +239,7 @@ function saveAd() {
 		});
 	} else {
 		$.extend(ad, {
-			/*'@type' : 'com.vacationbuds.model.VacationAd',*/
+			
 			'adtype' : 'V',
 			'country' : $('div[data-for="#country"]').text(),
 			'city' : $('div[data-for="#city"]').text(),

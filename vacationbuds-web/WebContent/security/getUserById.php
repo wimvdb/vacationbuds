@@ -6,16 +6,16 @@ if ( !isset( $_SESSION['userid'])){
 	header("location:../index.html");
 }
 try {
-$data=$_POST['userid']; 
-
-	$url = 'http://localhost:8080/vacationbuds-webservice/rest/dao/getProfileImages';
+	$data=$_POST['user']; 
+	$user= json_decode(utf8_encode($data),true);
+	$url = 'http://localhost:8080/vacationbuds-webservice/rest/dao/getUserById';
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_HEADER, false);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_HTTPHEADER,
                 array("Content-type: application/json"));
     curl_setopt($curl, CURLOPT_POST, true);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $user['id']);
 	$response = curl_exec($curl);
 	if(curl_errno($curl))
 	{

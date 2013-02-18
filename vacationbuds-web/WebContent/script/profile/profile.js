@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	var userid = getURLParameter('userid');
+	var userid = getURLParameter('profileid');
 	initProfile(userid);
 	
 	

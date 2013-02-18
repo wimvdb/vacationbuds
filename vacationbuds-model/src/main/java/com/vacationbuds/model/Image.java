@@ -81,10 +81,6 @@ public class Image {
 		this.image = image;
 	}
 
-	
-
-	
-	
 	public Ad getAd() {
 		return ad;
 	}

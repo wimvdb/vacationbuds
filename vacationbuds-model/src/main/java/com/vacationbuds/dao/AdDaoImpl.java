@@ -4,15 +4,15 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vacationbuds.model.Ad;
+import com.vacationbuds.util.SearchCriteria;
 
 @Transactional
-public class AdDaoImpl  implements AdDao {
-
-	
+public class AdDaoImpl implements AdDao {
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -29,13 +29,83 @@ public class AdDaoImpl  implements AdDao {
 		} else {
 			return entityManager.merge(ad).getId();
 		}
-		
+
 	}
 
 	public List<Ad> getAdsByUserId(Long id) {
 		return entityManager
-				.createQuery("select a from Ad a where a.user.id =:id and a.active=true")
+				.createQuery(
+						"select a from Ad a where a.user.id =:id and a.active=true")
 				.setParameter("id", id).getResultList();
+	}
+
+	public void deletaAd(long adId, long userId) {
+
+		Query deleteAdImagesQuery = entityManager
+				.createQuery("DELETE FROM Image i  where id in (select id from Image where i.ad.id=:adId and i.ad.user.id = :userId) ");
+		deleteAdImagesQuery.setParameter("adId", adId);
+		deleteAdImagesQuery.setParameter("userId", userId);
+		deleteAdImagesQuery.executeUpdate();
+
+		Query deleteAdQuery = entityManager
+				.createQuery("DELETE FROM Ad a  where id =:adId and user.id=:userId");
+		deleteAdQuery.setParameter("adId", adId);
+		deleteAdQuery.setParameter("userId", userId);
+		deleteAdQuery.executeUpdate();
+
+	}
+
+	public List<Ad> search(SearchCriteria searchCriteria) {
+		String queryString = "select a from Ad a where ((soundex(a.country) =soundex(:country) and not a.country = '') or (soundex(a.city)=soundex(:city) and not a.city = '')) and a.adtype=:type";
+		switch (searchCriteria.getAge()) {
+		case 1:
+			queryString += " and a.user.age < 20 ";
+			break;
+		case 2:
+			queryString += " and a.user.age >= 20 and a.user.age <= 30 ";
+			break;
+		case 3:
+			queryString += " and a.user.age > 20 ";
+			break;
+		case 4:
+			queryString += " and a.user.age < 30 ";
+			break;
+		case 5:
+			queryString += " and a.user.age >= 30 and a.user.age <= 40 ";
+			break;
+		case 6:
+			queryString += " and a.user.age > 30 ";
+			break;
+		case 7:
+			queryString += " and a.user.age < 40 ";
+			break;
+		case 8:
+			queryString += " and a.user.age >= 40 :and age <= 50 ";
+			break;
+		case 9:
+			queryString += " and a.user.age > 40 ";
+			break;
+		case 10:
+			queryString += " and a.user.age < 50 ";
+			break;
+		case 11:
+			queryString += " and a.user.age > 50 ";
+			break;
+		default:
+			break;
+		}
+		if(searchCriteria.getSex() != 'E'){
+			queryString += " and a.user.gender =:sex ";
+		}
+		Query query = entityManager.createQuery(queryString)
+				.setParameter("country", searchCriteria.getDestination())
+				.setParameter("city", searchCriteria.getDestination())
+				.setParameter("type", searchCriteria.getType());
+		if(searchCriteria.getSex() != 'E'){
+			query.setParameter("sex", ""+searchCriteria.getSex());
+		}
+		return query.getResultList();
+
 	}
 
 }

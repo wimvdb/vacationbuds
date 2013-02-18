@@ -26,7 +26,7 @@ function initProfilePage(user) {
 	var response = $.ajax({
 		url: "../security/getProfileImages.php",
 		async: false,
-		type : 'Post',
+		type : 'POST',
 		data : {'userid' : user.id}
 		}).responseText;
 	var images = JSON.parse(response);

@@ -1,16 +1,23 @@
 var ads;
+var row = 0;
+var images = {};
+var c = {};
 $(document)
 		.ready(
 				function() {
 
+					$('#manage-ads').click();
 					initViewAds();
 
 					$('tbody tr').on('click', function() {
-						resetAd();
-						initViewAdPage(ads[$(this).index()]);
+						if (row != $(this).index()) {
+							resetAd();
+							row = $(this).index();
+							initViewAdPage(ads[row]);
+						}
 					});
 
-					$('#ad-list tbody tr:even').addClass('zebra');
+					// $('#ad-list tbody tr:even').addClass('zebra');
 					$('#ad-list tbody tr').mouseover(function() {
 						$(this).addClass('zebraHover');
 					});
@@ -21,7 +28,6 @@ $(document)
 					$('body').on('dragover', function handleDragOver(evt) {
 						evt.stopPropagation();
 						evt.preventDefault();
-						// evt.dataTransfer.dropEffect = 'move';
 					});
 					$('body').on('drop', function(evt) {
 						return false;
@@ -32,6 +38,7 @@ $(document)
 						hoverClass : 'highlight-accept',
 						drop : function(event, ui) {
 							puffRemoveAd($(ui.draggable));
+
 						}
 					});
 
@@ -81,14 +88,43 @@ function initViewAds() {
 		type : 'POST'
 	}).responseText;
 	ads = JSON.parse(response);
-	if (!ads.length) {
+	if (!ads.length && ads.length != 0) {
 		ads = JSON.parse(ads);
 	}
 	if (ads.length > 0) {
+		for ( var i = 0; i < ads.length; i++) {
+
+			var tr = $('<tr title="Drag ad to the bin to delete!"></tr>')
+					.append(
+							'<td>'
+									+ ((ads[i].adtype == 'V') ? 'Vacation ad'
+											: 'Hosting ad') + '</td>').append(
+							'<td>' + ads[i].title + '</td>').append(
+							'<td>' + ads[i].placeOn + '</td>').append(
+							'<td>' + ads[i].expireOn + '</td>');
+
+			$('#ad-list tbody').append(tr);
+			tr.draggable({
+				revert : 'invalid',
+				appendTo : 'body',
+
+				scroll : false,
+				helper : "clone",
+				start : function(event, ui) {
+					if(!$('body').outerHeight() > $(window).height()){
+						$('body').css('overflow', 'hidden');
+					}
+					c.tr = this;
+					c.helper = ui.helper;
+				},
+				stop : function() {
+					$('body').css('overflow', 'auto');
+				}
+			});
+
+		}
 		initViewAdPage(ads[0]);
 	}
-	;
-
 }
 
 function initViewAdPage(ad) {
@@ -102,12 +138,12 @@ function initViewAdPage(ad) {
 		$('#duration').text(ad.duration);
 		if (ad.expenses == 50) {
 			$('#vacation-expenses').text('I will pay my fair share!');
-		} else if (ads[0].expenses == 100) {
+		} else if (ad.expenses == 100) {
 			$('#vacation-expenses').text('I will pay for everything!');
 		} else {
 			$('#vacation-expenses').text('My company is payment enough! :-)');
 		}
-		
+
 	} else {
 		$('#type').text('Hosting Ad');
 		$('#vacation').hide();
@@ -127,39 +163,110 @@ function initViewAdPage(ad) {
 
 function resetAd() {
 	$('#title').text('');
-	$('#type').text('');
-	$('#placeOn').text('');
-	$('#expireOn').text('');
-	$('#destination').text('');
-	$('#dateOfDeparture').text('');
-	$('#duration').text('');
-	$('#vacation-expenses').text('');
-	$('#description-div').text('');
+	$('.ad-text div div div').text('');
+	$('.images:not("#new-image")').remove();
 
 }
 
 function initAdImages(adid) {
-	var response = $.ajax({
-		url : "../security/getAdImages.php",
-		async : false,
-		type : 'POST',
-		data : {
-			'adid' : adid
+	if (!images[row.valueOf()]) {
+		var response = $.ajax({
+			url : "../security/getAdImages.php",
+			async : false,
+			type : 'POST',
+			data : {
+				'adid' : adid
+			}
+		}).responseText;
+		var adImages = JSON.parse(response);
+		if (!adImages.length && adImages.length != 0) {
+			adImages = JSON.parse(adImages);
 		}
-	}).responseText;
-	var adImages = JSON.parse(response);
-	if (!adImages.length && adImages.length != 0) {
-		adImages = JSON.parse(adImages);
+		images[row] = adImages;
+	} else {
+		adImages = images[row.valueOf()];
 	}
 	for ( var i = 0; i < adImages.length; i++) {
 		var img = $('#new-image').clone();
 		$(img).removeClass('hidden');
+		$(img).attr('id', adImages[i].id);
 		$(img).attr('src', adImages[i].image);
 		$('img.images').addClass('hidden');
+		// $('img.images').hide();
 		$('#image-drop-zone').append(img);
+		// $(img).fadeIn(500);
 		if ($('.arrow').hasClass('hidden')) {
 			$('.arrow').removeClass('hidden');
 		}
+	}
+
+}
+
+function puffRemoveAd(which) {
+
+	var frame_count = 5, $trash, $puff;
+
+	// create container
+	$trash = $('<div class="puff"></div>').css({
+		height : 285,
+		left : 313,
+		top : 431,
+		width : 320,
+		position : 'absolute',
+		overflow : 'hidden'
+	}).appendTo('#drag-area');
+
+	// add the animation image
+	$puff = $('<img class="puff" src="../images/epuff.png"/>').css({
+		width : 320,
+		height : 1600
+	}).data('count', frame_count).appendTo($trash);
+
+	$(c.tr).hide();
+	$(c.helper).remove();
+
+	// $this.remove();
+	/*
+	 * var imagecount = $('img.images').length; if (imagecount > 1) {
+	 * $($('img.images').get(1)).removeClass('hidden'); } else {
+	 * $('.postit').removeClass('hidden'); $('.arrow').addClass('hidden'); }
+	 */
+
+	(function animate() {
+
+		var count = $puff.data('count');
+
+		if (count) {
+			var top = frame_count - count;
+			var height = $puff.height() / frame_count;
+			$puff.css({
+				"top" : -(top * height),
+				'position' : 'absolute'
+			});
+			$trash.css({
+				'height' : height
+			});
+			$puff.data("count", count - 1);
+			setTimeout(animate, 75);
+		} else {
+			$puff.parent().remove();
+		}
+	})();
+
+	$.ajax({
+		url : "../security/deleteAd.php",
+		async : true,
+		type : 'POST',
+		data : {
+			'ad' : JSON.stringify({
+				'id' : ads[$(c.tr).index()].id
+			})
+		}
+	});
+	if ($('#ad-list tbody tr:visible').length > 0) {
+		$('#ad-list tbody tr:visible').first().click();
+	}else{
+		resetAd();
 	}
 
 }

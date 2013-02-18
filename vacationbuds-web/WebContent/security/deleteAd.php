@@ -6,12 +6,11 @@ if ( !isset( $_SESSION['userid'])){
 	header("location:../index.html");
 }
 try {
-	$data=$_POST['img']; 
-	$img= json_decode(utf8_encode($data),true);
-	if(isset( $_SESSION['adId'])){
-		$img['ad'] = array('id' => $_SESSION['adId'],'user' => array('id' => $_SESSION['userid']));
-		$content = json_encode($img);
-		$url = 'http://localhost:8080/vacationbuds-webservice/rest/dao/deleteAdImage';
+	$data=$_POST['ad']; 
+	$ad= json_decode(utf8_encode($data),true);
+		$ad['user'] = array('id' => $_SESSION['userid']);
+		$content = json_encode($ad);
+		$url = 'http://localhost:8080/vacationbuds-webservice/rest/dao/deleteAd';
     	$curl = curl_init($url);
     	curl_setopt($curl, CURLOPT_HEADER, false);
     	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -22,7 +21,7 @@ try {
 		curl_exec($curl);
    		curl_close($curl);
 	
-	}
+	
 	
 } catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";

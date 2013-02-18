@@ -12,175 +12,160 @@ header("location:../index.html");
 <meta charset="ISO-8859-1">
 <title>Manage ads</title>
 <link rel="stylesheet" href="../css/ads/view-ads.css">
-
-
-<link rel="stylesheet"
-	href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="../css/ads/ads.css">
 <link rel="stylesheet" href="../css/navigation.css">
-<link rel="stylesheet" href="../css/ads/new-ad.css">
 <link href='http://fonts.googleapis.com/css?family=Special+Elite'
 	rel='stylesheet' type='text/css'>
 
 </head>
+<body>
+<div id="drag-area">
+	<div id="content">
+		<?php include("../includes/navigation.html");?>
+		<div class="hfeed">
 
-<div id="content">
-	<?php include("../includes/navigation.html");?>
-	<div class="hfeed">
+			<article class="entry post overview">
+				<table id="ad-list">
+					<thead>
+						<tr>
+							<th id="type-label">Type</th>
+							<th id="title-label">Title</th>
+							<th id="placeOn-label">Place On</th>
+							<th id="removeOn-label">Remove On</th>
+						</tr>
+					</thead>
+					<tbody>
 
-		<article id="ad" class="entry post overview">
-			<table id="ad-list">
-				<thead>
-					<tr>
-						<th id="type-label">Type</th>
-						<th id="title-label">Title</th>
-						<th id="placeOn-label">Place On</th>
-						<th id="removeOn-label">Remove On</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Vacation type</td>
-						<td>Title goes here</td>
-						<td>14-12-2012</td>
-						<td>15-12-2012</td>
-					</tr>
-					<tr>
-						<td>Hosting type</td>
-						<td>Title goes here</td>
-						<td>22-12-2012</td>
-						<td>11-02-2012</td>
-					</tr>
-				</tbody>
-			</table>
-		</article>
-		<article id="ad" class="entry post">
-			<h1 id="title"></h1>
-			<div id="images-fieldset">
-				<img id="prev" class="arrow hidden" src="../images/prev.gif" />
-				<div id="image-drop-zone">
+					</tbody>
+				</table>
+			</article>
+			<article id="ad" class="entry post">
+				<h1 id="title"></h1>
+				<div id="images-fieldset">
+					<img id="prev" class="arrow hidden" src="../images/prev.gif" />
+					<div id="image-drop-zone">
 
-					<img id="new-image" src="" title="" class="images hidden">
+						<img id="new-image" src="" title="" class="images hidden">
+					</div>
+					<img id="next" class="arrow hidden" src="../images/next.gif" />
 				</div>
-				<img id="next" class="arrow hidden" src="../images/next.gif" />
-			</div>
-			<fieldset>
-				<legend>Advertisement</legend>
-				<div class="ad-text">
-					<label>Type :</label>
-					<div class="editable-text">
-						<div>
-							<div id="type"></div>
+				<fieldset>
+					<legend>Advertisement</legend>
+					<div class="ad-text">
+						<label>Type :</label>
+						<div >
+							<div>
+								<div id="type"></div>
 
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="ad-text">
-					<label>Place on :</label>
-					<div class="editable-text">
-						<div>
-							<div id="placeOn"></div>
+					<div class="ad-text">
+						<label>Place on :</label>
+						<div >
+							<div>
+								<div id="placeOn"></div>
 
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="ad-text">
-					<label>Remove on :</label>
-					<div class="editable-text">
-						<div>
-							<div id="expireOn"></div>
+					<div class="ad-text">
+						<label>Remove on :</label>
+						<div >
+							<div>
+								<div id="expireOn"></div>
 
+							</div>
 						</div>
 					</div>
-				</div>
-			</fieldset>
+				</fieldset>
 
-			<fieldset id="vacation">
-				<legend>Vacation advertisement</legend>
-				<div class="ad-text">
-					<label>Destination :</label>
-					<div class="editable-text">
-						<div>
-							<div id="destination"></div>
+				<fieldset id="vacation">
+					<legend>Vacation advertisement</legend>
+					<div class="ad-text">
+						<label>Destination :</label>
+						<div >
+							<div>
+								<div id="destination"></div>
 
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="ad-text">
-					<label>Leave on :</label>
-					<div class="editable-text">
-						<div>
-							<div id="dateOfDeparture"></div>
+					<div class="ad-text">
+						<label>Leave on :</label>
+						<div >
+							<div>
+								<div id="dateOfDeparture"></div>
 
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="ad-text">
-					<label>Duration :</label>
-					<div class="editable-text">
-						<div>
-							<div id="duration"></div>
+					<div class="ad-text">
+						<label>Duration :</label>
+						<div >
+							<div>
+								<div id="duration"></div>
 
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="ad-text">
-					<label>Expenses :</label>
-					<div class="editable-text">
-						<div>
-							<div id="vacation-expenses"></div>
+					<div class="ad-text">
+						<label>Expenses :</label>
+						<div >
+							<div>
+								<div id="vacation-expenses"></div>
 
+							</div>
 						</div>
 					</div>
-				</div>
-			</fieldset>
+				</fieldset>
 
-			<fieldset id="hosting" class="hidden">
-				<legend>Hosting advertisement</legend>
-				<div class="ad-text">
-					<label>Location :</label>
-					<div class="editable-text">
-						<div>
-							<div id="location"></div>
+				<fieldset id="hosting" class="hidden">
+					<legend>Hosting advertisement</legend>
+					<div class="ad-text">
+						<label>Location :</label>
+						<div >
+							<div>
+								<div id="location"></div>
 
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="ad-text">
-					<label>Expenses :</label>
-					<div class="editable-text">
-						<div>
-							<div id="hosting-expenses"></div>
+					<div class="ad-text">
+						<label>Expenses :</label>
+						<div >
+							<div>
+								<div id="hosting-expenses"></div>
 
+							</div>
 						</div>
 					</div>
-				</div>
 
-			</fieldset>
+				</fieldset>
 
 
-			<fieldset id="description-fieldset">
-				<legend>Content</legend>
-				<div class="entry-content">
-					<div class="editable-text">
-						<div>
-							<div id="description-div"></div>
+				<fieldset id="description-fieldset">
+					<legend>Content</legend>
+					<div class="entry-content">
+						<div >
+							<div>
+								<div id="description-div"></div>
+							</div>
 						</div>
 					</div>
-				</div>
 
-			</fieldset>
+				</fieldset>
 
-		</article>
+			</article>
+		</div>
+		<div class="trash">
+			<img id="trashbin" src="../images/trash.png" height="150" alt="trash" />
+
+			<div>Drag ads here to delete!</div>
+		</div>
+
 	</div>
-	<div class="trash">
-		<img id="trashbin" src="../images/trash.png" height="150" alt="trash" />
-
-		<div>Drag ads here to delete!</div>
-	</div>
-
 </div>
-
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
 <script
@@ -191,7 +176,7 @@ header("location:../index.html");
 <script src="../script/ads/view-ads.js"></script>
 
 
-<body>
+
 
 </body>
 </html>

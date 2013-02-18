@@ -32,6 +32,7 @@ import com.vacationbuds.model.Image;
 import com.vacationbuds.model.Message;
 import com.vacationbuds.model.Review;
 import com.vacationbuds.model.User;
+import com.vacationbuds.util.SearchCriteria;
 
 @Path("/dao")
 public class DaoService {
@@ -55,10 +56,10 @@ public class DaoService {
 	@Autowired
 	private UserDao userDao;
 
-	@GET
-	@Path("getUserById/{id}")
+	@POST
+	@Path("getUserById")
 	@Produces("application/json")
-	public User getUserById(@PathParam("id") Long id) {
+	public User getUserById( Long id) {
 		// UserDao dao = new UserDaoImpl();
 		// User user =dao.getUserById(id);
 		User user = userDao.getUserById(id);
@@ -211,6 +212,13 @@ public class DaoService {
 	public void deleteProfileImage(Image image) {
 		imageDao.deleteProfileImage(image.getId(),image.getUser().getId());
 	}
+	
+	@POST
+	@Path("deleteAd")
+	@Consumes("application/json")
+	public void deleteA(Ad ad) {
+		adDao.deletaAd(ad.getId(),ad.getUser().getId());
+	}
 
 	/*
 	 * public String saveOrUpdateUser(User user) throws Exception {
@@ -334,6 +342,14 @@ public class DaoService {
 	public Ad getAdById(@PathParam("id") Long id) {
 		return adDao.getAdById(id);
 	}
+	
+	@POST
+	@Path("search")
+	@Consumes("application/json")
+	@Produces("application/json")
+	public List<Ad> search(SearchCriteria searchCriteria){
+		 return adDao.search(searchCriteria);
+	 }
 
 	@PostConstruct
 	public void init() {
@@ -382,6 +398,6 @@ public class DaoService {
 		this.userDao = userDao;
 	}
 
-	// String getAdsBySearchCriteria(String jsonSearchCriteria);
+	 
 
 }

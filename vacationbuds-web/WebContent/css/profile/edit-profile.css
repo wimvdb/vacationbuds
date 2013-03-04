@@ -4,7 +4,10 @@ html,body,#content,#create-profile,#drag-area {
 
 }
 
-
+input , textarea {
+	font-family: 'Crafty Girls', cursive;
+	border : none;
+}
 
 #content {
 	margin-left: auto;
@@ -187,6 +190,7 @@ body {
 }
 
 #save {
+	font-family: Georgia, "Times New Roman", Times, serif;
 	float: right;
 	margin-right: 58px;
 	padding: 10px;
@@ -242,7 +246,7 @@ img {
 
 input {
 	font-size: .8em;
-	border: 1px solid #666;
+	/*border: 1px solid #666;*/
 }
 
 textarea {

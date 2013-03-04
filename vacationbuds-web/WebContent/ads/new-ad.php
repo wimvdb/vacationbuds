@@ -225,8 +225,9 @@ unset($_SESSION['adId']);
 
 
 	<script src="../script/general.js"></script>
-	<script src="../script/ads/new-ad.js"></script>
 	<script src="../script/navigation.js"></script>
+	<script src="../script/ads/new-ad.js"></script>
+	
 	<script src="../script/jquery.editable-1.0.1.js"></script>
 
 </body>

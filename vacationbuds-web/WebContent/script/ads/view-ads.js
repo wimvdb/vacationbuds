@@ -111,7 +111,7 @@ function initViewAds() {
 				scroll : false,
 				helper : "clone",
 				start : function(event, ui) {
-					if(!$('body').outerHeight() > $(window).height()){
+					if (!$('body').outerHeight() > $(window).height()) {
 						$('body').css('overflow', 'hidden');
 					}
 					c.tr = this;
@@ -124,6 +124,11 @@ function initViewAds() {
 
 		}
 		initViewAdPage(ads[0]);
+	} else {
+		var tr = $('<tr></tr>').append('<td colspan="4"> No ads!</td>');
+		$('#ad-list tbody').append(tr);
+		$('#ad').addClass('hidden');
+		$('.trash').addClass('hidden');
 	}
 }
 
@@ -206,11 +211,12 @@ function puffRemoveAd(which) {
 
 	var frame_count = 5, $trash, $puff;
 
+	var position = $('#trashbin').position();
 	// create container
 	$trash = $('<div class="puff"></div>').css({
 		height : 285,
-		left : 313,
-		top : 431,
+		left : position.left,
+		top : position.top,
 		width : 320,
 		position : 'absolute',
 		overflow : 'hidden'
@@ -265,8 +271,11 @@ function puffRemoveAd(which) {
 	});
 	if ($('#ad-list tbody tr:visible').length > 0) {
 		$('#ad-list tbody tr:visible').first().click();
-	}else{
-		resetAd();
+	} else {
+		var tr = $('<tr></tr>').append('<td colspan="4"> No ads!</td>');
+		$('#ad-list tbody').append(tr);
+		$('#ad').addClass('hidden');
+		$('.trash').addClass('hidden');
 	}
 
 }

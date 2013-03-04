@@ -19,7 +19,7 @@ function markForInlineEditing(elements, showEditFields) {
 			}else{
 				display.text(this.find('option[value='+this.val()+']').text());
 			}
-			if (this.is('textarea') && this.val() == '') {
+			if (this.is('textarea') && this.val() == '' && this.hasClass('description-textarea')) {
 				display.text('Description');
 			}
 		}
@@ -27,12 +27,17 @@ function markForInlineEditing(elements, showEditFields) {
 
 	if (showEditFields) {
 		elements.find('div > div').hide();
+		elements.find('div > pre').hide();
 		elements.find('div > input').css('display', '');
 		elements.find('div > textarea').css('display', '');
 	} else {
 		elements.find('div > div').show();
+		elements.find('div > pre').show();
 	}
 	elements.find('div > div').on('hover', function() {
+		$(this).toggleClass('highlight');
+	});
+	elements.find('div > pre').on('hover', function() {
 		$(this).toggleClass('highlight');
 	});
 

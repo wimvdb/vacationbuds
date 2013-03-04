@@ -12,7 +12,12 @@ import javax.persistence.ManyToOne;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.annotations.GenericGenerator;
+
+import com.vacationbuds.util.CustomDateDeSerializer;
+import com.vacationbuds.util.CustomDateSerializer;
 
 @Entity
 
@@ -32,7 +37,8 @@ public class Message {
 	
 	private String text;
 	
-	
+	@JsonSerialize(using = CustomDateSerializer.class)
+	@JsonDeserialize(using = CustomDateDeSerializer.class)
 	private Date sendDate;
 	
 	@ManyToOne
@@ -43,7 +49,7 @@ public class Message {
 	@ManyToOne
 	@JoinColumn(name = "recipiant", nullable = false)
 	
-	private User recipiant;
+	private User recipient;
 	
 	public Long getId() {
 		return id;
@@ -76,12 +82,14 @@ public class Message {
 	public void setSendDate(Date sendDate) {
 		this.sendDate = sendDate;
 	}
-	public User getRecipiant() {
-		return recipiant;
+	public User getRecipient() {
+		return recipient;
 	}
-	public void setRecipiant(User recipiant) {
-		this.recipiant = recipiant;
+	public void setRecipient(User recipient) {
+		this.recipient = recipient;
 	}
+	
+	
 	
 	
 	

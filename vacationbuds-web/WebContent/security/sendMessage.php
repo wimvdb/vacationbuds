@@ -6,14 +6,11 @@ if ( !isset( $_SESSION['userid'])){
 	header("location:../index.html");
 }
 try {
-	$data=$_POST['ad']; 
-	$ad= json_decode(utf8_encode($data),true);
-	$ad['user'] = array('id' => $_SESSION['userid']);
-	if(isset( $_SESSION['adId'])){
- 		$ad['id'] = $_SESSION['adId'];
-	}
-	$content = json_encode($ad);
-	$url = 'http://localhost:8080/vacationbuds-webservice/rest/dao/saveOrUpdateAd';
+	$data=$_POST['message']; 
+	$message= json_decode(utf8_encode($data),true);
+	$message['sender'] = array('id' => $_SESSION['userid']);
+	$content = json_encode($message);
+	$url = 'http://localhost:8080/vacationbuds-webservice/rest/dao/saveOrUpdateMessage';
 	$curl = curl_init($url);
 	curl_setopt($curl, CURLOPT_HEADER, false);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, false);

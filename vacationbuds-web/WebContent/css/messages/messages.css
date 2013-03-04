@@ -1,0 +1,151 @@
+html,body,#content,#create-profile,#drag-area {
+	min-height: 95%;
+	height: 95%
+
+}
+input, textarea , .ui-autocomplete{
+	font-family: 'Special Elite', cursive;
+	font-size: 1em;
+}
+
+body {
+	background: url(../images/desk.jpg) no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	color: #333;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	line-height: 1.2;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+.message-text{
+	line-height: 1.8;
+}
+
+input {
+	
+	border: 1px solid #666;
+	float : right;
+	width : 99%;
+	float : right;
+}
+
+select{
+	width : 100%;
+}
+
+.editable-text div div {
+min-height: 1.6em;
+}
+.editable-text div pre {
+min-height: 1.6em;
+}
+
+fieldset{
+	/*width : 48%;*/
+	margin-bottom: 20px;
+}
+
+.message-text{
+    overflow:hidden;
+    position:relative;
+    display:table;
+    /*width : 45%*/
+    width : 100%;
+  
+}
+.message-text > label{
+    display:table-cell;
+    /*width : 15%*/
+    /*width : 22%;*/
+}
+.message-text > div{
+   /* width: 40%;*/
+    display:table-cell;
+}
+
+.message-text div div {
+width : 100%;
+overflow: hidden;
+}
+
+.entry-line{
+	overflow:hidden;
+    position:relative;
+    display:table;
+    width : 100%
+}
+
+.highlight {
+	background-color: #FFFACD;
+}
+
+label{
+	vertical-align: top;
+	
+	width: 7.7em;
+	margin-right: 1em;
+}
+
+#content {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.zebra { 
+  background-color: #dddddd;
+  color: #666666;
+}
+
+tr.zebraHover {
+  background-color: #FFFACD;
+}
+
+
+.trash {
+	width : 200px;
+	text-align : center;
+	float : left;
+	clear : both;
+	color: white;
+	margin-top : -200px;
+
+}
+
+
+.trash-highlight {
+border: 1px solid white;
+	
+}
+
+.highlight-accept {
+	border: 1px solid black;
+	background: white;
+	color: black;
+}
+
+th{
+	border-bottom: 2px solid #015287;
+}
+
+#sender-label, #recipient-label , #received-label{
+	width : 15%
+}
+
+tbody tr {
+cursor: move;
+}
+
+.hidden{
+	display : none;
+}
+
+
+
+
+
+
+

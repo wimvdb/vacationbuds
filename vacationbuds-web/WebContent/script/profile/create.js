@@ -1,6 +1,13 @@
 $(document).ready(function() {
+	
 	markForInlineEditing($('.editable-text'), true);
 	addPicture();
+	
+	$('input,textarea').focus(function(){
+		$(this).css('border','none');
+	});
+		
+	
 });
 
 function saveOrUpdateUser() {

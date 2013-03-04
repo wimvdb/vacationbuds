@@ -1,7 +1,7 @@
 var userid = getURLParameter('userid');
 
 $(document).ready(function() {
-
+	$('#menu-profile').click();
 	initProfile(userid);
 	if ($('#avatar').src != '#') {
 		showAvatar();

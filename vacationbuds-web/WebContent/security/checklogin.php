@@ -28,7 +28,7 @@ $_SESSION['userid'] = $user_id;
 $_SESSION['username'] = $username;
 $_SESSION['password'] = $password;
 
-header("location:../profile/profile.php?userid=" . $user_id);
+header("location:../profile/profile.php?userid=" . $user_id ."&profileid=" .$user_id);
 
 }
 else {

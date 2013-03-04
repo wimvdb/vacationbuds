@@ -4,6 +4,7 @@ $(document)
 		.ready(
 				function() {
 
+					$('#manage-ads').click();
 					markForInlineEditing($('.editable-text'), false);
 					/*
 					 * $('body').on('dragover', function handleDragOver(evt) {

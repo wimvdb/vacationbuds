@@ -216,7 +216,7 @@ public class DaoService {
 	@POST
 	@Path("deleteAd")
 	@Consumes("application/json")
-	public void deleteA(Ad ad) {
+	public void deleteAd(Ad ad) {
 		adDao.deletaAd(ad.getId(),ad.getUser().getId());
 	}
 
@@ -279,19 +279,17 @@ public class DaoService {
 
 	}
 
-	@GET
-	@Path("getInboxMessagesByUserId/{userId}")
+	@POST
+	@Path("getInboxMessagesByUserId")
 	@Produces("application/json")
-	public List<Message> getInboxMessagesByUserId(
-			@PathParam("userId") Long userId) {
+	public List<Message> getInboxMessagesByUserId(Long userId) {
 		return messageDao.getInboxMessagesByUserId(userId);
 	}
 
-	@GET
-	@Path("getOutboxMessagesByUserId/{userId}")
+	@POST
+	@Path("getOutboxMessagesByUserId")
 	@Produces("application/json")
-	public List<Message> getOutboxMessagesByUserId(
-			@PathParam("userId") Long userId) {
+	public List<Message> getOutboxMessagesByUserId(Long userId) {
 		return messageDao.getOutboxMessagesByUserId(userId);
 	}
 
@@ -305,18 +303,27 @@ public class DaoService {
 	@POST
 	@Path("saveOrUpdateMessage")
 	@Consumes("application/json")
-	public long saveOrUpdateMessage(Message message) {
-		return messageDao.saveOrUpdate(message);
+	public void saveOrUpdateMessage(Message message) throws Exception {
+		String username = message.getRecipient().getUsername();
+		message.setRecipient(userDao.getUserByUsername(username));
+		message.setSendDate(new Date());
+		messageDao.saveOrUpdate(message);
 	}
 
 	@POST
-	@Path("deleteMessage")
+	@Path("deleteInboxMessage")
 	@Consumes("application/json")
-	public boolean deleteMessage(Message message) {
-
-		return messageDao.delete(message);
+	public void deleteInboxMessage(Message message) {
+		messageDao.deleteInboxMessage(message);
 	}
-
+	
+	@POST
+	@Path("deleteOutboxMessage")
+	@Consumes("application/json")
+	public void deleteOutboxMessage(Message message) {
+		messageDao.deleteOutboxMessage(message);
+	}
+	
 	@POST
 	@Path("getAdsByUserId")
 	@Produces("application/json")
@@ -342,6 +349,15 @@ public class DaoService {
 	public Ad getAdById(@PathParam("id") Long id) {
 		return adDao.getAdById(id);
 	}
+	
+	@POST
+	@Path("getUsernames")
+	@Produces("application/json")
+	public List<String> getUsernames(String prefix) {
+		return userDao.getUsernames(prefix);
+	}
+	
+	
 	
 	@POST
 	@Path("search")

@@ -118,14 +118,14 @@ public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 		Message sendMessage = new Message();
 		sendMessage.setTitle("hello");
 		sendMessage.setSender(sender);
-		sendMessage.setRecipiant(recipiant);
+		sendMessage.setRecipient(recipiant);
 		
 		
 		
 		Message receiveMessage = new Message();
 		receiveMessage.setTitle("hello");
 		receiveMessage.setSender(recipiant);
-		receiveMessage.setRecipiant(sender);
+		receiveMessage.setRecipient(sender);
 		
 		
 

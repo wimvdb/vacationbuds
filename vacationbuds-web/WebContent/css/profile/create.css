@@ -6,3 +6,8 @@
 #content {
 	width: 800px;
 }
+
+input , textarea {
+	font-family: 'Crafty Girls', cursive;
+	border: 1px solid #666;
+}

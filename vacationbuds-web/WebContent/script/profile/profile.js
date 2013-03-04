@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	$('#menu-profile').click();
 	var userid = getURLParameter('profileid');
 	initProfile(userid);
 	

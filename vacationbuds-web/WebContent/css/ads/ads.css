@@ -17,9 +17,7 @@ body {
 	-o-background-size: cover;
 	background-size: cover;
 }
-.ad-text{
-	line-height: 1.8;
-}
+
 
 input {
 	font-size: .8em;
@@ -48,8 +46,11 @@ fieldset{
     display:table;
     /*width : 45%*/
     width : 100%;
+    line-height: 1.8;
   
 }
+
+
 .ad-text > label{
     display:table-cell;
     /*width : 15%*/

@@ -10,7 +10,8 @@ public interface MessageDao {
 
 	Message getMessageById(Long id);
 	
-	boolean delete(Message message);
+	void deleteInboxMessage(Message message);
+	void deleteOutboxMessage(Message message);
 	
 	List<Message> getInboxMessagesByUserId(long id);
 	

@@ -83,7 +83,7 @@ unset($_SESSION['profileId']);
 							<div>
 								<div data-type="editable" data-updatable='true'
 									data-for="#short-description" class="description-label"></div>
-								<textarea class="hidden" id="short-description" rows="15"
+								<textarea class="hidden" id="short-description" rows="10"
 									name="user-description"
 									title="A short description of yourself. This description will be viewable by others when the find one of your ads."></textarea>
 							</div>
@@ -108,7 +108,7 @@ unset($_SESSION['profileId']);
 									<div>
 										<div data-type="editable" data-updatable='true'
 											data-for="#description" class="description-label">Description</div>
-										<textarea rows="5" cols="35" name="description"></textarea>
+										<textarea class="description-textarea" rows="5" cols="30" name="description"></textarea>
 									</div>
 								</div>
 							</div>
@@ -128,7 +128,7 @@ unset($_SESSION['profileId']);
 									<div>
 										<div data-type="editable" data-updatable='true'
 											data-for="#description" class="description-label">Description</div>
-										<textarea rows="5" cols="35" name="description"></textarea>
+										<textarea class="description-textarea" rows="5" cols="30" name="description"></textarea>
 									</div>
 								</div>
 							</div>

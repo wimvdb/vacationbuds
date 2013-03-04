@@ -163,6 +163,7 @@ header("location:../index.html");
 
 			<div>Drag ads here to delete!</div>
 		</div>
+		 <div class="modal"></div> 
 
 	</div>
 </div>

@@ -90,7 +90,6 @@ function puffRemoveProfile(which, remove) {
 	
 	$.ajax({
 		url: "../security/deleteProfileImage.php",
-		async: true,
 		type : 'POST',
 		data : {'img' :JSON.stringify({'id' : imgId})}
 		});

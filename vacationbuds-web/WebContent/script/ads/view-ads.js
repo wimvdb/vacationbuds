@@ -7,23 +7,17 @@ $(document)
 				function() {
 
 					$('#manage-ads').click();
-					initViewAds();
 
-					$('tbody tr').on('click', function() {
-						if (row != $(this).index()) {
-							resetAd();
-							row = $(this).index();
-							initViewAdPage(ads[row]);
+					$("body").on({
+						ajaxStart : function() {
+							$(this).addClass("loading");
+						},
+						ajaxStop : function() {
+							$(this).removeClass("loading");
 						}
 					});
 
-					// $('#ad-list tbody tr:even').addClass('zebra');
-					$('#ad-list tbody tr').mouseover(function() {
-						$(this).addClass('zebraHover');
-					});
-					$('#ad-list tbody tr').mouseout(function() {
-						$(this).removeClass('zebraHover');
-					});
+					initViewAds();
 
 					$('body').on('dragover', function handleDragOver(evt) {
 						evt.stopPropagation();
@@ -82,54 +76,84 @@ $(document)
 				});
 
 function initViewAds() {
-	var response = $.ajax({
-		url : "../security/getAdsByUserId.php",
-		async : false,
-		type : 'POST'
-	}).responseText;
-	ads = JSON.parse(response);
-	if (!ads.length && ads.length != 0) {
-		ads = JSON.parse(ads);
-	}
-	if (ads.length > 0) {
-		for ( var i = 0; i < ads.length; i++) {
+	$
+			.ajax({
+				url : "../security/getAdsByUserId.php",
+				type : 'POST'
+			})
+			.done(
+					function(data) {
+						ads = JSON.parse(data);
+						if (!ads.length && ads.length != 0) {
+							ads = JSON.parse(ads);
+						}
+						if (ads.length > 0) {
+							for ( var i = 0; i < ads.length; i++) {
 
-			var tr = $('<tr title="Drag ad to the bin to delete!"></tr>')
-					.append(
-							'<td>'
-									+ ((ads[i].adtype == 'V') ? 'Vacation ad'
-											: 'Hosting ad') + '</td>').append(
-							'<td>' + ads[i].title + '</td>').append(
-							'<td>' + ads[i].placeOn + '</td>').append(
-							'<td>' + ads[i].expireOn + '</td>');
+								var tr = $(
+										'<tr title="Drag ad to the bin to delete!"></tr>')
+										.append(
+												'<td>'
+														+ ((ads[i].adtype == 'V') ? 'Vacation ad'
+																: 'Hosting ad')
+														+ '</td>')
+										.append('<td>' + ads[i].title + '</td>')
+										.append(
+												'<td>' + ads[i].placeOn
+														+ '</td>').append(
+												'<td>' + ads[i].expireOn
+														+ '</td>');
 
-			$('#ad-list tbody').append(tr);
-			tr.draggable({
-				revert : 'invalid',
-				appendTo : 'body',
+								$('#ad-list tbody').append(tr);
+								tr
+										.draggable({
+											revert : 'invalid',
+											appendTo : 'body',
 
-				scroll : false,
-				helper : "clone",
-				start : function(event, ui) {
-					if (!$('body').outerHeight() > $(window).height()) {
-						$('body').css('overflow', 'hidden');
-					}
-					c.tr = this;
-					c.helper = ui.helper;
-				},
-				stop : function() {
-					$('body').css('overflow', 'auto');
-				}
-			});
+											scroll : false,
+											helper : "clone",
+											start : function(event, ui) {
+												if (!$('body').outerHeight() > $(
+														window).height()) {
+													$('body').css('overflow',
+															'hidden');
+												}
+												c.tr = this;
+												c.helper = ui.helper;
+											},
+											stop : function() {
+												$('body').css('overflow',
+														'auto');
+											}
+										});
 
-		}
-		initViewAdPage(ads[0]);
-	} else {
-		var tr = $('<tr></tr>').append('<td colspan="4"> No ads!</td>');
-		$('#ad-list tbody').append(tr);
-		$('#ad').addClass('hidden');
-		$('.trash').addClass('hidden');
-	}
+							}
+							initViewAdPage(ads[0]);
+						} else {
+							var tr = $('<tr></tr>').append(
+									'<td colspan="4"> No ads!</td>');
+							$('#ad-list tbody').append(tr);
+							$('#ad').addClass('hidden');
+							$('.trash').addClass('hidden');
+						}
+
+						$('tbody tr').on('click', function() {
+							if (row != $(this).index()) {
+								resetAd();
+								row = $(this).index();
+								initViewAdPage(ads[row]);
+							}
+						});
+
+						// $('#ad-list tbody tr:even').addClass('zebra');
+						$('#ad-list tbody tr').mouseover(function() {
+							$(this).addClass('zebraHover');
+						});
+						$('#ad-list tbody tr').mouseout(function() {
+							$(this).removeClass('zebraHover');
+						});
+					});
+
 }
 
 function initViewAdPage(ad) {
@@ -175,22 +199,29 @@ function resetAd() {
 
 function initAdImages(adid) {
 	if (!images[row.valueOf()]) {
-		var response = $.ajax({
+		$.ajax({
 			url : "../security/getAdImages.php",
-			async : false,
 			type : 'POST',
 			data : {
 				'adid' : adid
 			}
-		}).responseText;
-		var adImages = JSON.parse(response);
-		if (!adImages.length && adImages.length != 0) {
-			adImages = JSON.parse(adImages);
-		}
-		images[row] = adImages;
+		}).done(function(data) {
+			var adImages = JSON.parse(data);
+			if (!adImages.length && adImages.length != 0) {
+				adImages = JSON.parse(adImages);
+			}
+			images[row] = adImages;
+			initAdImages2(adImages);
+		});
+
 	} else {
-		adImages = images[row.valueOf()];
+
+		initAdImages2(images[row.valueOf()]);
 	}
+
+}
+
+function initAdImages2(adImages) {
 	for ( var i = 0; i < adImages.length; i++) {
 		var img = $('#new-image').clone();
 		$(img).removeClass('hidden');
@@ -204,7 +235,9 @@ function initAdImages(adid) {
 			$('.arrow').removeClass('hidden');
 		}
 	}
-
+	if (adImages.length == 0) {
+		$('.arrow').addClass('hidden');
+	}
 }
 
 function puffRemoveAd(which) {
@@ -261,7 +294,6 @@ function puffRemoveAd(which) {
 
 	$.ajax({
 		url : "../security/deleteAd.php",
-		async : true,
 		type : 'POST',
 		data : {
 			'ad' : JSON.stringify({

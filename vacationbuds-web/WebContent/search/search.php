@@ -95,123 +95,140 @@ unset($_SESSION['profileId']);
 			</article>
 
 
+			<div>
+			
+				<article id="ad" class="entry post hidden">
+					<h1 id="title"></h1>
+					<div id="images-fieldset">
+					
+						<img id="prev" class="arrow hidden" src="../images/prev.gif" />
+						<div id="image-drop-zone">
 
-			<article id="ad" class="entry post hidden">
-				<h1 id="title"></h1>
-				<div id="images-fieldset">
-					<img id="prev" class="arrow hidden" src="../images/prev.gif" />
-					<div id="image-drop-zone">
-
-						<img id="new-image" src="" title="" class="images hidden">
+							<img id="new-image" src="" title="" class="images hidden">
+						</div>
+						<img id="next" class="arrow hidden" src="../images/next.gif" />
 					</div>
-					<img id="next" class="arrow hidden" src="../images/next.gif" />
-				</div>
-				<fieldset>
-					<legend>User</legend>
-					<div class="ad-text">
-						<label>Name :</label>
-						<div>
+					<fieldset>
+						<legend>User</legend>
+						<div class="ad-text">
+							<label>Name :</label>
 							<div>
-								<div id="name"></div>
+								<div>
+									<div id="name"></div>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="ad-text">
-						<label>Age :</label>
-						<div>
+						<div class="ad-text">
+							<label>Age :</label>
 							<div>
-								<div id="age"></div>
+								<div>
+									<div id="age"></div>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="ad-text">
-						<label>From :</label>
-						<div>
+						<div class="ad-text">
+							<label>From :</label>
 							<div>
-								<div id="from"></div>
+								<div>
+									<div id="from"></div>
+								</div>
 							</div>
 						</div>
-					</div>
-				</fieldset>
-				<fieldset id="vacation">
-					<legend>Vacation advertisement</legend>
-					<div class="ad-text">
-						<label>Destination :</label>
-						<div>
-							<div>
-								<div id="destination"></div>
+						<div id="message-container">
+							<img id="favorites" src="../images/favorites.jpg"
+								onclick="addToFavorites();" title="Add to favorites"><a
+								id="send-message-link" href="#" onclick="addToFavorites();">Add
+								to favorites </a> <img id="message" src="../images/mail.png"
+								onclick="sendMessage();" title="Send message"> <a
+								id="send-message-link" href="#" onclick="sendMessage();">Send
+								Message</a>
+						</div>
+					</fieldset>
 
+					<fieldset id="vacation">
+						<legend>Vacation advertisement</legend>
+						<div class="ad-text">
+							<label>Destination :</label>
+							<div>
+								<div>
+									<div id="destination"></div>
+
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="ad-text">
-						<label>Leave on :</label>
-						<div>
+						<div class="ad-text">
+							<label>Leave on :</label>
 							<div>
-								<div id="dateOfDeparture"></div>
+								<div>
+									<div id="dateOfDeparture"></div>
 
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="ad-text">
-						<label>Duration :</label>
-						<div>
+						<div class="ad-text">
+							<label>Duration :</label>
 							<div>
-								<div id="duration"></div>
+								<div>
+									<div id="duration"></div>
 
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="ad-text">
-						<label>Expenses :</label>
-						<div>
+						<div class="ad-text">
+							<label>Expenses :</label>
 							<div>
-								<div id="vacation-expenses"></div>
+								<div>
+									<div id="vacation-expenses"></div>
 
+								</div>
 							</div>
 						</div>
-					</div>
-				</fieldset>
+					</fieldset>
 
-				<fieldset id="hosting" class="hidden">
-					<legend>Hosting advertisement</legend>
-					<div class="ad-text">
-						<label>Location :</label>
-						<div>
+					<fieldset id="hosting" class="hidden">
+						<legend>Hosting advertisement</legend>
+						<div class="ad-text">
+							<label>Location :</label>
 							<div>
-								<div id="location"></div>
+								<div>
+									<div id="location"></div>
 
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="ad-text">
-						<label>Expenses :</label>
-						<div>
+						<div class="ad-text">
+							<label>Expenses :</label>
 							<div>
-								<div id="hosting-expenses"></div>
+								<div>
+									<div id="hosting-expenses"></div>
 
+								</div>
 							</div>
 						</div>
-					</div>
 
-				</fieldset>
+					</fieldset>
 
 
-				<fieldset id="description-fieldset">
-					<legend>Content</legend>
-					<div class="entry-content">
-						<div>
+
+					<fieldset id="description-fieldset">
+						<legend>Content</legend>
+						<div class="entry-content">
 							<div>
-								<div id="description-div"></div>
+								<div>
+									<div id="description-div"></div>
+								</div>
 							</div>
 						</div>
-					</div>
 
-				</fieldset>
-				<div class="modal"></div>
-			</article>
+					</fieldset>
+
+
+				</article>
+				
+			</div>
 
 		</div>
+		 <div class="modal"></div> 
 	</div>
 	<script
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>

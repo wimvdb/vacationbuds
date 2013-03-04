@@ -7,14 +7,13 @@ var userid;
 $(document)
 		.ready(
 				function() {
-
 					$("body").on({
-						ajaxStart : function() {
-							$(this).addClass("loading");
-						},
-						ajaxStop : function() {
-							$(this).removeClass("loading");
-						}
+					    ajaxStart: function() { 
+					        $(this).addClass("loading"); 
+					    },
+					    ajaxStop: function() { 
+					        $(this).removeClass("loading"); 
+					    }    
 					});
 
 					$('#prev').hover(function() {
@@ -67,60 +66,61 @@ function search() {
 		'age' : $('#search-age').val()
 	};
 
-	ads = $.ajax({
+	$.ajax({
 		url : "../security/getAdsBySearchCriteria.php",
-		async : false,
 		type : 'POST',
 		data : {
 			'searchCriteria' : JSON.stringify(searchCriteria)
 		}
-	}).responseText;
-	ads = JSON.parse(ads);
-	if (ads.length > 0) {
-		for ( var i = 0; i < ads.length; i++) {
+	}).done(function(data){
+		ads = JSON.parse(data);
+		if (ads.length > 0) {
+			for ( var i = 0; i < ads.length; i++) {
+				var tr = $('<tr></tr>').append(
+						'<td>'
+								+ ((ads[i].adtype == 'V') ? 'Vacation ad'
+										: 'Hosting ad') + '</td>').append(
+						'<td title="' + ads[i].user.description + '">'
+								+ ads[i].user.username + '</td>')
+						.append(
+								'<td title="' + ads[i].text + '">' + ads[i].title
+										+ '</td>').append(
+								'<td>' + ads[i].country + ', ' + ads[i].city
+										+ '</td>');
+
+				$('#results tbody').append(tr);
+			}
+
+			initViewAdPage(ads[row]);
+			$('#results tbody tr').on('click', function() {
+				if (row != $(this).index()) {
+					resetAd();
+					row = $(this).index();
+					initViewAdPage(ads[row]);
+				}
+			});
+
+			// $('#ad-list tbody tr:even').addClass('zebra');
+			$('#results tbody tr').mouseover(function() {
+				$(this).addClass('zebraHover');
+			});
+			$('#results tbody tr').mouseout(function() {
+				$(this).removeClass('zebraHover');
+			});
+			$('#ad').removeClass('hidden');
+
+			$(".wrapper-paging").show();
+			TABLE.paginate('#results', 5);
+
+		} else {
 			var tr = $('<tr></tr>').append(
-					'<td>'
-							+ ((ads[i].adtype == 'V') ? 'Vacation ad'
-									: 'Hosting ad') + '</td>').append(
-					'<td title="' + ads[i].user.description + '">'
-							+ ads[i].user.username + '</td>')
-					.append(
-							'<td title="' + ads[i].text + '">' + ads[i].title
-									+ '</td>').append(
-							'<td>' + ads[i].country + ', ' + ads[i].city
-									+ '</td>');
+					'<td colspan="4"> No results found!</td>');
 
 			$('#results tbody').append(tr);
+			$('#ad').addClass('hidden');
 		}
-
-		initViewAdPage(ads[row]);
-		$('#results tbody tr').on('click', function() {
-			if (row != $(this).index()) {
-				resetAd();
-				row = $(this).index();
-				initViewAdPage(ads[row]);
-			}
-		});
-
-		// $('#ad-list tbody tr:even').addClass('zebra');
-		$('#results tbody tr').mouseover(function() {
-			$(this).addClass('zebraHover');
-		});
-		$('#results tbody tr').mouseout(function() {
-			$(this).removeClass('zebraHover');
-		});
-		$('#ad').removeClass('hidden');
-
-		$(".wrapper-paging").show();
-		TABLE.paginate('#results', 5);
-
-	} else {
-		var tr = $('<tr></tr>').append(
-				'<td colspan="4"> No results found!</td>');
-
-		$('#results tbody').append(tr);
-		$('#ad').addClass('hidden');
-	}
+	});
+	
 
 }
 
@@ -131,6 +131,7 @@ function resetAd() {
 }
 
 function initViewAdPage(ad) {
+
 	var username = $('<a id="profile-link" href="../profile/profile.php?profileid='
 			+ ad.user.id
 			+ '&userid='
@@ -175,24 +176,37 @@ function initViewAdPage(ad) {
 }
 
 function initAdImages(ad) {
+	
 	if (!images[row.valueOf()]) {
-		var response = $.ajax({
+		 $.ajax({
 			url : "../security/getAdImages.php",
-			async : false,
 			type : 'POST',
 			data : {
 				'adid' : ad.id
 			}
-		}).responseText;
-		var adImages = JSON.parse(response);
-		if (!adImages.length && adImages.length != 0) {
-			adImages = JSON.parse(adImages);
-		}
-		images[row] = adImages;
+		}).done(function (data) {
+			var adImages = JSON.parse(data);
+			if (!adImages.length && adImages.length != 0) {
+				adImages = JSON.parse(adImages);
+			}
+			images[row] = adImages;
+			initAdImages2(adImages);
+			initProfileImage(ad);
+		});
+		
+
 	} else {
-		adImages = images[row.valueOf()];
+		initAdImages2(images[row.valueOf()]);
+		initProfileImage(ad);
 	}
 
+	
+	
+	
+
+}
+
+function initAdImages2(adImages){
 	for ( var i = 0; i < adImages.length; i++) {
 		var img = $('#new-image').clone();
 		$(img).removeClass('hidden');
@@ -206,7 +220,10 @@ function initAdImages(ad) {
 			$('.arrow').removeClass('hidden');
 		}
 	}
-	//add avatar
+	
+}
+
+function initProfileImage(ad){
 	var img = $('#new-image').clone();
 	$(img).removeClass('hidden');
 	$(img).attr('id', 'avatar');
@@ -217,7 +234,6 @@ function initAdImages(ad) {
 	if ($('.arrow').hasClass('hidden')) {
 		$('.arrow').removeClass('hidden');
 	}
-
 }
 
 var prevLoop = true;
@@ -333,3 +349,12 @@ TABLE.paginate = function(table, pageLength) {
 		reveal(current);
 	};
 };
+
+function sendMessage() {
+	window.location = "../messages/new-message.php?userid=" + userid
+			+ '&recipient=' + $('#name').text();
+}
+
+function addToFavorites() {
+	alert('todo');
+}

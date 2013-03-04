@@ -118,11 +118,12 @@ function saveProfileImage(image, imgHtml) {
 	var profileImage = {
 			'image' : image
 		};
-	var response = $.ajax({
+	$.ajax({
 		url: "../security/saveProfileImage.php",
-		async: false,
 		type : 'POST',
 		data : {'profileImg' : JSON.stringify(profileImage)}
-		}).responseText;
-	$(imgHtml).attr('id', 'profile-image' + JSON.parse(response).imgId);
+		}).done(function(data){
+			$(imgHtml).attr('id', 'profile-image' + JSON.parse(data).imgId);
+		});
+	
 }

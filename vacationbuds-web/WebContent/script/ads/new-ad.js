@@ -196,7 +196,6 @@ function puffRemoveAd(which, remove) {
 
 	$.ajax({
 		url : "../security/deleteAdImage.php",
-		async : true,
 		type : 'POST',
 		data : {
 			'img' : JSON.stringify({
@@ -211,15 +210,16 @@ function saveAdImage(image, imgHtml) {
 	var adImage = {
 		'image' : image
 	};
-	var response = $.ajax({
+	 $.ajax({
 		url : "../security/saveAdImage.php",
-		async : false,
 		type : 'POST',
 		data : {
 			'adImg' : JSON.stringify(adImage)
 		}
-	}).responseText;
-	$(imgHtml).attr('id', 'new-image' + JSON.parse(response).imgId);
+	}).done(function(data){
+		$(imgHtml).attr('id', 'new-image' + JSON.parse(data).imgId);
+	});
+	
 }
 
 function saveAd() {

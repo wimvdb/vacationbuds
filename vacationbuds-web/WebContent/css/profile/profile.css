@@ -96,7 +96,10 @@ body {
 }
 
 
-
+pre {
+	font-family: 'Crafty Girls', cursive;
+	
+}
 .paper {
 	min-height: 700px;
 	font-family: 'Crafty Girls', cursive;

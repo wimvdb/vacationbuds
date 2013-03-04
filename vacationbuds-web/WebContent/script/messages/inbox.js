@@ -43,53 +43,54 @@ $(document).ready(function() {
 });
 
 function initInbox() {
-	var response = $.ajax({
+	$.ajax({
 		url : "../security/getInboxMessages.php",
-		async : false,
 		type : 'POST'
-	}).responseText;
-	messages = JSON.parse(response);
-	if (!messages.length && messages.length != 0) {
-		messages = JSON.parse(messages);
-	}
-	if (messages.length > 0) {
-		for ( var i = 0; i < messages.length; i++) {
+	}).done(function(data){
+		messages = JSON.parse(data);
+		if (!messages.length && messages.length != 0) {
+			messages = JSON.parse(messages);
+		}
+		if (messages.length > 0) {
+			for ( var i = 0; i < messages.length; i++) {
 
-			
-			
-			var tr = $('<tr title="Drag message to the bin to delete!"></tr>')
-					.append('<td>' +  messages[i].sender.username + '</td>')
-					.append('<td>' + messages[i].title + '</td>').append(
-							'<td>' + messages[i].sendDate + '</td>');
+				
+				
+				var tr = $('<tr title="Drag message to the bin to delete!"></tr>')
+						.append('<td>' +  messages[i].sender.username + '</td>')
+						.append('<td>' + messages[i].title + '</td>').append(
+								'<td>' + messages[i].sendDate + '</td>');
 
-			$('#inbox-list tbody').append(tr);
-			tr.draggable({
-				revert : 'invalid',
-				appendTo : 'body',
+				$('#inbox-list tbody').append(tr);
+				tr.draggable({
+					revert : 'invalid',
+					appendTo : 'body',
 
-				scroll : false,
-				helper : "clone",
-				start : function(event, ui) {
-					if (!$('body').outerHeight() > $(window).height()) {
-						$('body').css('overflow', 'hidden');
+					scroll : false,
+					helper : "clone",
+					start : function(event, ui) {
+						if (!$('body').outerHeight() > $(window).height()) {
+							$('body').css('overflow', 'hidden');
+						}
+						c.tr = this;
+						c.helper = ui.helper;
+					},
+					stop : function() {
+						$('body').css('overflow', 'auto');
 					}
-					c.tr = this;
-					c.helper = ui.helper;
-				},
-				stop : function() {
-					$('body').css('overflow', 'auto');
-				}
-			});
+				});
+
+			}
+			initMessage(messages[0]);
+		} else {
+			var tr = $('<tr></tr>').append('<td colspan="4"> No Messages!</td>');
+			$('#inbox-list tbody').append(tr);
+			$('#message').addClass('hidden');
+			$('.trash').addClass('hidden');
 
 		}
-		initMessage(messages[0]);
-	} else {
-		var tr = $('<tr></tr>').append('<td colspan="4"> No Messages!</td>');
-		$('#inbox-list tbody').append(tr);
-		$('#message').addClass('hidden');
-		$('.trash').addClass('hidden');
-
-	}
+	});
+	
 }
 
 function initMessage(message) {
@@ -159,7 +160,6 @@ function puffRemoveMessage(which) {
 
 	$.ajax({
 		url : "../security/deleteInboxMessage.php",
-		async : true,
 		type : 'POST',
 		data : {
 			'message' : JSON.stringify({

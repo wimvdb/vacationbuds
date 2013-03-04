@@ -30,7 +30,7 @@ public class Message {
 	
 	private Long id;
 	
-	@Column(length=25)
+	@Column(length=125)
 	
 	private String title;
 	@Column(columnDefinition="text")

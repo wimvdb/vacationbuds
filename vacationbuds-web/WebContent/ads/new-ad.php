@@ -194,8 +194,7 @@ unset($_SESSION['adId']);
 							<div class="editable-text">
 								<div>
 									<div id="description-div" data-type="editable"
-										data-updatable='true' data-for="#description">Details go
-										here...</div>
+										data-updatable='true' data-for="#description">Details go here...</div>
 								</div>
 							</div>
 						</div>

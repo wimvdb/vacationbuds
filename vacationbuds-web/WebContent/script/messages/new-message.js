@@ -1,27 +1,29 @@
+var recipient;
 $(document).ready(function() {
 
+	recipient = getURLParam('recipient');
+	if (recipient != 'null') {
+		$('div[data-for="#recipient"]').text(recipient);
+	}
 	$('#messages').click();
 	markForInlineEditing($('.editable-text'), false);
 	$('#recipient').autocomplete({
 		source : function(req, add) {
 			$.ajax({
 				url : "../security/getUsernames.php",
-				async : true,
 				type : 'POST',
 				data : {
 					'prefix' : req.term
 				},
-				success : function(text)
-		         {
-		             add(JSON.parse(text));
-		         }
+				success : function(text) {
+					add(JSON.parse(text));
+				}
 			});
 		}
 	});
-	
 
 });
-// username
+
 function sendMessage() {
 	var message = {
 		'title' : $('div[data-for="#title"]').text(),
@@ -32,14 +34,12 @@ function sendMessage() {
 	};
 	$.ajax({
 		url : "../security/sendMessage.php",
-		async : true,
 		type : 'POST',
 		data : {
 			'message' : JSON.stringify(message)
 		},
-		success : function(text)
-        {
-            alert('Message sent succesfully!');
-        }
+		success : function(text) {
+			alert('Message sent succesfully!');
+		}
 	});
 }

@@ -34,7 +34,7 @@ $content = json_encode($user);
 
         
 
-header("location:../profile/profile.php?userid=" . $_SESSION['userid']);
+header("location:../profile/profile.php?userid=" . $_SESSION['userid']  . "&profileid=" . $_SESSION['userid']);
 }else{
 header("location:../index.html");
 

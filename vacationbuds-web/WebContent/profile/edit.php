@@ -81,8 +81,8 @@ unset($_SESSION['profileId']);
 							words :</label>
 						<div class="editable-text">
 							<div>
-								<div data-type="editable" data-updatable='true'
-									data-for="#short-description" class="description-label"></div>
+								<pre data-type="editable" data-updatable='true'
+									data-for="#short-description" class="description-label"></pre>
 								<textarea class="hidden" id="short-description" rows="10"
 									name="user-description"
 									title="A short description of yourself. This description will be viewable by others when the find one of your ads."></textarea>

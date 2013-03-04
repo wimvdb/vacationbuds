@@ -16,40 +16,41 @@ function initProfilePage(user) {
 	$('div[data-for=#country]').text(user.country);
 	$(':radio[value=' + user.gender + ']').get(0).checked = true;
 
-	$('div[data-for=#short-description]').text(user.description);
+	$('pre[data-for=#short-description]').text(user.description);
 
 
 	markForInlineEditing($('.editable-text'), false);
 
 	$('#avatar').get(0).src = user.avatar;
 
-	var response = $.ajax({
+	$.ajax({
 		url: "../security/getProfileImages.php",
-		async: false,
 		type : 'POST',
 		data : {'userid' : user.id}
-		}).responseText;
-	var images = JSON.parse(response);
+		}).done(function(data){
+			var images = JSON.parse(data);
 
-	for ( var i = 0; i < images.length; i++) {
-		var dropzone;
-		//if (i % 2 == 0) {
-			dropzone = addPicture();
-		//} else {
-		//	dropzone = addPicture($('.image-drop-zone-right-parent').get(0).children(0));
-		//}
-		var img =$(dropzone.find('img').get(0));
-		img.attr({'src':images[i].image,'id':'profile-image'+images[i].id}).removeClass('hidden');
-		dropzone.find('div[data-type=editable]').eq(0).text(images[i].description);
-		$(dropzone.find('.postit').get(0)).addClass('hidden');
-		img.draggable({
-			revert : 'invalid',
-			sroll : false
+			for ( var i = 0; i < images.length; i++) {
+				var dropzone;
+				//if (i % 2 == 0) {
+					dropzone = addPicture();
+				//} else {
+				//	dropzone = addPicture($('.image-drop-zone-right-parent').get(0).children(0));
+				//}
+				var img =$(dropzone.find('img').get(0));
+				img.attr({'src':images[i].image,'id':'profile-image'+images[i].id}).removeClass('hidden');
+				dropzone.find('div[data-type=editable]').eq(0).text(images[i].description);
+				$(dropzone.find('.postit').get(0)).addClass('hidden');
+				img.draggable({
+					revert : 'invalid',
+					sroll : false
+				});
+				
+			}
+			
+				addPicture();
 		});
-		
-	}
 	
-		addPicture();
 	
 
 }
@@ -67,7 +68,6 @@ function saveOrUpdateUser() {
 		};
 		$.ajax({
 			url : "../security/saveProfileImage.php",
-			async : false,
 			type : 'POST',
 			data : {
 				'profileImg' : JSON.stringify(profileImage)
@@ -81,7 +81,7 @@ function saveOrUpdateUser() {
 		'age' : $('div[data-for="#age"]').text(),
 		'country' : $('div[data-for="#country"]').text(),
 		'gender' : $('input[name=gender]:radio:checked').val(),
-		'description' : $('div[data-for="#short-description"]').text(),
+		'description' : $('pre[data-for="#short-description"]').text(),
 		'avatar' : $('#avatar').get(0).src
 	});
 

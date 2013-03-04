@@ -22,7 +22,6 @@ function saveOrUpdateUser() {
 		};
 		$.ajax({
 			url : "../security/saveProfileImage.php",
-			async : false,
 			type : 'POST',
 			data : {
 				'profileImg' : JSON.stringify(profileImage)
@@ -37,7 +36,7 @@ function saveOrUpdateUser() {
 		'age' : $('div[data-for="#age"]').text(),
 		'country' : $('div[data-for="#country"]').text(),
 		'gender' : $('input[name=gender]:radio:checked').val(),
-		'description' : $('div[data-for="#short-description"]').text()
+		'description' : $('pre[data-for="#short-description"]').text()
 	});
 
 	post_to_url('../security/createUser.php', {

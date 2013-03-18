@@ -9,21 +9,22 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 
-	<tx:annotation-driven/>
-	
+	<tx:annotation-driven />
+
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory"/>
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
-	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
 		<property name="persistenceUnitName" value="persistenceUnit" />
 	</bean>
-	
 
-	
-	
-	
+
+
+
+
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		lazy-init="true">
@@ -32,28 +33,30 @@
 		<property name="username" value="postgres" />
 		<property name="password" value="vacationpost" />
 	</bean>
-	
-	
+
+
 	<bean id="adDaoImpl" class="com.vacationbuds.dao.AdDaoImpl">
-		
+
 	</bean>
 	<bean id="imageDaoImpl" class="com.vacationbuds.dao.ImageDaoImpl">
-		
+
 	</bean>
 	<bean id="messageDaoImpl" class="com.vacationbuds.dao.MessageDaoImpl">
-	
+
 	</bean>
-	
+
 	<bean id="reviewDaoImpl" class="com.vacationbuds.dao.ReviewDaoImpl">
-		
+
 	</bean>
 	<bean id="userDaoImpl" class="com.vacationbuds.dao.UserDaoImpl">
-		
-	</bean>
-	
 
-	
-	
+	</bean>
+
+	<bean id="favoriteDaoImpl" class="com.vacationbuds.dao.FavoriteDaoImpl">
+
+	</bean>
+
+
 
 
 

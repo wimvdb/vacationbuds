@@ -1,13 +1,7 @@
 package com.vacationbuds.rest;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
@@ -22,9 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.vacationbuds.dao.AdDao;
+import com.vacationbuds.dao.FavoriteDao;
 import com.vacationbuds.dao.ImageDao;
 import com.vacationbuds.dao.MessageDao;
-
 import com.vacationbuds.dao.ReviewDao;
 import com.vacationbuds.dao.UserDao;
 import com.vacationbuds.model.Ad;
@@ -55,6 +49,9 @@ public class DaoService {
 
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private FavoriteDao favoriteDao;
 
 	@POST
 	@Path("getUserById")
@@ -123,11 +120,11 @@ public class DaoService {
 	@Path("saveOrUpdateUser")
 	@Consumes("application/json")
 	public void saveOrUpdateUser(User user) throws Exception {
-		if (user.getUsername() == null || !(user.getUsername().length() > 2)) {
+		if (user.getUsername() == null || user.getUsername().length() < 2) {
 			throw new Exception(
 					"Invalid username. minimun 3 characters required.");
 		}
-		if (user.getPassword() == null || !(user.getPassword().length() > 2)) {
+		if (user.getPassword() == null || user.getPassword().length() < 2) {
 			throw new Exception(
 					"Invalid password. minimun 3 characters required.");
 		}
@@ -213,11 +210,26 @@ public class DaoService {
 		imageDao.deleteProfileImage(image.getId(),image.getUser().getId());
 	}
 	
+	
 	@POST
 	@Path("deleteAd")
 	@Consumes("application/json")
 	public void deleteAd(Ad ad) {
 		adDao.deletaAd(ad.getId(),ad.getUser().getId());
+	}
+	
+	@POST
+	@Path("removeAdFromFavorites")
+	@Consumes("application/json")
+	public void deleteAdFromFavorites(Ad ad) {
+		favoriteDao.removeAdFromFavorites(ad,ad.getUser().getId());
+	}
+	
+	@POST
+	@Path("addToFavorites")
+	@Consumes("application/json")
+	public void addToFavorites(Ad ad) {
+		favoriteDao.addToFavorites(ad,ad.getUser().getId());
 	}
 
 	/*
@@ -331,6 +343,13 @@ public class DaoService {
 		return adDao.getAdsByUserId(userId);
 	}
 	
+	@POST
+	@Path("getFavAdsByUserId")
+	@Produces("application/json")
+	public List<Ad> getFavAdsByUserId(Long userId) {
+		return favoriteDao.getFavAdsByUserId(userId);
+	}
+	
 	/*@POST
 	@Path("getProfileImages/{id}")
 	@Produces("application/json")
@@ -356,6 +375,15 @@ public class DaoService {
 	public List<String> getUsernames(String prefix) {
 		return userDao.getUsernames(prefix);
 	}
+	
+	@POST
+	@Path("validateUsername")
+	@Produces("application/json")
+	public boolean validateUsername(String username) {
+		return userDao.validateUsername(username);
+	}
+	
+	
 	
 	
 	

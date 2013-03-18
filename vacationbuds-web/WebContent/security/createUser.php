@@ -25,8 +25,8 @@ $url = 'http://localhost:8080/vacationbuds-webservice/rest/dao/saveOrUpdateUser'
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
 
-         curl_exec($curl);
-
+  
+curl_exec($curl);
 
        curl_close($curl);
 
@@ -50,12 +50,11 @@ $user_id = file_get_contents($url, false, $context);
 
 
 if($user_id != null){
-session_start();
 $_SESSION['userid'] = $user_id;
 $_SESSION['username'] = $username;
 $_SESSION['password'] = $password;
 
-header("location:../profile/profile.php?userid=" . $user_id . "&profileid=" . $user_id );
+echo "../profile/profile.php" ;
 
 }
 

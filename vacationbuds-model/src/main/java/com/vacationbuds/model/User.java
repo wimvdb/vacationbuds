@@ -1,63 +1,83 @@
 package com.vacationbuds.model;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonValue;
 import org.hibernate.annotations.GenericGenerator;
 
-
 @Entity
-@Table(name="buduser")
+@Table(name = "buduser")
 public class User {
 
+	public User() {
+
+	}
+
+	public User(Long id,String username) {
+		this.id = id;
+		this.username = username;
+	}
+	
+	public User(Long id) {
+		this.id = id;
+	}
+
+	public User(Long id, String username, /*String password,*/ boolean active,
+			int age, String avatar, String country, String description,
+			String email, String gender) {
+		this.id = id;
+		this.username = username;
+		//this.password = password;
+		this.active = active;
+		this.age=age;
+		this.avatar = avatar;
+		this.country = country;
+		this.description = description;
+		this.email = email;
+		this.gender=gender;
+
+	}
+
 	@Id
-	@GeneratedValue(generator="increment")
-	@GenericGenerator(name="increment", strategy = "increment")
-	
+	@GeneratedValue(generator = "increment")
+	@GenericGenerator(name = "increment", strategy = "increment")
 	private Long id;
-	
-	@Column(length=25)
-	
+
+	@Column(length = 25)
 	private String username;
-	@Column(length=25)
-	
+	@Column(length = 25)
 	private String password;
-	@Column(length=50)
-	
+	@Column(length = 50)
 	private String email;
-	
+
 	private String country;
-	
+
 	private int age;
-	
+
 	@Column(columnDefinition = "text")
 	private String avatar;
-	
-	@Column(columnDefinition="text")
-	
-	private String description;
-	
-	@Column(length=1)
-	
-	private String gender;
-	
-	private boolean active;
-	
 
-	
-	
-	
+	@Column(columnDefinition = "text")
+	private String description;
+
+	@Column(length = 1)
+	private String gender;
+
+	private boolean active;
+
+	/*@OneToMany
+	@JsonIgnore
+	private List<Favorite> favorites = new ArrayList<Favorite>();*/
+
 	public boolean isActive() {
 		return active;
 	}
@@ -69,15 +89,15 @@ public class User {
 	public Long getId() {
 		return id;
 	}
-	
+
 	private void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}
-	
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -86,6 +106,7 @@ public class User {
 	public String getPassword() {
 		return password;
 	}
+
 	@JsonProperty
 	public void setPassword(String password) {
 		this.password = password;
@@ -139,5 +160,14 @@ public class User {
 		this.gender = gender;
 	}
 
+	/*public List<Favorite> getFavorites() {
+		return favorites;
+	}
+
+	public void setFavorites(List<Favorite> favorites) {
+		this.favorites = favorites;
+	}*/
+
 	
+
 }

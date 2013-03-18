@@ -3,7 +3,7 @@
 ob_start();
 
 session_start();
-if ( !isset( $_SESSION['userid']) || htmlspecialchars($_GET["userid"]) != $_SESSION['userid']){
+if ( !isset( $_SESSION['userid'])){
 header("location:../index.html");
 }
 
@@ -11,7 +11,7 @@ header("location:../index.html");
 $data=$_POST['user']; 
 $user= json_decode(utf8_encode($data),true);
 
-if($user['id'] == $_SESSION['userid']){
+$user['id'] = $_SESSION['userid'];
 $user['username'] = $_SESSION['username'];
 $user['password'] = $_SESSION['password'];
 
@@ -34,11 +34,8 @@ $content = json_encode($user);
 
         
 
-header("location:../profile/profile.php?userid=" . $_SESSION['userid']  . "&profileid=" . $_SESSION['userid']);
-}else{
-header("location:../index.html");
+header("location:../profile/profile.php");
 
-}
 
 ob_end_flush();
 

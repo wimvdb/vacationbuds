@@ -1,32 +1,18 @@
 <?php
 
 ob_start();
-session_start();
-if ( !isset( $_SESSION['userid'])){
-	header("location:../index.html");
-}
+
 try {
 
-	
-
-	if(isset($_POST['user'])){
-		$data=$_POST['user']; 
-		$user= json_decode(utf8_encode($data),true);
-		$userid = $user['id'];
-	}else{
-		$userid = $_SESSION['userid'];
-	}
-
-
-
-	$url = 'http://localhost:8080/vacationbuds-webservice/rest/dao/getUserById';
+	$data=$_POST['username']; 
+	$url = 'http://localhost:8080/vacationbuds-webservice/rest/dao/validateUsername';
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_HEADER, false);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_HTTPHEADER,
                 array("Content-type: application/json"));
     curl_setopt($curl, CURLOPT_POST, true);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $userid);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 	$response = curl_exec($curl);
 	if(curl_errno($curl))
 	{

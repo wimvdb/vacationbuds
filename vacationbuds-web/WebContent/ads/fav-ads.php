@@ -1,16 +1,10 @@
-<?php
 
-session_start();
-if ( !isset( $_SESSION['userid'])){
-header("location:../index.html");
-}
-?>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>View ads</title>
+<title>Favorites</title>
 <link rel="stylesheet" href="../css/ads/view-ads.css">
 <link rel="stylesheet" href="../css/ads/ads.css">
 <link rel="stylesheet" href="../css/navigation.css">
@@ -174,7 +168,7 @@ header("location:../index.html");
 <script src="../script/general.js"></script>
 
 <script src="../script/navigation.js"></script>
-<script src="../script/ads/view-ads.js"></script>
+<script src="../script/ads/fav-ads.js"></script>
 
 
 

@@ -6,29 +6,86 @@
 <title>Vacationbuds home</title>
 </head>
 <body>
-	<div id="login">
-		<form method="POST" action="security/checklogin.php">
-			<table>
-				<tbody>
-					<tr>
-						<td><label for="email">Username</label></td>
-						<td><label for="pass">Password</label></td>
-					</tr>
-					<tr>
-						<td><input id="username" type="text" name="username"></td>
-						<td><input id="password" type="password" name="password"></td>
-					</tr>
-					<tr>
-						<td><input type="submit" value="Log In" ></td>
-						<td><a href="profile/create.php">Register</a></td>
-					</tr>
-				</tbody>
-			</table>
-			</form>
-		
+	<div id="content">
+		<div class="hfeed">
+			<article id="login-post" class="post">
+				<div id="login">
+					<form method="POST" action="security/checklogin.php">
+						<table>
+							<tbody>
+								<tr>
+									<td><label for="email">Username</label></td>
+									<td><label for="pass">Password</label></td>
+								</tr>
+								<tr>
+									<td><input id="username" type="text" name="username"></td>
+									<td><input id="password" type="password" name="password"></td>
+								</tr>
+								<tr>
+									<td><input id="login-button" type="submit" value="Log In"></td>
+									<td><a href="profile/create.php">Register</a></td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+				<h1 class="no-margin-top">Vacation buds!</h1>
+				<p class="no-margin-top">Vacationbuds is a social website where
+					travellers can meet and plan their travels.</p>
+			</article>
+		</div>
+		<div class="hfeed max-height">
+			<article id="steps-article" class="post">
+				<div class="table-wrapper">
+					<div id="steps">
+						<div class="step">
+							<h2>Step 1 - Create a profile, it's free!</h2>
+							<p>Fill in a few fields, upload a profile picture and done!</p>
+							<div class="center">
+								<img src="images/profile.png" title="Create profile">
+							</div>
+						</div>
+						<div class="step">
+							<h2>Step 2 - Place an advertisement, also free...</h2>
+							<dl>
+								<dt>Vacation ad</dt>
+								<dd>For people who want to travel and are looking for
+									someone to go with them.</dd>
+								<dt>Hosting ad</dt>
+								<dd>For people who have a spare room and want people to
+									stay at their place.</dd>
+							</dl>
+							<div class="center">
+								<img id="createAd" src="images/ad.png" title="Create ad">
+							</div>
+						</div>
+						<div class="step">
+							<h2>Step 3 - Wait...</h2>
+							<p>The easiest step of all, wait for people to respond to
+								your ad or search for one yourself.</p>
+							<div class="center">
+								<img id="search" src="images/search.png" title="Search">
+							</div>
+						</div>
+					</div>
+					<div class="wrapper-paging">
+						<ul>
+							<li><a class="paging-back">&lt;</a></li>
+							<li><a class="paging-this">Step <strong>0</strong> of <span>x</span></a></li>
+							<li><a class="paging-next">&gt;</a></li>
+						</ul>
+					</div>
+
+				</div>
+
+			</article>
+		</div>
+
+
 	</div>
 
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+	<script
+		src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
 	<script src="script/index.js"></script>
 
 </body>

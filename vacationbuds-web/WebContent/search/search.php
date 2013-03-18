@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-if ( !isset( $_SESSION['userid']) || htmlspecialchars($_GET["userid"]) != $_SESSION['userid']){
+if ( !isset( $_SESSION['userid']) ){
 header("location:../index.html");
 }
 unset($_SESSION['profileId']);
@@ -228,7 +228,7 @@ unset($_SESSION['profileId']);
 			</div>
 
 		</div>
-		 <div class="modal"></div> 
+		
 	</div>
 	<script
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>

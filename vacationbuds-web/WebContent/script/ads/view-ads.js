@@ -2,6 +2,7 @@ var ads;
 var row = 0;
 var images = {};
 var c = {};
+var currentId = 0;
 $(document)
 		.ready(
 				function() {
@@ -10,10 +11,10 @@ $(document)
 
 					$("body").on({
 						ajaxStart : function() {
-							$(this).addClass("loading");
+							$('#image-drop-zone').addClass("loading");
 						},
 						ajaxStop : function() {
-							$(this).removeClass("loading");
+							$('#image-drop-zone').removeClass("loading");
 						}
 					});
 
@@ -36,17 +37,19 @@ $(document)
 						}
 					});
 
-					$('#prev').hover(function() {
-						movePrevLeft();
-					}, function() {
-						prevLoop = false;
-					});
+					if (!opera) {
+						$('#prev').hover(function() {
+							movePrevLeft();
+						}, function() {
+							prevLoop = false;
+						});
 
-					$('#next').hover(function() {
-						moveNextRight();
-					}, function() {
-						nextLoop = false;
-					});
+						$('#next').hover(function() {
+							moveNextRight();
+						}, function() {
+							nextLoop = false;
+						});
+					}
 
 					$('#next').click(
 							function() {
@@ -128,6 +131,7 @@ function initViewAds() {
 										});
 
 							}
+							currentId = ads[0].id;
 							initViewAdPage(ads[0]);
 						} else {
 							var tr = $('<tr></tr>').append(
@@ -141,6 +145,7 @@ function initViewAds() {
 							if (row != $(this).index()) {
 								resetAd();
 								row = $(this).index();
+								currentId = ads[row].id;
 								initViewAdPage(ads[row]);
 							}
 						});
@@ -206,12 +211,14 @@ function initAdImages(adid) {
 				'adid' : adid
 			}
 		}).done(function(data) {
-			var adImages = JSON.parse(data);
-			if (!adImages.length && adImages.length != 0) {
-				adImages = JSON.parse(adImages);
+			if (currentId == adid) {
+				var adImages = JSON.parse(data);
+				if (!adImages.length && adImages.length != 0) {
+					adImages = JSON.parse(adImages);
+				}
+				images[row] = adImages;
+				initAdImages2(adImages);
 			}
-			images[row] = adImages;
-			initAdImages2(adImages);
 		});
 
 	} else {

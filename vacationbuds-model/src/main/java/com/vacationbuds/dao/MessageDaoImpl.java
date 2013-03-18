@@ -31,37 +31,33 @@ public class MessageDaoImpl implements MessageDao {
 	}
 
 	public void deleteInboxMessage(Message message) {
-
-		Query deleteAdQuery = entityManager
-				.createQuery("DELETE FROM Message m  where id =:messageId and recipient.id=:recipientId");
-		deleteAdQuery.setParameter("messageId", message.getId());
-		deleteAdQuery.setParameter("recipientId", message.getRecipient()
-				.getId());
-		deleteAdQuery.executeUpdate();
+		entityManager
+				.createQuery(
+						"Update Message m set m.inboxRemoved = true where m.id =:messageId ")
+				.setParameter("messageId", message.getId()).executeUpdate();
 
 	}
 
 	public void deleteOutboxMessage(Message message) {
-
-		Query deleteAdQuery = entityManager
-				.createQuery("DELETE FROM Message m  where id =:messageId and sender.id=:senderId");
-		deleteAdQuery.setParameter("messageId", message.getId());
-		deleteAdQuery.setParameter("senderId", message.getSender().getId());
-		deleteAdQuery.executeUpdate();
+		entityManager
+				.createQuery(
+						"Update Message m set m.outboxRemoved = true where m.id =:messageId ")
+				.setParameter("messageId", message.getId()).executeUpdate();
 
 	}
 
 	public List<Message> getInboxMessagesByUserId(long id) {
 		return entityManager
 				.createQuery(
-						"select m from Message m where m.recipient.id =:id")
+						"select new Message(m.id, m.title,m.text,m.sendDate,m.recipient.username,m.recipient.id,m.sender.username,m.sender.id) from Message m where m.recipient.id =:id and m.inboxRemoved = false")
 				.setParameter("id", id).getResultList();
 
 	}
 
 	public List<Message> getOutboxMessagesByUserId(long id) {
 		return entityManager
-				.createQuery("select m from Message m where m.sender.id =:id")
+				.createQuery(
+						"select new Message(m.id, m.title,m.text,m.sendDate,m.recipient.username,m.recipient.id,m.sender.username,m.sender.id) from Message m where m.sender.id =:id  and  m.outboxRemoved = false")
 				.setParameter("id", id).getResultList();
 	}
 

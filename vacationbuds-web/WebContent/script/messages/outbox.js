@@ -1,9 +1,9 @@
 var messages;
 var row = 0;
 var c = {};
-var userid;
+//var userid;
 $(document).ready(function() {
-	userid = getURLParam('userid');
+	//userid = getURLParam('userid');
 	$('#messages').click();
 	initOutbox();
 	$('tbody tr').on('click', function() {
@@ -97,8 +97,8 @@ function initMessage(message) {
 	
 	var username = $('<a id="profile-link" href="../profile/profile.php?profileid='
 			+ message.recipient.id
-			+ '&userid='
-			+ userid
+			//+ '&userid='
+			//+ userid
 			+ '">'
 			+ message.recipient.username
 			+ '</a>');

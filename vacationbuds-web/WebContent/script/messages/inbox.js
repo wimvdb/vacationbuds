@@ -1,10 +1,10 @@
 var messages;
 var row = 0;
 var c = {};
-var userid;
+//var userid;
 $(document).ready(function() {
 
-	userid = getURLParam('userid');
+	//userid = getURLParam('userid');
 	$('#messages').click();
 	initInbox();
 	$('tbody tr').on('click', function() {
@@ -96,8 +96,6 @@ function initInbox() {
 function initMessage(message) {
 	var username = $('<a id="profile-link" href="../profile/profile.php?profileid='
 			+ message.sender.id
-			+ '&userid='
-			+ userid
 			+ '">'
 			+ message.sender.username
 			+ '</a>');

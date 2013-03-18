@@ -1,23 +1,58 @@
-/*function login() {
-	var username = $('#username').val();
-	var password = $('#password').val();
-	$
-			.ajax({
-				url : 'http://localhost:8080/vacationbuds-webservice/rest/dao/login',
-				contentType : 'application/json',
-				data : {
-					'username' : username,
-					'password' : password
-				},
-				type : "POST",
-				success : function(data) {
+$(document).ready(function() {
+	paginate('#steps', 1);
+});
 
-					window.location.href = "http://localhost:8080/vacationbuds-web/profile/profile.html";
+function paginate(table, pageLength) {
+	// 1. Set up paging information
+	var $table = $(table);
+	var $rows = $table.find('div.step');
+	var numPages = Math.ceil($rows.length / pageLength) - 1;
+	var current = 0;
 
-				},
-				error : function(data) {
-					alert(data.statusText);
-				}
-			});
+	// 2. Set up the navigation controls
+	var $nav = $table.parents('.table-wrapper').find('.wrapper-paging ul');
+	var $back = $nav.find('li:first-child a');
+	var $next = $nav.find('li:last-child a');
+
+	$nav.find('a.paging-this strong').text(current + 1);
+	$nav.find('a.paging-this span').text(numPages + 1);
+	$back.addClass('paging-disabled').click(function() {
+		pagination('<');
+	});
+	$next.click(function() {
+		pagination('>');
+	});
+
+	// 3. Show initial rows
+	$rows.hide().slice(0, pageLength).show();
+
+	pagination = function(direction) { // 4. Move previous and next  
+
+		var reveal = function(current) { // 5. Reveal the correct rows
+			$back.removeClass('paging-disabled');
+			$next.removeClass('paging-disabled');
+
+			$rows.hide().slice(current * pageLength,
+					current * pageLength + pageLength).show();
+
+			$nav.find('a.paging-this strong').text(current + 1);
+		};
+
+		if (direction == "<") { // previous
+			if (current > 1) {
+				(current -= 1);
+			} else if (current == 1) {
+				(current -= 1);
+				$back.addClass("paging-disabled");
+			}
+		} else { // next
+			if (current < numPages - 1) {
+				current += 1;
+			} else if (current == numPages - 1) {
+				current += 1;
+				$next.addClass("paging-disabled");
+			}
+		}
+		reveal(current);
+	};
 }
-*/

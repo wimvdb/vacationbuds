@@ -87,7 +87,15 @@ text-decoration: none;
 #profile .profile-text .editable-text div div {
 	margin-left: 7.5em;
 	overflow: hidden;
+	height : 1.6em;
 }
+
+#profile .profile-text .editable-text div div.error, .error {
+	margin-left: 0em;
+	color : red;
+}
+
+
 
 #profile textarea {
 	width: 100%;

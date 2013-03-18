@@ -12,6 +12,11 @@ div.hfeed {
 	
 }
 
+.error {
+	margin-left: 0em;
+	color : red;
+}
+
 .body-content {
 	
 	width: 100%;

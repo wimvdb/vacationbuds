@@ -42,6 +42,8 @@ $(document).ready(function() {
 			puffRemoveProfile($(ui.draggable));
 		}
 	});
+	
+	$('.error').hide();
 
 });
 
@@ -104,12 +106,13 @@ function handleImageSelect(evt) {
 				$(img).removeClass('hidden');
 				$(img).siblings(0).addClass('hidden');
 			}
+			img.draggable({
+				revert : 'invalid',
+				sroll : false
+			});
 
 		}
-		img.draggable({
-			revert : 'invalid',
-			sroll : false
-		});
+		
 	}
 
 }
@@ -127,3 +130,5 @@ function saveProfileImage(image, imgHtml) {
 		});
 	
 }
+
+

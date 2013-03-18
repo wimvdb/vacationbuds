@@ -23,25 +23,42 @@ import com.vacationbuds.util.CustomDateDeSerializer;
 import com.vacationbuds.util.CustomDateSerializer;
 
 @Entity
-
 public class Ad {
+
+	public Ad() {
+
+	}
+
+	public Ad(Long id, boolean active, char adtype, String city,
+			String country, String departure, String duration, int expenses,
+			Date expireOn, Date placeOn, String text, String title) {
+		this.id = id;
+		this.active=active;
+		this.adtype = adtype;
+		this.city = city;
+		this.country = country;
+		this.departure=departure;
+		this.duration = duration;
+		this.expenses=expenses;
+		this.expireOn=expireOn;
+		this.placeOn=placeOn;
+		this.text=text;
+		this.title=title;
+		
+	}
 
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
-
 	private Long id;
 
 	@Column(length = 100)
-
 	private String title;
 
 	@Column(length = 50)
-
 	private String country;
 
 	@Column(length = 50)
-
 	private String city;
 
 	private int expenses;
@@ -68,10 +85,7 @@ public class Ad {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
-	
 	private User user;
-
-	
 
 	public Long getId() {
 		return id;
@@ -176,7 +190,23 @@ public class Ad {
 	public void setAdtype(char adtype) {
 		this.adtype = adtype;
 	}
-
 	
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof Ad){
+			if(this.id == null && ((Ad)o).getId() == null){
+				return true;
+			}else{
+				if(this.id == null){
+					return false;
+				}
+				return this.id.equals(((Ad)o).getId());
+			}
+		}else{
+			return false;
+		}
+		
+		
+	}
 
 }

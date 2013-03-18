@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-if ( !isset( $_SESSION['userid']) || htmlspecialchars($_GET["userid"]) != $_SESSION['userid']){
+if ( !isset( $_SESSION['userid'])){
 header("location:../index.html");
 }
 unset($_SESSION['profileId']);
@@ -47,6 +47,7 @@ unset($_SESSION['profileId']);
 									data-for="#email"></div>
 								<input class="hidden" id="email" type="text"
 									title="You email address" name="email" />
+								<div class="error"></div>
 							</div>
 						</div>
 					</div>
@@ -57,6 +58,7 @@ unset($_SESSION['profileId']);
 								<div data-type="editable" data-updatable='true' data-for="#age"></div>
 								<input class="hidden" id="age" type="text" title="Your age"
 									name="age" />
+								<div class="error"></div>
 							</div>
 						</div>
 					</div>
@@ -74,6 +76,7 @@ unset($_SESSION['profileId']);
 					<div class="profile-text">
 						<label>I am :</label> <input type="radio" name="gender" value="M">Male
 						<input type="radio" name="gender" value="F">Female
+						<div class="error"></div>
 
 					</div>
 					<div class="profile-textarea">
@@ -108,7 +111,8 @@ unset($_SESSION['profileId']);
 									<div>
 										<div data-type="editable" data-updatable='true'
 											data-for="#description" class="description-label">Description</div>
-										<textarea class="description-textarea" rows="5" cols="30" name="description"></textarea>
+										<textarea class="description-textarea" rows="5" cols="30"
+											name="description"></textarea>
 									</div>
 								</div>
 							</div>
@@ -128,7 +132,8 @@ unset($_SESSION['profileId']);
 									<div>
 										<div data-type="editable" data-updatable='true'
 											data-for="#description" class="description-label">Description</div>
-										<textarea class="description-textarea" rows="5" cols="30" name="description"></textarea>
+										<textarea class="description-textarea" rows="5" cols="30"
+											name="description"></textarea>
 									</div>
 								</div>
 							</div>
@@ -153,7 +158,7 @@ unset($_SESSION['profileId']);
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
 	<script
 		src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-		<script src="../script/general.js"></script>
+	<script src="../script/general.js"></script>
 	<script src="../script/navigation.js"></script>
 	<script src="../script/profile/profile-func.js"></script>
 	<script src="../script/profile/edit.js"></script>

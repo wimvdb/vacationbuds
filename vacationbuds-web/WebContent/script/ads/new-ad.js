@@ -47,17 +47,19 @@ $(document)
 						}
 					});
 
-					$('#prev').hover(function() {
-						movePrevLeft();
-					}, function() {
-						prevLoop = false;
-					});
+					if (!opera) {
+						$('#prev').hover(function() {
+							movePrevLeft();
+						}, function() {
+							prevLoop = false;
+						});
 
-					$('#next').hover(function() {
-						moveNextRight();
-					}, function() {
-						nextLoop = false;
-					});
+						$('#next').hover(function() {
+							moveNextRight();
+						}, function() {
+							nextLoop = false;
+						});
+					}
 
 					$('#next').click(
 							function() {
@@ -210,16 +212,16 @@ function saveAdImage(image, imgHtml) {
 	var adImage = {
 		'image' : image
 	};
-	 $.ajax({
+	$.ajax({
 		url : "../security/saveAdImage.php",
 		type : 'POST',
 		data : {
 			'adImg' : JSON.stringify(adImage)
 		}
-	}).done(function(data){
+	}).done(function(data) {
 		$(imgHtml).attr('id', 'new-image' + JSON.parse(data).imgId);
 	});
-	
+
 }
 
 function saveAd() {
@@ -228,11 +230,11 @@ function saveAd() {
 		'text' : $('div[data-for="#description"]').text(),
 		'placeOn' : $('div[data-for="#placeOn"]').text(),
 		'expireOn' : $('div[data-for="#expireOn"]').text(),
-	
+
 	};
 	if ($('#type').val() == 'H') {
 		$.extend(ad, {
-			
+
 			'adtype' : 'H',
 			'country' : $('div[data-for="#host-country"]').text(),
 			'city' : $('div[data-for="#host-city"]').text(),
@@ -240,7 +242,7 @@ function saveAd() {
 		});
 	} else {
 		$.extend(ad, {
-			
+
 			'adtype' : 'V',
 			'country' : $('div[data-for="#country"]').text(),
 			'city' : $('div[data-for="#city"]').text(),

@@ -21,7 +21,7 @@ function getURLParameter(name) {
 			, null ])[1]);
 }
 
-function initProfile(id) {
+function initProfileById(id) {
 	var user;
 	$
 			.ajax({
@@ -32,6 +32,24 @@ function initProfile(id) {
 						'id' : id
 					})
 				},
+				success : function(user) {
+					if (!user.id) {
+						user = JSON.parse(user);
+					}
+					initProfilePage(user);
+				},
+				error : function(data) {
+					alert(data);
+				}
+			});
+}
+
+function initProfile() {
+	var user;
+	$
+			.ajax({
+				url: "../security/getUserById.php",
+				type : "POST",
 				success : function(user) {
 					if (!user.id) {
 						user = JSON.parse(user);

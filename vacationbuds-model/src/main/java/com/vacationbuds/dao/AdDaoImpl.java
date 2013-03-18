@@ -1,5 +1,6 @@
 package com.vacationbuds.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,6 +10,7 @@ import javax.persistence.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vacationbuds.model.Ad;
+import com.vacationbuds.model.User;
 import com.vacationbuds.util.SearchCriteria;
 
 @Transactional
@@ -35,12 +37,19 @@ public class AdDaoImpl implements AdDao {
 	public List<Ad> getAdsByUserId(Long id) {
 		return entityManager
 				.createQuery(
-						"select a from Ad a where a.user.id =:id and a.active=true")
+						"select new Ad(a.id, a.active, a.adtype, a.city,a.country, a.departure, a.duration, a.expenses,a.expireOn, a.placeOn, a.text, a.title) from Ad a where a.user.id =:id and a.active=true")
 				.setParameter("id", id).getResultList();
 	}
+	
+	
 
 	public void deletaAd(long adId, long userId) {
-
+		Query deleteFavAdsQuery = entityManager
+				.createQuery("DELETE FROM Favorite f where f.ad.id =:adId and f.user.id=:userId ");
+		deleteFavAdsQuery.setParameter("adId", adId).setParameter(
+				"userId", userId);
+		deleteFavAdsQuery.executeUpdate();
+		
 		Query deleteAdImagesQuery = entityManager
 				.createQuery("DELETE FROM Image i  where id in (select id from Image where i.ad.id=:adId and i.ad.user.id = :userId) ");
 		deleteAdImagesQuery.setParameter("adId", adId);
@@ -56,7 +65,7 @@ public class AdDaoImpl implements AdDao {
 	}
 
 	public List<Ad> search(SearchCriteria searchCriteria) {
-		String queryString = "select a from Ad a where ((soundex(a.country) =soundex(:country) and not a.country = '') or (soundex(a.city)=soundex(:city) and not a.city = '')) and a.adtype=:type";
+		String queryString = "select a from Ad a where ((soundex(a.country) =soundex(:country) and not a.country = '') or (soundex(a.city)=soundex(:city) and not a.city = '')) and a.adtype=:type and now() > a.placeOn and  now() < a.expireOn ";
 		switch (searchCriteria.getAge()) {
 		case 1:
 			queryString += " and a.user.age < 20 ";

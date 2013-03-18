@@ -131,8 +131,12 @@ th{
 	border-bottom: 2px solid #015287;
 }
 
-#sender-label, #recipient-label , #received-label{
+#sender-label, #recipient-label {
 	width : 15%
+}
+
+#received-label{
+	width : 20%
 }
 
 tbody tr {

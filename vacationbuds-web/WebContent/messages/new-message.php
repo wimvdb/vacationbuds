@@ -27,6 +27,7 @@
 								<div data-type="editable" data-updatable='true'
 									data-for="#recipient"></div>
 								<input id="recipient" type="text" title="Recipient name" name="recipient" />
+								<div class="error"></div>
 							</div>
 						</div>
 					</div>

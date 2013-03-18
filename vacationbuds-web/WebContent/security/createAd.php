@@ -27,7 +27,7 @@ try {
 	}
 	curl_close($curl);
 	if($_SESSION['userid']  != null){
-		header("location:../ads/view-ads.php?userid=" . $_SESSION['userid'] );
+		header("location:../ads/view-ads.php");
 	}
 } catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";

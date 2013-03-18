@@ -3,10 +3,11 @@ function markForInlineEditing(elements, showEditFields) {
 		beforeEdit : function(field) {
 			if (this.data('updatable') && $(this).text() != 'Description') {
 				if (!field.is('select')) {
-				field.val(this.text());
-				}else{
-					field.find('option:contains("'+this.text()+'")').attr('selected',true);
-					//field.val('50');
+					field.val(this.text());
+				} else {
+					field.find('option:contains("' + this.text() + '")').attr(
+							'selected', true);
+					// field.val('50');
 				}
 			}
 
@@ -16,10 +17,12 @@ function markForInlineEditing(elements, showEditFields) {
 				if (display.data('updatable')) {
 					display.text(this.val());
 				}
-			}else{
-				display.text(this.find('option[value='+this.val()+']').text());
+			} else {
+				display.text(this.find('option[value=' + this.val() + ']')
+						.text());
 			}
-			if (this.is('textarea') && this.val() == '' && this.hasClass('description-textarea')) {
+			if (this.is('textarea') && this.val() == ''
+					&& this.hasClass('description-textarea')) {
 				display.text('Description');
 			}
 		}
@@ -31,10 +34,10 @@ function markForInlineEditing(elements, showEditFields) {
 		elements.find('div > input').css('display', '');
 		elements.find('div > textarea').css('display', '');
 	} else {
-		elements.find('div > div').show();
+		elements.find('div > div').filter(':not(.error)').show();
 		elements.find('div > pre').show();
 	}
-	elements.find('div > div').on('hover', function() {
+	elements.find('div > div').filter(':not(.error)').on('hover', function() {
 		$(this).toggleClass('highlight');
 	});
 	elements.find('div > pre').on('hover', function() {
@@ -44,7 +47,7 @@ function markForInlineEditing(elements, showEditFields) {
 }
 
 function puffRemoveProfile(which, remove) {
-	var imgId = which.attr('id').split('profile-image')[1];
+
 	var $this = $(which), image_width = 128, scale_factor = $this.outerWidth()
 			/ image_width, frame_count = 5, $trash, $puff;
 
@@ -87,17 +90,25 @@ function puffRemoveProfile(which, remove) {
 			$puff.parent().remove();
 		}
 	})();
-	
-	$.ajax({
-		url: "../security/deleteProfileImage.php",
-		type : 'POST',
-		data : {'img' :JSON.stringify({'id' : imgId})}
+
+	if (which.attr('id') != 'avatar') {
+		var imgId = which.attr('id').split('profile-image')[1];
+		$.ajax({
+			url : "../security/deleteProfileImage.php",
+			type : 'POST',
+			data : {
+				'img' : JSON.stringify({
+					'id' : imgId
+				})
+			}
 		});
+	}
 
 }
 
 function post_to_url(path, params, method) {
-	method = method || "post"; // Set method to post by default, if not specified.
+	method = method || "post"; // Set method to post by default, if not
+								// specified.
 
 	// The rest of this code assumes you are not using a library.
 	// It can be made less wordy if you use one.

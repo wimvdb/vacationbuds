@@ -12,12 +12,12 @@ $(document).ready(function() {
 		$(this).find('ul:first').stop(true, true).slideToggle();
 	});
 	
-	var userid = getURLParam('userid');
+	/*var userid = getURLParam('userid');
 	var links = $('#navigation a:not("#view-profile")');
 	for(var i= 0; i< links.length; i++){
 		links.get(i).href=links.get(i).href + '?userid='+userid;
-	}
-	$('#view-profile').get(0).href=$('#view-profile').get(0).href + '?userid='+userid +'&profileid='+userid;
+	}*/
+	$('#view-profile').get(0).href=$('#view-profile').get(0).href ;/* +'&profileid='+userid;*/
 
 	
 });

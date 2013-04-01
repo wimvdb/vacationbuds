@@ -9,7 +9,7 @@
 
 
 
-
+<script src="script/googleanalytics.js"></script>
 </body>
 </html>
 

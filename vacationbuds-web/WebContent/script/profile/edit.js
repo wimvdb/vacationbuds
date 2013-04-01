@@ -6,14 +6,13 @@ $(document).ready(function() {
 	if ($('#avatar').src != '#') {
 		showAvatar();
 	}
-	
 
 });
 
 function initProfilePage(user) {
 
 	$('div[data-for=#email]').text(user.email);
-	$('div[data-for=#age]').text(user.age);
+	$('div[data-for=#dateOfBirth]').text(user.birthday);
 	$('div[data-for=#country]').text(user.country);
 	$(':radio[value=' + user.gender + ']').get(0).checked = true;
 
@@ -21,7 +20,15 @@ function initProfilePage(user) {
 
 	markForInlineEditing($('.editable-text'), false);
 
-	$('#avatar').get(0).src = user.avatar;
+	if (user.avatar != "" && user.avatar != null) {
+		$('#avatar').get(0).src = user.avatar;
+	} else {
+		if (user.gender == 'M') {
+			$('#avatar').get(0).src = "../images/derp.jpg";
+		} else {
+			$('#avatar').get(0).src = "../images/derpina.jpg";
+		}
+	}
 
 	$.ajax({
 		url : "../security/getProfileImages.php",
@@ -64,36 +71,60 @@ function initProfilePage(user) {
 function saveOrUpdateUser() {
 
 	if (validateInput()) {
-		var pictures = $.find('#pictures img.ui-draggable');
-		for ( var i = 0; i < pictures.length; i++) {
-			var pictureContainer = $(pictures[i]).parent().parent();
-			var profileImage = {
-				'id' : $(pictures[i]).attr('id').split('profile-image')[1],
-				'description' : pictureContainer
-						.find('div[data-type=editable]').eq(0).text()
-			};
+		try {
+			$('body').addClass("loading");
+			var pictures = $.find('#pictures img.ui-draggable');
+			for ( var i = 0; i < pictures.length; i++) {
+				var pictureContainer = $(pictures[i]).parent().parent();
+				var profileImage = {
+					'id' : $(pictures[i]).attr('id').split('profile-image')[1],
+					'description' : pictureContainer.find(
+							'div[data-type=editable]').eq(0).text()
+				};
+				$.ajax({
+					url : "../security/saveProfileImage.php",
+					type : 'POST',
+					data : {
+						'profileImg' : JSON.stringify(profileImage)
+					}
+				});
+			}
+
+			$.extend(user, {
+				// 'id' : userid,
+				'email' : $('div[data-for="#email"]').text(),
+				'birthday' : $('div[data-for="#dateOfBirth"]').text(),
+				'country' : $('div[data-for="#country"]').text(),
+				'gender' : $('input[name=gender]:radio:checked').val(),
+				'description' : $('pre[data-for="#short-description"]').text(),
+				'avatar' : $('#avatar').get(0).src
+			});
+
+			// post_to_url('../security/updateUser.php', {
+			// 'user' : JSON.stringify(user)
+			// }, 'post');
+
 			$.ajax({
-				url : "../security/saveProfileImage.php",
+				url : "../security/updateUser.php",
 				type : 'POST',
 				data : {
-					'profileImg' : JSON.stringify(profileImage)
+					'user' : JSON.stringify(user)
 				}
+			}).done(function(data) {
+				if (data.indexOf('../profile/profile') == 0) {
+					window.location.href = data;
+				} else {
+					post_to_url('../error.php', {
+						'data' : JSON.stringify(data)
+					}, 'post');
+				}
+			}).complete(function() {
+				$('body').removeClass("loading");
 			});
+		} catch (e) {
+			$('body').removeClass("loading");
 		}
 
-		$.extend(user, {
-			//'id' : userid,
-			'email' : $('div[data-for="#email"]').text(),
-			'age' : $('div[data-for="#age"]').text(),
-			'country' : $('div[data-for="#country"]').text(),
-			'gender' : $('input[name=gender]:radio:checked').val(),
-			'description' : $('pre[data-for="#short-description"]').text(),
-			'avatar' : $('#avatar').get(0).src
-		});
-
-		post_to_url('../security/updateUser.php', {
-			'user' : JSON.stringify(user)
-		}, 'post');
 	}
 }
 
@@ -109,12 +140,17 @@ function validateInput() {
 	} else {
 		email.siblings('div.error').hide();
 	}
-	var age = $('div[data-for="#age"]');
-	if ($.trim(age.text()) == '') {
+	var dateOfBirth = $('div[data-for="#dateOfBirth"]');
+	if ($.trim(dateOfBirth.text()) == '') {
 		valid = false;
-		age.siblings('div.error').show().text('Age is a required field!');
-	} else {
-		age.siblings('div.error').hide();
+		dateOfBirth.siblings('div.error').show().text(
+				'Date of birth is a required field!');
+	} else if (validateDate(dateOfBirth.text())) {
+		valid = false;
+		dateOfBirth.siblings('div.error').show().text(
+				'Date of birth not in format dd-MM-yyyy');
+	}else {
+		dateOfBirth.siblings('div.error').hide();
 	}
 	var gender = $('input[name=gender]:radio:checked');
 	if (!gender.val()) {
@@ -123,6 +159,9 @@ function validateInput() {
 				'Sex is a required field!');
 	} else {
 		$('input[name=gender]').siblings('div.error').hide();
+	}
+	if (!valid) {
+		$('#profile-link').click();
 	}
 	return valid;
 }
@@ -137,3 +176,14 @@ function validateEmail(email) {
 	return true;
 }
 
+function validateDate(dateString) {
+	try {
+		var dateArray = dateString.split('-');
+		return isNaN(Date.parse(dateArray[1] + '-' + dateArray[0] + '-'
+				+ dateArray[2]));
+		return true;
+	} catch (e) {
+		return false;
+	}
+
+}

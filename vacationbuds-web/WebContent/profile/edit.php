@@ -23,7 +23,7 @@ unset($_SESSION['profileId']);
 			<?php include("../includes/navigation.html");?>
 
 			<ul id="create-profile-nav">
-				<li><a href="#profile">Profile</a></li>
+				<li><a id="profile-link" href="#profile">Profile</a></li>
 				<li><a href="#pictures-frame">Pictures</a></li>
 			</ul>
 
@@ -52,12 +52,13 @@ unset($_SESSION['profileId']);
 						</div>
 					</div>
 					<div class="profile-text">
-						<label>Age :</label>
+						<label>Date of birth:</label>
 						<div class="editable-text">
 							<div>
-								<div data-type="editable" data-updatable='true' data-for="#age"></div>
-								<input class="hidden" id="age" type="text" title="Your age"
-									name="age" />
+								<div class="hidden" data-type="editable" data-updatable='true'
+									data-for="#dateOfBirth"></div>
+								<input id="dateOfBirth" placeholder="dd-MM-yyyy" type="text" title="dd-MM-yyyy"
+									name="dateOfBirth" />
 								<div class="error"></div>
 							</div>
 						</div>
@@ -110,8 +111,8 @@ unset($_SESSION['profileId']);
 								<div class="editable-text">
 									<div>
 										<div data-type="editable" data-updatable='true'
-											data-for="#description" class="description-label">Description</div>
-										<textarea class="description-textarea" rows="5" cols="30"
+											data-for="#description" class="description-label"></div>
+										<textarea placeholder="Description" class="description-textarea" rows="5" cols="30"
 											name="description"></textarea>
 									</div>
 								</div>
@@ -131,8 +132,8 @@ unset($_SESSION['profileId']);
 								<div class="editable-text">
 									<div>
 										<div data-type="editable" data-updatable='true'
-											data-for="#description" class="description-label">Description</div>
-										<textarea class="description-textarea" rows="5" cols="30"
+											data-for="#description" class="description-label"></div>
+										<textarea placeholder="Description" class="description-textarea" rows="5" cols="30"
 											name="description"></textarea>
 									</div>
 								</div>
@@ -153,6 +154,7 @@ unset($_SESSION['profileId']);
 			<div>Drag photos here to delete!</div>
 		</div>
 	</div>
+	<div class="modal"></div>
 
 	<script
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
@@ -166,6 +168,6 @@ unset($_SESSION['profileId']);
 
 
 	<script src="../script/jquery.editable-1.0.1.js"></script>
-
+	<script src="../script/googleanalytics.js"></script>
 </body>
 </html>

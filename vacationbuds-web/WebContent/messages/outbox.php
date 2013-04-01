@@ -1,3 +1,10 @@
+<?php
+
+session_start();
+if ( !isset( $_SESSION['userid'])){
+header("location:../index.html");
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,6 +31,7 @@
 							<th id="recipient-label">Recipient</th>
 							<th id="title-label">Title</th>
 							<th id="received-label">Received on</th>
+							<th id="remove-label"></th>
 						</tr>
 					</thead>
 					<tbody>

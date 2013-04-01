@@ -2,14 +2,16 @@
 
 ob_start();
 session_start();
-try {
+
 	$data=$_POST['profileImg']; 
 	$profileImg= json_decode(utf8_encode($data),true);
 	if(isset( $_SESSION['profileId'])){
 		$profileImg['user'] = array('id' => $_SESSION['profileId']);
+
 	}
 	else if(isset( $_SESSION['userid'])){
 		$profileImg['user'] = array('id' => $_SESSION['userid']);
+
 	}
 	$content = json_encode($profileImg);
 	$url = 'http://localhost:8080/vacationbuds-webservice/rest/dao/saveProfileImage';
@@ -28,9 +30,7 @@ try {
 	}
     curl_close($curl);
 	
-} catch (Exception $e) {
-    echo 'Caught exception: ',  $e->getMessage(), "\n";
-}
-ob_end_flush();
 echo $response;
+ob_end_flush();
+
 ?>

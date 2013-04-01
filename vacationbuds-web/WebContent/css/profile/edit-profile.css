@@ -23,9 +23,7 @@ pre {
 	min-height: 100%;
 }
 
-.tab {
-	min-height: 700px;
-}
+
 
 #create-profile-nav {
 	margin-bottom: 0px;
@@ -209,6 +207,7 @@ body {
 }
 
 .tab {
+	min-height: 700px;
 	font-family: 'Crafty Girls', cursive;
 	float: left; /* float containment */
 	min-width: 600px;
@@ -219,6 +218,7 @@ body {
 	-o-border-image: url(../images/edge.png) 0 0 0 50 round;
 	-moz-border-image: url(../images/edge.png) 0 0 0 50 round;
 	-webkit-border-image: url(../images/edge.png) 0 0 0 50 round;
+	
 	border-image: url(../images/edge.png) 0 0 0 50 round;
 	border-style:solid;
 	border-width: 0 0 0 50px;
@@ -374,4 +374,26 @@ border: 1px solid white;
 	border: 1px solid black;
 	background: white;
 	color: black;
+}
+
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('http://i.stack.imgur.com/FhHRx.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+body.loading {
+    overflow: hidden;   
+}
+
+body.loading .modal {
+    display: block;
 }

@@ -18,14 +18,12 @@ try {
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
 	curl_exec($curl);
-	if(curl_errno($curl))
-	{
-	    echo 'Curl error: ' . curl_error($curl);
-	}
+	
 	curl_close($curl);
-	if($_SESSION['userid']  != null){
-		header("location:../ads/view-ads.php");
-	}
+	
+
+
+	
 } catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
 }

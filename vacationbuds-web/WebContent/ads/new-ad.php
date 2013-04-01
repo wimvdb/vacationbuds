@@ -228,6 +228,7 @@ unset($_SESSION['adId']);
 	<script src="../script/ads/new-ad.js"></script>
 	
 	<script src="../script/jquery.editable-1.0.1.js"></script>
+	<script src="../script/googleanalytics.js"></script>
 
 </body>
 </html>

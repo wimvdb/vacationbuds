@@ -21,7 +21,7 @@ public class UserDaoImpl implements UserDao {
 	public User getUserById(Long id) {
 		List<User> users = entityManager
 				.createQuery(
-						"select new User(id, username, active, age,  avatar,  country,  description, email,  gender) from User u where id=:id",
+						"select new User(id, username, active, birthday,  avatar,  country,  description, email,  gender) from User u where id=:id",
 						User.class).setParameter("id", id).getResultList();
 		if (users.size() > 0) {
 			return users.get(0);
@@ -43,7 +43,7 @@ public class UserDaoImpl implements UserDao {
 	public long validateUser(String username, String password) throws Exception {
 		List<User> users = entityManager
 				.createQuery(
-						"select new User(id, username, active, age,  avatar,  country,  description, email,  gender) from User u where username=:username and password=:password",
+						"select new User(id, username, active, birthday,  avatar,  country,  description, email,  gender) from User u where username=:username and password=:password",
 						User.class).setParameter("username", username)
 				.setParameter("password", password).getResultList();
 
@@ -55,7 +55,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	public User getUserByUsername(String username) throws Exception {
-		List<User> users = entityManager.createQuery("select new User(id, username, active, age,  avatar,  country,  description, email,  gender) from User u where username=:username",User.class).setParameter("username", username).getResultList();
+		List<User> users = entityManager.createQuery("select new User(id, username, active, birthday,  avatar,  country,  description, email,  gender) from User u where username=:username",User.class).setParameter("username", username).getResultList();
 		if (users.size() > 0) {
 			return users.get(0);
 		} else {

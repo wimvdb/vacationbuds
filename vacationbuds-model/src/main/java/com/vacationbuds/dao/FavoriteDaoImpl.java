@@ -18,8 +18,6 @@ public class FavoriteDaoImpl implements FavoriteDao {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	
-
 	public List<Ad> getFavAdsByUserId(Long id) {
 		return entityManager
 				.createQuery("select f.ad from Favorite f where f.user.id =:id")
@@ -35,11 +33,17 @@ public class FavoriteDaoImpl implements FavoriteDao {
 	}
 
 	public void addToFavorites(Ad ad, Long userId) {
-		Favorite favorite = new Favorite(new User(userId), ad);
-		// if (!user.getFavorites().contains(favorite)) {
-		entityManager.persist(favorite);
-		// }
-	}
 
+		int size = entityManager
+				.createQuery(
+						"select f.ad.id from Favorite f where f.user.id =:id and f.ad.id=:adId")
+				.setParameter("id", userId).setParameter("adId", ad.getId())
+				.getResultList().size();
+		if (size == 0) {
+			Favorite favorite = new Favorite(new User(userId), ad);
+			entityManager.persist(favorite);
+		}
+		
+	}
 
 }

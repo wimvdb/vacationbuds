@@ -68,37 +68,37 @@ public class AdDaoImpl implements AdDao {
 		String queryString = "select a from Ad a where ((soundex(a.country) =soundex(:country) and not a.country = '') or (soundex(a.city)=soundex(:city) and not a.city = '')) and a.adtype=:type and now() > a.placeOn and  now() < a.expireOn ";
 		switch (searchCriteria.getAge()) {
 		case 1:
-			queryString += " and a.user.age < 20 ";
+			queryString += " and EXTRACT(year from AGE(NOW(), a.user.birthday)) < 20 ";
 			break;
 		case 2:
-			queryString += " and a.user.age >= 20 and a.user.age <= 30 ";
+			queryString += " and EXTRACT(year from AGE(NOW(), a.user.birthday)) >= 20 and EXTRACT(year from AGE(NOW(), a.user.birthday)) <= 30 ";
 			break;
 		case 3:
-			queryString += " and a.user.age > 20 ";
+			queryString += " and EXTRACT(year from AGE(NOW(), a.user.birthday)) > 20 ";
 			break;
 		case 4:
-			queryString += " and a.user.age < 30 ";
+			queryString += " and EXTRACT(year from AGE(NOW(), a.user.birthday)) < 30 ";
 			break;
 		case 5:
-			queryString += " and a.user.age >= 30 and a.user.age <= 40 ";
+			queryString += " and EXTRACT(year from AGE(NOW(), a.user.birthday)) >= 30 and EXTRACT(year from AGE(NOW(), a.user.birthday)) <= 40 ";
 			break;
 		case 6:
-			queryString += " and a.user.age > 30 ";
+			queryString += " and EXTRACT(year from AGE(NOW(), a.user.birthday)) > 30 ";
 			break;
 		case 7:
-			queryString += " and a.user.age < 40 ";
+			queryString += " and EXTRACT(year from AGE(NOW(), a.user.birthday)) < 40 ";
 			break;
 		case 8:
-			queryString += " and a.user.age >= 40 :and age <= 50 ";
+			queryString += " and EXTRACT(year from AGE(NOW(), a.user.birthday)) >= 40 and EXTRACT(year from AGE(NOW(), a.user.birthday)) <= 50 ";
 			break;
 		case 9:
-			queryString += " and a.user.age > 40 ";
+			queryString += " and EXTRACT(year from AGE(NOW(), a.user.birthday)) > 40 ";
 			break;
 		case 10:
-			queryString += " and a.user.age < 50 ";
+			queryString += " and EXTRACT(year from AGE(NOW(), a.user.birthday)) < 50 ";
 			break;
 		case 11:
-			queryString += " and a.user.age > 50 ";
+			queryString += " and EXTRACT(year from AGE(NOW(), a.user.birthday)) > 50 ";
 			break;
 		default:
 			break;

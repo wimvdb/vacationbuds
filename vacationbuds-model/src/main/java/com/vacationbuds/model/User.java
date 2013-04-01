@@ -1,18 +1,21 @@
 package com.vacationbuds.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.annotations.GenericGenerator;
+
+import com.vacationbuds.util.CustomDateDeSerializer;
+import com.vacationbuds.util.CustomDateSerializer;
 
 @Entity
 @Table(name = "buduser")
@@ -32,13 +35,13 @@ public class User {
 	}
 
 	public User(Long id, String username, /*String password,*/ boolean active,
-			int age, String avatar, String country, String description,
+			Date birthday, String avatar, String country, String description,
 			String email, String gender) {
 		this.id = id;
 		this.username = username;
 		//this.password = password;
 		this.active = active;
-		this.age=age;
+		this.birthday=birthday;
 		this.avatar = avatar;
 		this.country = country;
 		this.description = description;
@@ -61,7 +64,9 @@ public class User {
 
 	private String country;
 
-	private int age;
+	@JsonSerialize(using = CustomDateSerializer.class)
+	@JsonDeserialize(using = CustomDateDeSerializer.class)
+	private Date birthday;
 
 	@Column(columnDefinition = "text")
 	private String avatar;
@@ -128,12 +133,12 @@ public class User {
 		this.country = country;
 	}
 
-	public int getAge() {
-		return age;
+	public Date getBirthday() {
+		return birthday;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 
 	public String getDescription() {

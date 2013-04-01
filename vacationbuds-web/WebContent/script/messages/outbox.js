@@ -1,9 +1,9 @@
 var messages;
 var row = 0;
 var c = {};
-//var userid;
+// var userid;
 $(document).ready(function() {
-	//userid = getURLParam('userid');
+	// userid = getURLParam('userid');
 	$('#messages').click();
 	initOutbox();
 	$('tbody tr').on('click', function() {
@@ -37,72 +37,83 @@ $(document).ready(function() {
 
 		}
 	});
-	
 
 });
 
 function initOutbox() {
-	$.ajax({
-		url : "../security/getOutboxMessages.php",
-		type : 'POST'
-	}).done(function(data){
-		messages = JSON.parse(data);
-		if (!messages.length && messages.length != 0) {
-			messages = JSON.parse(messages);
-		}
-		if (messages.length > 0) {
-			for ( var i = 0; i < messages.length; i++) {
-
-				
-				
-				
-				var tr = $('<tr title="Drag message to the bin to delete!"></tr>')
-						.append('<td>' + messages[i].recipient.username + '</td>')
-						.append('<td>' + messages[i].title + '</td>').append(
-								'<td>' + messages[i].sendDate + '</td>');
-
-				$('#outbox-list tbody').append(tr);
-				tr.draggable({
-					revert : 'invalid',
-					appendTo : 'body',
-
-					scroll : false,
-					helper : "clone",
-					start : function(event, ui) {
-						if (!$('body').outerHeight() > $(window).height()) {
-							$('body').css('overflow', 'hidden');
+	$
+			.ajax({
+				url : "../security/getOutboxMessages.php",
+				type : 'POST'
+			})
+			.done(
+					function(data) {
+						messages = JSON.parse(data);
+						if (!messages.length && messages.length != 0) {
+							messages = JSON.parse(messages);
 						}
-						c.tr = this;
-						c.helper = ui.helper;
-					},
-					stop : function() {
-						$('body').css('overflow', 'auto');
-					}
-				});
+						if (messages.length > 0) {
+							for ( var i = 0; i < messages.length; i++) {
 
-			}
-			initMessage(messages[0]);
-		} else {
-			var tr = $('<tr></tr>').append('<td colspan="4"> No Messages!</td>');
-			$('#outbox-list tbody').append(tr);
-			$('#message').addClass('hidden');
-			$('.trash').addClass('hidden');
+								var tr = $(
+										'<tr title="Drag message to the bin to delete!"></tr>')
+										.append(
+												'<td>'
+														+ messages[i].recipient.username
+														+ '</td>').append(
+												'<td>' + messages[i].title
+														+ '</td>').append(
+												'<td>' + messages[i].sendDate
+														+ '</td>').append(
+												'<td><a href="" onclick="clickRemoveMessage('
+														+ i
+														+ ')">Remove</a></td>');
 
-		}
-	});
-	
+								$('#outbox-list tbody').append(tr);
+								tr
+										.draggable({
+											revert : 'invalid',
+											appendTo : 'body',
+
+											scroll : false,
+											helper : "clone",
+											start : function(event, ui) {
+												if (!$('body').outerHeight() > $(
+														window).height()) {
+													$('body').css('overflow',
+															'hidden');
+												}
+												c.tr = this;
+												c.helper = ui.helper;
+											},
+											stop : function() {
+												$('body').css('overflow',
+														'auto');
+											}
+										});
+
+							}
+							initMessage(messages[0]);
+						} else {
+							var tr = $('<tr></tr>').append(
+									'<td colspan="4"> No Messages!</td>');
+							$('#outbox-list tbody').append(tr);
+							$('#message').addClass('hidden');
+							$('.trash').addClass('hidden');
+
+						}
+					});
+
 }
 
 function initMessage(message) {
-	
+
 	var username = $('<a id="profile-link" href="../profile/profile.php?profileid='
 			+ message.recipient.id
-			//+ '&userid='
-			//+ userid
-			+ '">'
-			+ message.recipient.username
-			+ '</a>');
-	
+			// + '&userid='
+			// + userid
+			+ '">' + message.recipient.username + '</a>');
+
 	$('#recipient').append(username);
 	$('#title').text(message.title);
 	$('#message-body').text(message.text);
@@ -158,13 +169,22 @@ function puffRemoveMessage(which) {
 			$puff.parent().remove();
 		}
 	})();
+	removeMessage($(c.tr).index());
 
+}
+
+function clickRemoveMessage(row) {
+	$($('tbody tr').get(row)).hide();
+	removeMessage(row);
+}
+
+function removeMessage(row) {
 	$.ajax({
 		url : "../security/deleteOutboxMessage.php",
 		type : 'POST',
 		data : {
 			'message' : JSON.stringify({
-				'id' : messages[$(c.tr).index()].id
+				'id' : messages[row].id
 			})
 		}
 	});
@@ -177,5 +197,4 @@ function puffRemoveMessage(which) {
 		$('#message').addClass('hidden');
 		$('.trash').addClass('hidden');
 	}
-
 }

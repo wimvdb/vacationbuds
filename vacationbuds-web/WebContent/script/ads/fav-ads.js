@@ -37,7 +37,7 @@ $(document)
 						}
 					});
 
-					if (!opera) {
+					if (!$.browser.opera) {
 						$('#prev').hover(function() {
 							movePrevLeft();
 						}, function() {
@@ -104,8 +104,8 @@ function initViewAds() {
 												'<td>' + ads[i].placeOn
 														+ '</td>').append(
 												'<td>' + ads[i].expireOn
-														+ '</td>');
-
+														+ '</td>').append(
+																'<td><a href="" onclick="clickRemoveMessage('+i+')">Remove</a></td>');
 								$('#ad-list tbody').append(tr);
 								tr
 										.draggable({
@@ -312,13 +312,23 @@ function puffRemoveAd(which) {
 			$puff.parent().remove();
 		}
 	})();
+	removeMessage($(c.tr).index());
+	
 
+}
+
+function clickRemoveMessage(row){
+	$($('tbody tr').get(row)).hide();
+	removeMessage(row);
+}
+
+function removeMessage(row){
 	$.ajax({
 		url : "../security/removeAdFromFavorites.php",
 		type : 'POST',
 		data : {
 			'ad' : JSON.stringify({
-				'id' : ads[$(c.tr).index()].id
+				'id' : ads[row].id
 			})
 		}
 	});
@@ -330,8 +340,8 @@ function puffRemoveAd(which) {
 		$('#ad').addClass('hidden');
 		$('.trash').addClass('hidden');
 	}
-
 }
+
 
 function handleDragOver(evt) {
 	evt.stopPropagation();

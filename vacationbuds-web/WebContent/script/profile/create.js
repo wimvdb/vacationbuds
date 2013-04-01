@@ -12,49 +12,56 @@ $(document).ready(function() {
 function saveOrUpdateUser() {
 
 	if (validateInput()) {
+		try {
+			$('body').addClass("loading");
 
-		var pictures = $.find('#pictures img.ui-draggable');
-		for ( var i = 0; i < pictures.length; i++) {
-			var pictureContainer = $(pictures[i]).parent().parent();
-			var profileImage = {
-				'id' : $(pictures[i]).attr('id').split('profile-image')[1],
-				'description' : pictureContainer
-						.find('div[data-type=editable]').eq(0).text()
-			};
+			var pictures = $.find('#pictures img.ui-draggable');
+			for ( var i = 0; i < pictures.length; i++) {
+				var pictureContainer = $(pictures[i]).parent().parent();
+				var profileImage = {
+					'id' : $(pictures[i]).attr('id').split('profile-image')[1],
+					'description' : pictureContainer.find(
+							'div[data-type=editable]').eq(0).text()
+				};
+				$.ajax({
+					url : "../security/saveProfileImage.php",
+					type : 'POST',
+					data : {
+						'profileImg' : JSON.stringify(profileImage)
+					}
+				});
+			}
+
+			$.extend(user, {
+				'username' : $('div[data-for="#username"]').text(),
+				'password' : $('#password-value').text(),
+				'email' : $('div[data-for="#email"]').text(),
+				'birthday' : $('div[data-for="#dateOfBirth"]').text(),
+				'country' : $('div[data-for="#country"]').text(),
+				'gender' : $('input[name=gender]:radio:checked').val(),
+				'description' : $('pre[data-for="#short-description"]').text()
+			});
+
 			$.ajax({
-				url : "../security/saveProfileImage.php",
+				url : "../security/createUser.php",
 				type : 'POST',
 				data : {
-					'profileImg' : JSON.stringify(profileImage)
+					'user' : JSON.stringify(user)
 				}
+			}).done(function(data) {
+				if (data.indexOf('../profile/profile') == 0) {
+					window.location.href = data;
+				} else {
+					post_to_url('../error.php', {
+						'data' : JSON.stringify(data)
+					}, 'post');
+				}
+			}).complete(function() {
+				$('body').removeClass("loading");
 			});
+		} catch (e) {
+			$('body').removeClass("loading");
 		}
-
-		$.extend(user, {
-			'username' : $('div[data-for="#username"]').text(),
-			'password' : $('div[data-for="#password"]').text(),
-			'email' : $('div[data-for="#email"]').text(),
-			'age' : $('div[data-for="#age"]').text(),
-			'country' : $('div[data-for="#country"]').text(),
-			'gender' : $('input[name=gender]:radio:checked').val(),
-			'description' : $('pre[data-for="#short-description"]').text()
-		});
-
-		$.ajax({
-			url : "../security/createUser.php",
-			type : 'POST',
-			data : {
-				'user' : JSON.stringify(user)
-			}
-		}).done(function(data) {
-			if (data.indexOf('../profile/profile') == 0) {
-				window.location.href = data;
-			} else {
-				post_to_url('../error.php', {
-					'data' : JSON.stringify(data)
-				}, 'post');
-			}
-		});
 
 	}
 }
@@ -67,11 +74,11 @@ function validateInput() {
 		valid = false;
 		username.siblings('div.error').show().text(
 				'Username is a required field!');
-	} else if ($.trim(username.text()).length < 2) {
+	} else if ($.trim(username.text()).length < 3) {
 		valid = false;
 		username.siblings('div.error').show().text(
-				'Username needs to be at least 3 characters long!');
-	} else if (userNameTaken =="true") {
+				'Minimum 3 characters!');
+	} else if (userNameTaken == "true") {
 		valid = false;
 		username.siblings('div.error').show().text('Username taken!');
 	} else {
@@ -82,10 +89,10 @@ function validateInput() {
 		valid = false;
 		password.siblings('div.error').show().text(
 				'Password is a required field!');
-	} else if ($.trim(password.text()).length < 2) {
+	} else if ($.trim(password.text()).length < 3) {
 		valid = false;
 		password.siblings('div.error').show().text(
-				'Password needs to be at least 3 characters long!');
+				'Minimum 3 characters!');
 	} else {
 		password.siblings('div.error').hide();
 	}
@@ -99,12 +106,17 @@ function validateInput() {
 	} else {
 		email.siblings('div.error').hide();
 	}
-	var age = $('div[data-for="#age"]');
-	if ($.trim(age.text()) == '') {
+	var dateOfBirth = $('div[data-for="#dateOfBirth"]');
+	if ($.trim(dateOfBirth.text()) == '') {
 		valid = false;
-		age.siblings('div.error').show().text('Age is a required field!');
+		dateOfBirth.siblings('div.error').show().text(
+				'Required field!');
+	} else if (validateDate(dateOfBirth.text())) {
+		valid = false;
+		dateOfBirth.siblings('div.error').show().text(
+				'Date of birth not in format dd-MM-yyyy');
 	} else {
-		age.siblings('div.error').hide();
+		dateOfBirth.siblings('div.error').hide();
 	}
 	var gender = $('input[name=gender]:radio:checked');
 	if (!gender.val()) {
@@ -114,7 +126,22 @@ function validateInput() {
 	} else {
 		$('input[name=gender]').siblings('div.error').hide();
 	}
+	if (!valid) {
+		$('#profile-link').click();
+	}
 	return valid;
+}
+
+function validateDate(dateString) {
+	try {
+		var dateArray = dateString.split('-');
+		return isNaN(Date.parse(dateArray[1] + '-' + dateArray[0] + '-'
+				+ dateArray[2]));
+		return true;
+	} catch (e) {
+		return false;
+	}
+
 }
 
 function validateUsername(username) {

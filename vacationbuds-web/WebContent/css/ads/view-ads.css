@@ -20,6 +20,10 @@ tbody tr {
 	
 }
 
+#remove-label {
+	width : 10%
+}
+
 #placeOn-label {
 	width: 15%;
 }

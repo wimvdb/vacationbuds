@@ -11,7 +11,7 @@ header("location:../index.html");
 <head>
 <meta charset="ISO-8859-1">
 <title>View ads</title>
-<link rel="stylesheet" href="../css/ads/view-ads.css">
+
 <link rel="stylesheet" href="../css/ads/ads.css">
 <link rel="stylesheet" href="../css/navigation.css">
 <link href='http://fonts.googleapis.com/css?family=Special+Elite'
@@ -32,6 +32,7 @@ header("location:../index.html");
 							<th id="title-label">Title</th>
 							<th id="placeOn-label">Place On</th>
 							<th id="removeOn-label">Remove On</th>
+							<th id="remove-label"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -175,7 +176,7 @@ header("location:../index.html");
 
 <script src="../script/navigation.js"></script>
 <script src="../script/ads/view-ads.js"></script>
-
+<script src="../script/googleanalytics.js"></script>
 
 
 

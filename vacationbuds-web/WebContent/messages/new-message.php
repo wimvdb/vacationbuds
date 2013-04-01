@@ -1,3 +1,10 @@
+<?php
+
+session_start();
+if ( !isset( $_SESSION['userid'])){
+header("location:../index.html");
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,6 +69,7 @@
 
 
 	</div>
+	<div class="modal"></div>
 	<script
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
 	<script

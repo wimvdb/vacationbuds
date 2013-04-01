@@ -34,7 +34,7 @@ $content = json_encode($user);
 
         
 
-header("location:../profile/profile.php");
+echo "../profile/profile.php" ;
 
 
 ob_end_flush();

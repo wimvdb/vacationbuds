@@ -20,7 +20,7 @@ $(document).ready(function() {
 function initProfilePage(user) {
 
 	$('#username-container').append('<div>' + user.username + '</div>');
-	$('#age-container').append('<div>' + user.age + '</div>');
+	$('#age-container').append('<div>' + calcAge(user.birthday) + '</div>');
 	$('#country-container').append('<div>' + user.country + '</div>');
 
 	var description = $('#short-description-container');
@@ -33,7 +33,15 @@ function initProfilePage(user) {
 	$('#short-description-container').append(
 			'<pre class="marginTop">' + user.description + '</pre>');
 
-	$('#avatar').get(0).src = user.avatar;
+	if (user.avatar != "" && user.avatar != null) {
+		$('#avatar').get(0).src = user.avatar;
+	} else {
+		if (user.gender == 'M') {
+			$('#avatar').get(0).src = "../images/derp.jpg";
+		} else {
+			$('#avatar').get(0).src = "../images/derpina.jpg";
+		}
+	}
 
 	$.ajax({
 		url : "../security/getProfileImages.php",
@@ -119,4 +127,18 @@ function initProfilePage(user) {
 		}
 	});
 
+}
+
+
+
+function calcAge(dateString) {
+    var today = new Date();
+    var dateArray = dateString.split('-');
+    var birthDate = new Date(Date.parse(dateArray[1]+'-'+dateArray[0]+'-'+dateArray[2]));
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
 }

@@ -131,6 +131,10 @@ th{
 	border-bottom: 2px solid #015287;
 }
 
+#remove-label {
+	width : 10%
+}
+
 #sender-label, #recipient-label {
 	width : 15%
 }

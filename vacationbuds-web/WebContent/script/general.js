@@ -1,13 +1,17 @@
 function markForInlineEditing(elements, showEditFields) {
 	elements.editables({
 		beforeEdit : function(field) {
-			if (this.data('updatable') && $(this).text() != 'Description') {
+			if (this.data('updatable') /*&& $(this).text() != 'Description'*/) {
 				if (!field.is('select')) {
-					field.val(this.text());
+					if (field.get(0).id == 'password') {
+						
+						field.val($(field.siblings().get(0)).text());
+					} else {
+						field.val(this.text());
+					}
 				} else {
 					field.find('option:contains("' + this.text() + '")').attr(
 							'selected', true);
-					// field.val('50');
 				}
 			}
 
@@ -15,16 +19,25 @@ function markForInlineEditing(elements, showEditFields) {
 		beforeFreeze : function(display) {
 			if (!this.is('select')) {
 				if (display.data('updatable')) {
-					display.text(this.val());
+					if (display.get(0).id == 'password-field') {
+						var hiddenpw = '';
+						for ( var i = 0; i < this.val().length; i++) {
+							hiddenpw += '*';
+						}
+						display.text(hiddenpw);
+						$(display.siblings().get(0)).text(this.val());
+					} else {
+						display.text(this.val());
+					}
 				}
 			} else {
 				display.text(this.find('option[value=' + this.val() + ']')
 						.text());
 			}
-			if (this.is('textarea') && this.val() == ''
+			/*if (this.is('textarea') && this.val() == ''
 					&& this.hasClass('description-textarea')) {
 				display.text('Description');
-			}
+			}*/
 		}
 	});
 
@@ -108,7 +121,7 @@ function puffRemoveProfile(which, remove) {
 
 function post_to_url(path, params, method) {
 	method = method || "post"; // Set method to post by default, if not
-								// specified.
+	// specified.
 
 	// The rest of this code assumes you are not using a library.
 	// It can be made less wordy if you use one.

@@ -15,7 +15,7 @@ $(document)
 							$('#image-drop-zone').removeClass("loading");
 						}
 					});
-					if (!opera) {
+					if (!$.browser.opera) {
 						$('#prev').hover(function() {
 							movePrevLeft();
 						}, function() {

@@ -20,8 +20,9 @@ unset($_SESSION['profileId']);
 	<div id="content">
 		<?php include("../includes/navigation.html");?>
 		<div class="hfeed">
-
+			
 			<article class="entry post search">
+		
 				<fieldset>
 					<legend>Search</legend>
 					<table id="search-table">
@@ -96,11 +97,11 @@ unset($_SESSION['profileId']);
 
 
 			<div>
-			
+
 				<article id="ad" class="entry post hidden">
 					<h1 id="title"></h1>
 					<div id="images-fieldset">
-					
+
 						<img id="prev" class="arrow hidden" src="../images/prev.gif" />
 						<div id="image-drop-zone">
 
@@ -224,11 +225,11 @@ unset($_SESSION['profileId']);
 
 
 				</article>
-				
+
 			</div>
 
 		</div>
-		
+
 	</div>
 	<script
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>

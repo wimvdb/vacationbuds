@@ -66,8 +66,8 @@ $(document)
 								if ($('.images').length > 2) {
 									var current = $('.images:not(".hidden")');
 									var next = current.next().length ? current
-											.next() : $(current.siblings().get(
-											2));
+											.next() : $(current.siblings('img')
+											.get(1));
 									current.addClass('hidden');
 									next.removeClass('hidden');
 								}
@@ -78,7 +78,10 @@ $(document)
 										if ($('.images').length > 2) {
 											var current = $('.images:not(".hidden")');
 											var prev = !(current.prev().attr(
-													'id') == 'new-image') ? current
+													'id') == 'new-image')
+													&& !current
+															.prev()
+															.hasClass('ie-form') ? current
 													.prev()
 													: current.siblings().last();
 											current.addClass('hidden');
@@ -86,8 +89,144 @@ $(document)
 										}
 									});
 
-					$('#image-drop-zone').on('dragover', handleDragOver);
-					$('#image-drop-zone').on('drop', handleImageSelect);
+					// $('#image-drop-zone').on('dragover', handleDragOver);
+					// $('#image-drop-zone').on('drop', handleImageSelect);
+
+					new Dropzone(
+							'#image-drop-zone',
+							{
+								paramName : "userfile",
+								url : '../security/file-upload.php',
+								createImageThumbnails : false,
+								maxFilesize : 2, // MB
+								previewTemplate : "<div class=\"preview file-preview\">\n  <div class=\"details\">\n   <div class=\"filename\"><span></span></div>\n  </div>\n  <div class=\"progress\"><span class=\"upload\"></span></div>\n  <div class=\"success-mark\"><span></span></div>\n  <div class=\"error-mark\"><span></span></div>\n  <div class=\"error-message\"><span></span></div>\n</div>",
+								accept : function(file, done) {
+									done();
+								},
+								addedfile : function(file) {
+									file.previewTemplate = Dropzone
+											.createElement(this.options.previewTemplate);
+									this.previewsContainer
+											.appendChild(file.previewTemplate);
+								},
+								
+								success : function(file, response) {
+									var img = $('#image-drop-zone').children(
+											'#new-image').first().clone();
+									img[0].src = response;
+									$(img).removeClass('hidden');
+									$('img.images').addClass('hidden');
+									$('#image-drop-zone').append(img);
+
+									saveAdImage(response, img);
+
+									if (!$('.postit').hasClass('hidden')) {
+										$('.postit').addClass('hidden');
+										$('.arrow').removeClass('hidden');
+									}
+
+									img
+											.draggable({
+												revert : 'invalid',
+												appendTo : 'body',
+
+												scroll : false,
+												start : function() {
+													$('body').css('overflow',
+															'hidden');
+												},
+												stop : function() {
+													$('body').css('overflow',
+															'auto');
+												}
+											});
+
+								},
+								complete : function() {
+									$('.file-preview').remove();
+								},
+								fallback : function() {
+									$('.dragNdropMessage').text(
+											'Click here to upload Image!')
+									var child, messageElement, span, _i, _len, _ref;
+
+									this.element.className = ""
+											+ this.element.className
+											+ " browser-not-supported";
+									_ref = this.element
+											.getElementsByTagName("div");
+									for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+										child = _ref[_i];
+										if (/(^| )message($| )/
+												.test(child.className)) {
+											messageElement = child;
+											child.className = "message";
+											continue;
+										}
+									}
+
+									return $(this.element).append(
+											this.getFallbackForm());
+
+								}
+							});
+
+					$('.ie-form').submit(
+							function() {
+								$(this).ajaxSubmit(
+										{
+											success : function(response) {
+												var img = $('#image-drop-zone')
+														.children('#new-image')
+														.first().clone();
+												img[0].src = response;
+												$(img).removeClass('hidden');
+												$('img.images').addClass(
+														'hidden');
+												$('#image-drop-zone').append(
+														img);
+
+												saveAdImage(response, img);
+
+												if (!$('.postit').hasClass(
+														'hidden')) {
+													$('.postit').addClass(
+															'hidden');
+													$('.arrow').removeClass(
+															'hidden');
+												}
+
+												img.click(function() {
+													$(".ie-file").click();
+												});
+
+												img.draggable({
+													revert : 'invalid',
+													appendTo : 'body',
+
+													scroll : false,
+													start : function() {
+														$('body').css(
+																'overflow',
+																'hidden');
+													},
+													stop : function() {
+														$('body').css(
+																'overflow',
+																'auto');
+													}
+												});
+											}
+										});
+								return false;
+							});
+					$('.ie-file').change(function() {
+						$(this).closest("form").submit();
+					});
+
+					$(".ie-file").position({
+						of : $(".postit")
+					});
 
 					$('body').on('dragover', function handleDragOver(evt) {
 						evt.stopPropagation();
@@ -104,46 +243,26 @@ function handleDragOver(evt) {
 	evt.preventDefault();
 }
 
-function handleImageSelect(evt) {
-
-	evt.stopPropagation();
-	evt.preventDefault();
-	var files = evt.originalEvent.dataTransfer.files; // FileList object.
-	for ( var i = 0; i < files.length; i++) {
-		var img = $(this).children('#new-image').first().clone();
-		if (typeof FileReader !== "undefined" && (/image/i).test(files[i].type)) {
-			reader = new FileReader();
-			reader.onload = (function(theImg) {
-				return function(evt) {
-					theImg.src = evt.target.result;
-					saveAdImage(evt.target.result, theImg);
-				};
-			}(img.get(0)));
-			$(img).removeClass('hidden');
-			$('img.images').addClass('hidden');
-			$('#image-drop-zone').append(img);
-			reader.readAsDataURL(files[i]);
-
-			if (!$('.postit').hasClass('hidden')) {
-				$('.postit').addClass('hidden');
-				$('.arrow').removeClass('hidden');
-			}
-
-		}
-		img.draggable({
-			revert : 'invalid',
-			appendTo : 'body',
-
-			scroll : false,
-			start : function() {
-				$('body').css('overflow', 'hidden');
-			},
-			stop : function() {
-				$('body').css('overflow', 'auto');
-			}
-		});
-	}
-}
+/*
+ * function handleImageSelect(evt) {
+ * 
+ * evt.stopPropagation(); evt.preventDefault(); var files =
+ * evt.originalEvent.dataTransfer.files; // FileList object. for ( var i = 0; i <
+ * files.length; i++) { var img =
+ * $(this).children('#new-image').first().clone(); if (typeof FileReader !==
+ * "undefined" && (/image/i).test(files[i].type)) { reader = new FileReader();
+ * reader.onload = (function(theImg) { return function(evt) { theImg.src =
+ * evt.target.result; saveAdImage(evt.target.result, theImg); }; }(img.get(0)));
+ * $(img).removeClass('hidden'); $('img.images').addClass('hidden');
+ * $('#image-drop-zone').append(img); reader.readAsDataURL(files[i]);
+ * 
+ * if (!$('.postit').hasClass('hidden')) { $('.postit').addClass('hidden');
+ * $('.arrow').removeClass('hidden'); }
+ *  } img.draggable({ revert : 'invalid', appendTo : 'body',
+ * 
+ * scroll : false, start : function() { $('body').css('overflow', 'hidden'); },
+ * stop : function() { $('body').css('overflow', 'auto'); } }); } }
+ */
 
 function puffRemoveAd(which, remove) {
 	var imgId = which.attr('id').split('new-image')[1];
@@ -201,7 +320,8 @@ function puffRemoveAd(which, remove) {
 		type : 'POST',
 		data : {
 			'img' : JSON.stringify({
-				'id' : imgId
+				'id' : imgId,
+				'image' : which.attr('src')
 			})
 		}
 	});

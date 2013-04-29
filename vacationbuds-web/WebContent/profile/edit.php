@@ -4,7 +4,7 @@ session_start();
 if ( !isset( $_SESSION['userid'])){
 header("location:../index.html");
 }
-unset($_SESSION['profileId']);
+//unset($_SESSION['profileId']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,7 +24,7 @@ unset($_SESSION['profileId']);
 
 			<ul id="create-profile-nav">
 				<li><a id="profile-link" href="#profile">Profile</a></li>
-				<li><a href="#pictures-frame">Pictures</a></li>
+				<li><a id="pictures-link" href="#pictures-frame">Pictures</a></li>
 			</ul>
 
 
@@ -32,8 +32,14 @@ unset($_SESSION['profileId']);
 
 				<div id="profile" class="tab">
 					<div id="avatar-drop-zone">
-						<div id="avatar-postit" class="postit">Drag &amp; drop your
-							photo here!</div>
+						<div id="avatar-postit" class="postit">
+							<span class="dragNdropMessage">Drag &amp; drop your photo
+								here!</span>
+							<form class="fallback ie-form-avatar" encType="multipart/form-data"
+								method="POST" action="../security/file-upload.php">
+								<input class="ie-file-avatar" name="userfile" type="file">
+							</form>
+						</div>
 						<img id="avatar" src="" title="Drag your picture here!"
 							height="187" class="hidden">
 
@@ -57,8 +63,8 @@ unset($_SESSION['profileId']);
 							<div>
 								<div class="hidden" data-type="editable" data-updatable='true'
 									data-for="#dateOfBirth"></div>
-								<input id="dateOfBirth" placeholder="dd-MM-yyyy" type="text" title="dd-MM-yyyy"
-									name="dateOfBirth" />
+								<input id="dateOfBirth" placeholder="dd-MM-yyyy" type="text"
+									title="dd-MM-yyyy" name="dateOfBirth" />
 								<div class="error"></div>
 							</div>
 						</div>
@@ -100,10 +106,19 @@ unset($_SESSION['profileId']);
 						<h1>Pictures</h1>
 						<div class="image-drop-zone-left-parent">
 							<div class="image-drop-zone-left">
-								<div class="postit moveUp">Drag &amp; drop your photo
-									here!</div>
+								<div class="postit moveUp">
+									<span class="dragNdropMessage">Drag &amp; drop your
+										photo here!</span>
+									<form class="fallback ie-form"
+										encType="multipart/form-data" method="POST"
+										action="../security/file-upload.php">
+										<input class="ie-file" name="userfile" type="file">
+									</form>
+									
+								</div>
 								<img src="" title="Drag your picture here!" height="187"
 									class="hidden image moveUp">
+								
 							</div>
 
 							<div class="picture-text">
@@ -112,7 +127,8 @@ unset($_SESSION['profileId']);
 									<div>
 										<div data-type="editable" data-updatable='true'
 											data-for="#description" class="description-label"></div>
-										<textarea placeholder="Description" class="description-textarea" rows="5" cols="30"
+										<textarea placeholder="Description"
+											class="description-textarea" rows="5" cols="30"
 											name="description"></textarea>
 									</div>
 								</div>
@@ -121,10 +137,18 @@ unset($_SESSION['profileId']);
 						</div>
 						<div class="image-drop-zone-right-parent">
 							<div class="image-drop-zone-right">
-								<div class="postit moveUp">Drag &amp; drop your photo
-									here!</div>
+								<div class="postit moveUp">
+									<span class="dragNdropMessage">Drag &amp; drop your
+										photo here!</span>
+									<form class="fallback ie-form" encType="multipart/form-data"
+										method="POST" action="../security/file-upload.php">
+										<input class="ie-file" name="userfile" type="file">
+									</form>
+									
+								</div>
 								<img src="" title="Drag your picture here!" height="187"
 									class="hidden image moveUp">
+								
 							</div>
 
 							<div class="picture-text">
@@ -133,7 +157,8 @@ unset($_SESSION['profileId']);
 									<div>
 										<div data-type="editable" data-updatable='true'
 											data-for="#description" class="description-label"></div>
-										<textarea placeholder="Description" class="description-textarea" rows="5" cols="30"
+										<textarea placeholder="Description"
+											class="description-textarea" rows="5" cols="30"
 											name="description"></textarea>
 									</div>
 								</div>
@@ -160,6 +185,8 @@ unset($_SESSION['profileId']);
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
 	<script
 		src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+	<script src="../script/dropzone.js"></script>
+	<script src="../script/jquery.form.js"></script>
 	<script src="../script/general.js"></script>
 	<script src="../script/navigation.js"></script>
 	<script src="../script/profile/profile-func.js"></script>

@@ -1,13 +1,17 @@
-$(document).ready(function() {
+$(document)
+		.ready(
+				function() {
 
-	markForInlineEditing($('.editable-text'), true);
-	addPicture();
+					markForInlineEditing($('.editable-text'), true);
+					addPicture();
 
-	$('input,textarea').focus(function() {
-		$(this).css('border', 'none');
-	});
+					$('input,textarea').focus(function() {
+						$(this).css('border', 'none');
+					});
 
-});
+					
+
+				});
 
 function saveOrUpdateUser() {
 
@@ -66,6 +70,9 @@ function saveOrUpdateUser() {
 	}
 }
 
+
+
+
 function validateInput() {
 	var valid = true;
 	var username = $('div[data-for="#username"]');
@@ -76,8 +83,7 @@ function validateInput() {
 				'Username is a required field!');
 	} else if ($.trim(username.text()).length < 3) {
 		valid = false;
-		username.siblings('div.error').show().text(
-				'Minimum 3 characters!');
+		username.siblings('div.error').show().text('Minimum 3 characters!');
 	} else if (userNameTaken == "true") {
 		valid = false;
 		username.siblings('div.error').show().text('Username taken!');
@@ -91,8 +97,7 @@ function validateInput() {
 				'Password is a required field!');
 	} else if ($.trim(password.text()).length < 3) {
 		valid = false;
-		password.siblings('div.error').show().text(
-				'Minimum 3 characters!');
+		password.siblings('div.error').show().text('Minimum 3 characters!');
 	} else {
 		password.siblings('div.error').hide();
 	}
@@ -109,8 +114,7 @@ function validateInput() {
 	var dateOfBirth = $('div[data-for="#dateOfBirth"]');
 	if ($.trim(dateOfBirth.text()) == '') {
 		valid = false;
-		dateOfBirth.siblings('div.error').show().text(
-				'Required field!');
+		dateOfBirth.siblings('div.error').show().text('Required field!');
 	} else if (validateDate(dateOfBirth.text())) {
 		valid = false;
 		dateOfBirth.siblings('div.error').show().text(

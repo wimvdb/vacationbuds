@@ -14,9 +14,9 @@ unset($_SESSION['adId']);
 
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="../css/ads/ads.css">
+<link rel="stylesheet" href="../css/sda/sda.css">
 <link rel="stylesheet" href="../css/navigation.css">
-<link rel="stylesheet" href="../css/ads/new-ad.css">
+<link rel="stylesheet" href="../css/sda/new-da.css">
 <link href='http://fonts.googleapis.com/css?family=Special+Elite'
 	rel='stylesheet' type='text/css'>
 
@@ -31,7 +31,14 @@ unset($_SESSION['adId']);
 					<div id="images-fieldset">
 						<img id="prev" class="arrow hidden" src="../images/prev.gif" />
 						<div id="image-drop-zone">
-							<div class="postit">Drag &amp; drop your photos here!</div>
+							<div class="postit">
+								<span class="dragNdropMessage">Drag &amp; drop your photo
+									here!</span>
+								<form class="fallback ie-form" encType="multipart/form-data"
+									method="POST" action="../security/file-upload.php">
+									<input class="ie-file" name="userfile" type="file">
+								</form>
+							</div>
 							<img id="new-image" src="" title="Drag your photos here!"
 								class="images hidden">
 						</div>
@@ -194,7 +201,8 @@ unset($_SESSION['adId']);
 							<div class="editable-text">
 								<div>
 									<div id="description-div" data-type="editable"
-										data-updatable='true' data-for="#description">Details go here...</div>
+										data-updatable='true' data-for="#description">Details go
+										here...</div>
 								</div>
 							</div>
 						</div>
@@ -221,12 +229,13 @@ unset($_SESSION['adId']);
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
 	<script
 		src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.js"></script>
-
+		<script src="../script/jquery.form.js"></script>
+	<script src="../script/dropzone.js"></script>
 
 	<script src="../script/general.js"></script>
 	<script src="../script/navigation.js"></script>
-	<script src="../script/ads/new-ad.js"></script>
-	
+	<script src="../script/sda/new-da.js"></script>
+
 	<script src="../script/jquery.editable-1.0.1.js"></script>
 	<script src="../script/googleanalytics.js"></script>
 

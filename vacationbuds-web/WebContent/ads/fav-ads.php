@@ -6,7 +6,7 @@
 <meta charset="ISO-8859-1">
 <title>Favorites</title>
 
-<link rel="stylesheet" href="../css/ads/ads.css">
+<link rel="stylesheet" href="../css/sda/sda.css">
 <link rel="stylesheet" href="../css/navigation.css">
 <link href='http://fonts.googleapis.com/css?family=Special+Elite'
 	rel='stylesheet' type='text/css'>
@@ -169,7 +169,7 @@
 <script src="../script/general.js"></script>
 
 <script src="../script/navigation.js"></script>
-<script src="../script/ads/fav-ads.js"></script>
+<script src="../script/sda/fav-sda.js"></script>
 <script src="../script/googleanalytics.js"></script>
 
 

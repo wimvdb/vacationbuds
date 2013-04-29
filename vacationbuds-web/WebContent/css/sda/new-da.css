@@ -173,3 +173,15 @@ border: 1px solid white;
 	background: white;
 	color: black;
 }
+
+
+.fallback input {
+	filter: alpha(opacity =0);
+	opacity: 0;
+}
+
+.ie-file, .ie-file-avatar{
+	height : 267px;
+	width : 251px;
+	position : absolute;
+}

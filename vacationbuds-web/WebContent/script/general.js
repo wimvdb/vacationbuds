@@ -111,10 +111,13 @@ function puffRemoveProfile(which, remove) {
 			type : 'POST',
 			data : {
 				'img' : JSON.stringify({
-					'id' : imgId
+					'id' : imgId,
+					'image' : which.attr('src')
 				})
 			}
 		});
+	}else{
+		which.attr('src',null);
 	}
 
 }

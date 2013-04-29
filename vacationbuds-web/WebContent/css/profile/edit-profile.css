@@ -33,6 +33,18 @@ pre {
 	
 }
 
+.fallback input {
+	
+	opacity: 0;
+	font-size: 50px;
+}
+
+.ie-file, .ie-file-avatar{
+	height : 267px;
+	width : 251px;
+	position : absolute;
+}
+
 
 #create-profile-nav li {
 	display: inline;
@@ -207,6 +219,7 @@ body {
 }
 
 .tab {
+	
 	min-height: 700px;
 	font-family: 'Crafty Girls', cursive;
 	float: left; /* float containment */
@@ -220,7 +233,7 @@ body {
 	-webkit-border-image: url(../images/edge.png) 0 0 0 50 round;
 	
 	border-image: url(../images/edge.png) 0 0 0 50 round;
-	border-style:solid;
+	
 	border-width: 0 0 0 50px;
 	background: url(../images/paperlines.gif) #FBFBF9; /* IE, old FF */
 	background:
@@ -235,6 +248,9 @@ body {
 	-moz-box-shadow: 6px 5px 3px hsla(0, 0%, 0%, .2);
 	-webkit-box-shadow: 6px 5px 3px hsla(0, 0%, 0%, .2);
 	box-shadow: 6px 5px 3px hsla(0, 0%, 0%, .2);
+	
+	
+	
 	
 }
 

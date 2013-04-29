@@ -1,3 +1,5 @@
+var lastImg;
+
 function showAvatar() {
 	$('#avatar').removeClass('hidden');
 	$('#avatar-postit').addClass('hidden');
@@ -23,54 +25,53 @@ function getURLParameter(name) {
 
 function initProfileById(id) {
 	var user;
-	$
-			.ajax({
-				url: "../security/getUserById.php",
-				type : "POST",
-				data : {
-					'user' : JSON.stringify({
-						'id' : id
-					})
-				},
-				success : function(user) {
-					if (!user.id) {
-						user = JSON.parse(user);
-					}
-					initProfilePage(user);
-				},
-				error : function(data) {
-					alert(data);
-				}
-			});
+	$.ajax({
+		url : "../security/getUserById.php",
+		type : "POST",
+		data : {
+			'user' : JSON.stringify({
+				'id' : id
+			})
+		},
+		success : function(user) {
+			if (!user.id) {
+				user = JSON.parse(user);
+			}
+			initProfilePage(user);
+		},
+		error : function(data) {
+			alert(data);
+		}
+	});
 }
 
 function initProfile() {
 	var user;
-	$
-			.ajax({
-				url: "../security/getUserById.php",
-				type : "POST",
-				success : function(user) {
-					if (!user.id) {
-						user = JSON.parse(user);
-					}
-					initProfilePage(user);
-				},
-				error : function(data) {
-					alert(data);
-				}
-			});
+	$.ajax({
+		url : "../security/getUserById.php",
+		type : "POST",
+		success : function(user) {
+			if (!user.id) {
+				user = JSON.parse(user);
+			}
+			initProfilePage(user);
+		},
+		error : function(data) {
+			alert(data);
+		}
+	});
 }
 
 function addPicture() {
 	var dropzone;
-	if ($('.image-drop-zone-right-parent').size() > $('.image-drop-zone-left-parent').size()) {
+	if ($('.image-drop-zone-right-parent').size() > $(
+			'.image-drop-zone-left-parent').size()) {
 		dropzone = $($('.image-drop-zone-left-parent').get(0)).clone();
 	} else {
 		dropzone = $($('.image-drop-zone-right-parent').get(0)).clone();
 	}
-	dropzone.children(0).on('dragover', handleDragOver);
-	dropzone.children(0).on('drop', handleImageSelect);
+	// dropzone.children(0).on('dragover', handleDragOver);
+	// dropzone.children(0).on('drop', handleImageSelect);
 	var count = $('#pictures > div').size() - 1;
 
 	var title_label = dropzone.children(1).find('div[data-for=#title]');
@@ -83,6 +84,110 @@ function addPicture() {
 	dropzone.children(1).find('textarea').attr('id', 'description' + count);
 
 	$('#pictures').append(dropzone.show());
+
+	dropzone.children(0).attr('id', 'images_dropzone_' + count);
+	new Dropzone(
+			'#images_dropzone_' + count,
+			{
+				paramName : "userfile",
+				url : '../security/file-upload.php',
+				createImageThumbnails : false,
+				maxFilesize : 2, // MB
+				previewTemplate : "<div class=\"preview file-preview\">\n  <div class=\"details\">\n   <div class=\"filename\"><span></span></div>\n  </div>\n  <div class=\"progress\"><span class=\"upload\"></span></div>\n  <div class=\"success-mark\"><span></span></div>\n  <div class=\"error-mark\"><span></span></div>\n  <div class=\"error-message\"><span></span></div>\n</div>",
+				accept : function(file, done) {
+					done();
+				},
+				
+				addedfile : function(file) {
+					file.previewTemplate = Dropzone
+							.createElement(this.options.previewTemplate);
+					this.previewsContainer.appendChild(file.previewTemplate);
+				},
+				success : function(file, response) {
+					var img = $($(this)[0].previewsContainer).find('img');
+
+					saveProfileImage(response, img);
+
+					img[0].src = response;
+					if ($(img).hasClass('hidden')) {
+						if ($('#pictures .postit:visible').size() == 1) {
+							addPicture($(this));
+						}
+						$(img).removeClass('hidden');
+						$(img).siblings(0).addClass('hidden');
+					}
+					img.draggable({
+						revert : 'invalid',
+						sroll : false
+					});
+
+				},
+				complete : function() {
+					$('.file-preview').remove();
+				},
+				fallback : function() {
+					$('.dragNdropMessage').text('Click here to upload Image!');
+					var child, messageElement, span, _i, _len, _ref;
+
+					this.element.className = "" + this.element.className
+							+ " browser-not-supported";
+					_ref = this.element.getElementsByTagName("div");
+					for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+						child = _ref[_i];
+						if (/(^| )message($| )/.test(child.className)) {
+							messageElement = child;
+							child.className = "message";
+							continue;
+						}
+					}
+
+					return $(this.element).after(this.getFallbackForm());
+
+				}
+			});
+
+	$(dropzone).find('form').submit(function() {
+		$(this).ajaxSubmit({
+			success : function(response) {
+				var img = lastImg;
+
+				saveProfileImage(response, img);
+
+				img[0].src = response;
+				if ($(img).hasClass('hidden')) {
+					if ($('#pictures .postit:visible').size() == 1) {
+						addPicture($(this));
+					}
+					$(img).removeClass('hidden');
+					$(img).siblings(0).addClass('hidden');
+				}
+				img.draggable({
+					revert : 'invalid',
+					sroll : false
+				});
+			}
+		});
+		return false;
+	});
+
+	$(dropzone).find('.ie-file').change(function() {
+		$(this).closest("form").submit();
+
+	});
+
+	$(dropzone).hover(function(e) {
+
+		$(dropzone).find('.ie-file').position({
+			of : $(dropzone).find('.postit')
+		});
+	});
+
+	
+
+	$(dropzone).find('.ie-file').click(function() {
+		lastImg = $(this).parent().parent().find('img');
+		
+	});
 
 	markForInlineEditing(dropzone.children(1).find('.editable-text'), false);
 	return dropzone;

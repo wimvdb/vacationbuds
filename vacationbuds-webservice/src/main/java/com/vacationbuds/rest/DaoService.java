@@ -1,5 +1,6 @@
 package com.vacationbuds.rest;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +35,8 @@ public class DaoService {
 
 	private static final Pattern rfc2822 = Pattern
 			.compile("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
+
+	private static String OS = System.getProperty("os.name").toLowerCase();
 
 	@Autowired
 	private AdDao adDao;
@@ -120,11 +123,13 @@ public class DaoService {
 	@Path("saveOrUpdateUser")
 	@Consumes("application/json")
 	public void saveOrUpdateUser(User user) throws Exception {
-		if (user.getUsername() == null || user.getUsername().length() < 2) {
+		if (user.getId() == null
+				&& (user.getUsername() == null || user.getUsername().length() < 2)) {
 			throw new Exception(
 					"Invalid username. minimun 3 characters required.");
 		}
-		if (user.getPassword() == null || user.getPassword().length() < 2) {
+		if (user.getId() == null
+				&& (user.getPassword() == null || user.getPassword().length() < 2)) {
 			throw new Exception(
 					"Invalid password. minimun 3 characters required.");
 		}
@@ -148,12 +153,12 @@ public class DaoService {
 	@Consumes("application/json")
 	public void saveOrUpdateAd(Ad ad) throws Exception {
 		ad.setActive(true);
-		if(ad.getPlaceOn() == null){
+		if (ad.getPlaceOn() == null) {
 			ad.setPlaceOn(new Date());
 		}
-		if(ad.getExpireOn() == null){
-			Calendar today_plus_year = Calendar.getInstance();  
-			today_plus_year.add( Calendar.YEAR, 1 );
+		if (ad.getExpireOn() == null) {
+			Calendar today_plus_year = Calendar.getInstance();
+			today_plus_year.add(Calendar.YEAR, 1);
 			ad.setExpireOn(today_plus_year.getTime());
 		}
 		adDao.saveOrUpdate(ad);
@@ -172,7 +177,10 @@ public class DaoService {
 		// image.setAd(ad);
 		adId = adDao.saveOrUpdate(ad);
 		long imgId = imageDao.saveOrUpdate(image);
-		return "{ \"adId\" : " + adId + " , \"imgId\" : " + imgId + " }";
+		String result = "{ \"adId\" : " + adId + " , \"imgId\" : " + imgId
+				+ " }";
+		// System.out.println(" saveAdImage result : " + result);
+		return result;
 	}
 
 	@POST
@@ -207,6 +215,7 @@ public class DaoService {
 	@Consumes("application/json")
 	public void deleteAdImage(Image image) {
 		imageDao.deleteAdImage(image.getId(), image.getAd().getUser().getId());
+		deleteAdImageFile(image);
 	}
 
 	@POST
@@ -214,6 +223,55 @@ public class DaoService {
 	@Consumes("application/json")
 	public void deleteProfileImage(Image image) {
 		imageDao.deleteProfileImage(image.getId(), image.getUser().getId());
+		deleteProfileImageFile(image);
+
+	}
+
+	private void deleteProfileImageFile(Image image) {
+		try {
+			String[] dirPieces = image.getImage().split("/");
+			String imageFileLoc = "";
+			if (isWindows()) {
+				imageFileLoc = "C:\\Users\\Wim\\git\\vacationbuds\\vacationbuds-web\\WebContent\\images\\user-pics\\"
+						+ dirPieces[3] + "\\" + dirPieces[4];
+			} else {
+				imageFileLoc = "/home/vacation/public_html/main/images/user-pics/" + dirPieces[3] + "/" + dirPieces[4];
+			}
+			if (dirPieces[3].equals("default")
+					|| dirPieces[3].equals(image.getUser().getId().toString())) {
+				File imageFile = new File(imageFileLoc);
+				imageFile.delete();
+			} else {
+				System.out.println("User " + image.getUser().getId()
+						+ " is trying to delete  " + imageFileLoc);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void deleteAdImageFile(Image image) {
+		try {
+			String[] dirPieces = image.getImage().split("/");
+			String imageFileLoc = "";
+			if (isWindows()) {
+				imageFileLoc = "C:\\Users\\Wim\\git\\vacationbuds\\vacationbuds-web\\WebContent\\images\\user-pics\\"
+						+ dirPieces[3] + "\\" + dirPieces[4];
+			} else {
+				imageFileLoc = "/home/vacation/public_html/main/images/user-pics/" + dirPieces[3] + "/" + dirPieces[4];
+			}
+			if (dirPieces[3].equals("default")
+					|| dirPieces[3].equals(image.getAd().getUser().getId().toString())) {
+				File imageFile = new File(imageFileLoc);
+				imageFile.delete();
+			} else {
+				System.out.println("User " + image.getUser().getId()
+						+ " is trying to delete  " + imageFileLoc);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@POST
@@ -450,6 +508,12 @@ public class DaoService {
 
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
+	}
+
+	private boolean isWindows() {
+
+		return (OS.indexOf("win") >= 0);
+
 	}
 
 }

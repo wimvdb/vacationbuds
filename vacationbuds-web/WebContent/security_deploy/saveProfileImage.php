@@ -14,7 +14,7 @@ session_start();
 
 	}
 	$content = json_encode($profileImg);
-	$url = 'http://' . $_SERVER['SERVER_NAME'] . '/vacationbuds-webservice/rest/dao/saveProfileImage';
+	$url = 'http://' . $_SERVER['SERVER_NAME'] . ':10385/vacationbuds-webservice/rest/dao/saveProfileImage';
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_HEADER, false);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);

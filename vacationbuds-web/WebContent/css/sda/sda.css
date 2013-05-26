@@ -220,11 +220,7 @@ th {
 	width: 77%;
 }
 
-div.hfeed {
-	font-family: 'Special Elite', cursive;
-	position: relative;
-	margin-left: 240px;
-}
+
 
 .entry-content {
 	-moz-column-count: 2;
@@ -342,12 +338,7 @@ article.post:after {
 	margin-right: 15px;
 }
 
-#save {
-	float: none;
-	padding: 10px;
-	font-size: 1em;
-	width: auto;
-}
+
 
 .trash-highlight {
 	border: 1px solid white;

@@ -3,14 +3,14 @@
 ob_start();
 session_start();
 if ( !isset( $_SESSION['userid'])){
-	header("location:../index.html");
+	header("location:../index.php");
 }
 try {
 	$data=$_POST['ad']; 
 	$ad= json_decode(utf8_encode($data),true);
 		$ad['user'] = array('id' => $_SESSION['userid']);
 		$content = json_encode($ad);
-		$url = 'http://' . $_SERVER['SERVER_NAME'] . '/vacationbuds-webservice/rest/dao/removeAdFromFavorites';
+		$url = 'http://' . $_SERVER['SERVER_NAME'] . ':10385/vacationbuds-webservice/rest/dao/removeAdFromFavorites';
     	$curl = curl_init($url);
     	curl_setopt($curl, CURLOPT_HEADER, false);
     	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);

@@ -155,11 +155,13 @@ function initProfilePage(user) {
 
 }
 
+
 function calcAge(dateString) {
 	var today = new Date();
 	var dateArray = dateString.split('-');
-	var birthDate = new Date(Date.parse(dateArray[1] + '-' + dateArray[0] + '-'
-			+ dateArray[2]));
+	var birthDate = new Date(Date.fromISO(dateArray[2] + '-' + dateArray[1] + '-' + dateArray[0]));
+	//var birthDate = new Date(Date.parse(dateArray[1] + '-' + dateArray[0] + '-'
+	//		+ dateArray[2]));
 	var age = today.getFullYear() - birthDate.getFullYear();
 	var m = today.getMonth() - birthDate.getMonth();
 	if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {

@@ -12,7 +12,7 @@ $user['id'] = $_SESSION['profileId'];
 }
 
 
-$url = 'http://localhost:8080/vacationbuds-webservice/rest/dao/saveOrUpdateUser';
+$url = 'http://localhost:8080/vacationbuds-webservice/rest/dao/createUser';
 
 
        $content = json_encode($user);

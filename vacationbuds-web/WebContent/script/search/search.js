@@ -6,7 +6,7 @@ var TABLE = {};
 var currentId = 0;
 $(document)
 		.ready(
-				function() {
+				function() {			
 					$("body").on({
 						ajaxStart : function() {
 							$('#image-drop-zone').addClass("loading");
@@ -57,9 +57,26 @@ $(document)
 				});
 // userid = getURLParam('userid');
 
+function positionLightboxImage() {
+	var top = ($(window).height() - $('#lightbox').height()) / 2;
+	var left = ($(window).width() - $('#lightbox').width()) / 2;
+	$('#lightbox').css({
+		'top' : top ,
+		'left' : left
+	}).fadeIn();
+}
+
+function removeLightbox() {
+	$('#overlay, #lightbox').fadeOut('slow', function() {
+		//$('body').css('overflow-y', 'auto'); // show scrollbars!
+	});
+}
+
 function search() {
 
-	$('#results tbody tr').remove();
+	$('#found-ads').children().remove();
+
+	// $('#results tbody tr').remove();
 	var searchCriteria = {
 		'type' : $('#search-type').val(),
 		'destination' : $('#search-destination').val(),
@@ -80,57 +97,85 @@ function search() {
 						ads = JSON.parse(data);
 						if (ads.length > 0) {
 							for ( var i = 0; i < ads.length; i++) {
-								var tr = $('<tr></tr>')
-										.append(
-												'<td>'
-														+ ((ads[i].adtype == 'V') ? 'Vacation ad'
-																: 'Hosting ad')
-														+ '</td>')
-										.append(
-												'<td title="'
-														+ ads[i].user.description
-														+ '">'
-														+ ads[i].user.username
-														+ '</td>')
-										.append(
-												'<td title="' + ads[i].text
-														+ '">' + ads[i].title
-														+ '</td>')
-										.append(
-												'<td>' + ads[i].country + ', '
-														+ ads[i].city + '</td>');
-
-								$('#results tbody').append(tr);
-							}
-							currentId = ads[0].id;
-							initViewAdPage(ads[row]);
-							$('#results tbody tr').on('click', function() {
-								if (row != $(this).index()) {
-									resetAd();
-									currentId = ads[row].id;
-									row = $(this).index();
-									initViewAdPage(ads[row]);
+								var adTemplate = $('#found-ad-template')
+										.clone();
+								adTemplate.attr('id', null).removeClass(
+										'hidden');
+								var username = $('<a href="../profile/profile.php?profileid='
+										+ ads[i].user.id
+										+ '">'
+										+ ads[i].user.username + '</a>');
+								adTemplate.find('.name').append(username);
+								adTemplate.find('.title').text(ads[i].title);
+								adTemplate.find('.from').text(
+										ads[i].user.country);
+								if (ads[i].adtype == 'V') {
+									adTemplate.find('.vacation').fadeIn(500);
+									adTemplate.find('.hosting').hide();
+									adTemplate.find('.destination')
+											.text(
+													ads[i].country + ', '
+															+ ads[i].city);
+									adTemplate.find('.dateOfDeparture').text(
+											ads[i].departure);
+									adTemplate.find('.duration').text(
+											ads[i].duration);
+								} else {
+									adTemplate.find('.hosting').fadeIn(500);
+									adTemplate.find('.vacation').hide();
+									adTemplate.find('.location')
+											.text(
+													ads[i].country + ', '
+															+ ads[i].city);
 								}
-							});
+								adTemplate.find('.content-div').text(
+										ads[i].text);
+								var img = adTemplate.find('.user-image');
+								$(img).attr('title', ads[i].user.description);
+								if (ads[i].user.avatar == '') {
+									if (ads[i].user.gender == 'M') {
+										$(img)
+												.attr('src',
+														"../images/derp.jpg");
+									} else {
+										$(img).attr('src',
+												"../images/derpina.jpg");
+									}
+								} else {
+									$(img).attr('src', ads[i].user.avatar);
+								}
+								$('#found-ads').append(adTemplate);
+								adTemplate.find('a.lightbox').attr('id',
+										'adlink' + i);
+							}
 
-							// $('#ad-list tbody tr:even').addClass('zebra');
-							$('#results tbody tr').mouseover(function() {
-								$(this).addClass('zebraHover');
-							});
-							$('#results tbody tr').mouseout(function() {
-								$(this).removeClass('zebraHover');
-							});
-							$('#ad').removeClass('hidden');
+							paginate('#found-ads', 4);
 
-							$(".wrapper-paging").show();
-							TABLE.paginate('#results', 5);
+							$('a.lightbox').click(
+									function(e) {
+										resetAd();
+										row = $(this)[0].id.substring(6);
+										initViewAdPage(ads[row]);
+										//$('body').css('overflow-y', 'hidden'); // hide
+										// scrollbars!
+										$('<div id="overlay"></div>')
+												.css('opacity', '0').animate({
+													'opacity' : '0.5'
+												}, 'slow').appendTo('body');
+										$('#ad').removeClass('hidden')
+												.appendTo('#lightbox');
 
+										$('.close').click(function() {
+											removeLightbox();
+										});
+
+										positionLightboxImage();
+										return false;
+									});
 						} else {
-							var tr = $('<tr></tr>').append(
-									'<td colspan="4"> No results found!</td>');
-
-							$('#results tbody').append(tr);
-							$('#ad').addClass('hidden');
+							$('#results').removeClass('hidden');
+							$('#noResults').removeClass('hidden');
+							$('.table-wrapper').addClass('hidden');
 						}
 					});
 
@@ -145,14 +190,11 @@ function resetAd() {
 function initViewAdPage(ad) {
 
 	var username = $('<a id="profile-link" href="../profile/profile.php?profileid='
-			+ ad.user.id
-			// + '&userid='
-			// + userid
-			+ '">' + ad.user.username + '</a>');
+			+ ad.user.id + '">' + ad.user.username + '</a>');
 	$('#profile-link').remove();
 	$('#title').text(ad.title);
 	$('#name').append(username);
-	$('#age').text(ad.user.age);
+	$('#age').text(calcAge(ad.user.birthday));
 	$('#from').text(ad.user.country);
 	if (ad.adtype == 'V') {
 		$('#vacation').fadeIn(500);
@@ -161,11 +203,11 @@ function initViewAdPage(ad) {
 		$('#dateOfDeparture').text(ad.departure);
 		$('#duration').text(ad.duration);
 		if (ad.expenses == 50) {
-			$('#vacation-expenses').text('I will pay my fair share!');
+			$('#vacation-expenses').text('I will pay my fair share');
 		} else if (ad.expenses == 100) {
-			$('#vacation-expenses').text('I will pay for everything!');
+			$('#vacation-expenses').text('I will pay for everything');
 		} else {
-			$('#vacation-expenses').text('My company is payment enough! :-)');
+			$('#vacation-expenses').text('My company is payment enough :-)');
 		}
 
 	} else {
@@ -218,9 +260,7 @@ function initAdImages2(adImages) {
 		$(img).attr('id', adImages[i].id);
 		$(img).attr('src', adImages[i].image);
 		$('img.images').addClass('hidden');
-		// $('img.images').hide();
 		$('#image-drop-zone').append(img);
-		// $(img).fadeIn(500);
 		if ($('.arrow').hasClass('hidden')) {
 			$('.arrow').removeClass('hidden');
 		}
@@ -233,7 +273,15 @@ function initProfileImage(ad) {
 	$(img).removeClass('hidden');
 	$(img).attr('id', 'avatar');
 	$(img).attr('title', ad.user.description);
-	$(img).attr('src', ad.user.avatar);
+	if (ad.user.avatar == '') {
+		if (ad.user.gender == 'M') {
+			$(img).attr('src', "../images/derp.jpg");
+		} else {
+			$(img).attr('src', "../images/derpina.jpg");
+		}
+	} else {
+		$(img).attr('src', ad.user.avatar);
+	}
 	$('img.images').addClass('hidden');
 	$('#image-drop-zone').append(img);
 	if ($('.arrow').hasClass('hidden')) {
@@ -300,15 +348,16 @@ function moveNextRight() {
 
 }
 
-TABLE.paginate = function(table, pageLength) {
-	// 1. Set up paging information
-	var $table = $(table);
-	var $rows = $table.find('tbody > tr');
-	var numPages = Math.ceil($rows.length / pageLength) - 1;
+function paginate(divs, pageLength) {
+
+	var numPages = Math.ceil($(divs).children().length / pageLength) - 1;
+
+	$('#results').removeClass('hidden');
+	$('.table-wrapper').removeClass('hidden');
+	$('#noResults').addClass('hidden');
 	var current = 0;
 
-	// 2. Set up the navigation controls
-	var $nav = $table.parents('.table-wrapper').find('.wrapper-paging ul');
+	var $nav = $('.table-wrapper').find('.wrapper-paging ul');
 	var $back = $nav.find('li:first-child a');
 	var $next = $nav.find('li:last-child a');
 
@@ -321,20 +370,7 @@ TABLE.paginate = function(table, pageLength) {
 		pagination('>');
 	});
 
-	// 3. Show initial rows
-	$rows.hide().slice(0, pageLength).show();
-
 	pagination = function(direction) { // 4. Move previous and next
-
-		var reveal = function(current) { // 5. Reveal the correct rows
-			$back.removeClass('paging-disabled');
-			$next.removeClass('paging-disabled');
-
-			$rows.hide().slice(current * pageLength,
-					current * pageLength + pageLength).show();
-
-			$nav.find('a.paging-this strong').text(current + 1);
-		};
 
 		if (direction == "<") { // previous
 			if (current > 1) {
@@ -351,9 +387,26 @@ TABLE.paginate = function(table, pageLength) {
 				$next.addClass("paging-disabled");
 			}
 		}
-		reveal(current);
+		reveal(current + 1);
 	};
-};
+
+	var reveal = function(current) { // 5. Reveal the correct rows
+		$back.removeClass('paging-disabled');
+		$next.removeClass('paging-disabled');
+
+		$(".found-ad").hide();
+		$(".found-ad").filter(":not('#found-ad-template')").each(function(n) {
+			if (n >= pageLength * (current - 1) && n < pageLength * current)
+				$(this).show();
+		});
+
+		$nav.find('a.paging-this strong').text(current);
+	};
+	reveal(1);
+
+}
+
+
 
 function sendMessage() {
 	window.location = "../messages/new-message.php?" + '&recipient='
@@ -370,4 +423,20 @@ function addToFavorites() {
 			})
 		}
 	});
+}
+
+function calcAge(dateString) {
+	var today = new Date();
+	var dateArray = dateString.split('-');
+	var birthDate = new Date(Date.fromISO(dateArray[2] + '-' + dateArray[1]
+			+ '-' + dateArray[0]));
+	// var birthDate = new Date(Date.parse(dateArray[1] + '-' + dateArray[0] +
+	// '-'
+	// + dateArray[2]));
+	var age = today.getFullYear() - birthDate.getFullYear();
+	var m = today.getMonth() - birthDate.getMonth();
+	if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+		age--;
+	}
+	return age;
 }

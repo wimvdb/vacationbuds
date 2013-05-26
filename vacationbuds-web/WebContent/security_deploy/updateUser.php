@@ -14,7 +14,7 @@ $user['password'] = $_SESSION['password'];
 }
 
 
-$url = 'http://' . $_SERVER['SERVER_NAME'] . '/vacationbuds-webservice/rest/dao/saveOrUpdateUser';
+$url = 'http://' . $_SERVER['SERVER_NAME'] . ':10385/vacationbuds-webservice/rest/dao/saveOrUpdateUser';
 
 
 
@@ -36,7 +36,7 @@ curl_exec($curl);
 //$password=$user['password']; 
 
 
-//$url = 'http://' . $_SERVER['SERVER_NAME'] . '/vacationbuds-webservice/rest/dao/login';
+//$url = 'http://' . $_SERVER['SERVER_NAME'] . ':10385/vacationbuds-webservice/rest/dao/login';
 $data = array('username' => $username, 'password' => $password);
 
 //$options = array('http' => array('header'  => "Content-Type: application/json", 'method'  => 'POST','content' => http_build_query($data)));

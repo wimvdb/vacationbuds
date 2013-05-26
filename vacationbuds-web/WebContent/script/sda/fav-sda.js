@@ -170,11 +170,11 @@ function initViewAdPage(ad) {
 		$('#dateOfDeparture').text(ad.departure);
 		$('#duration').text(ad.duration);
 		if (ad.expenses == 50) {
-			$('#vacation-expenses').text('I will pay my fair share!');
+			$('#vacation-expenses').text('I will pay my fair share');
 		} else if (ad.expenses == 100) {
-			$('#vacation-expenses').text('I will pay for everything!');
+			$('#vacation-expenses').text('I will pay for everything');
 		} else {
-			$('#vacation-expenses').text('My company is payment enough! :-)');
+			$('#vacation-expenses').text('My company is payment enough :-)');
 		}
 
 	} else {
@@ -253,7 +253,15 @@ function initProfileImage(ad) {
 	$(img).removeClass('hidden');
 	$(img).attr('id', 'avatar');
 	$(img).attr('title', ad.user.description);
-	$(img).attr('src', ad.user.avatar);
+	if (ad.user.avatar == '') {
+		if (ad.user.gender == 'M') {
+			$(img).attr('src', "../images/derp.jpg");
+		} else {
+			$(img).attr('src', "../images/derpina.jpg");
+		}
+	} else {
+		$(img).attr('src', ad.user.avatar);
+	}
 	$('img.images').addClass('hidden');
 	$('#image-drop-zone').append(img);
 	if ($('.arrow').hasClass('hidden')) {

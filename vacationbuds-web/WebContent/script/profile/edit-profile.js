@@ -115,6 +115,10 @@ $(document)
 					$('.ie-file-avatar').position({
 						of : $('#avatar-postit')
 					});
+					
+					$('#avatar-postit').click(function(){
+						$('#ie-file-avatar').click();
+					});
 
 				});
 

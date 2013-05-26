@@ -2,7 +2,7 @@
 
 session_start();
 if ( !isset( $_SESSION['userid'])){
-header("location:../index.html");
+header("location:../index.php");
 }
 ?>
 <!DOCTYPE html>
@@ -13,6 +13,7 @@ header("location:../index.html");
 
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="../css/logo.css">
 <link rel="stylesheet" href="../css/messages/messages.css">
 <link rel="stylesheet" href="../css/navigation.css">
 <link rel="stylesheet" href="../css/messages/new-message.css">
@@ -21,6 +22,7 @@ header("location:../index.html");
 </head>
 <body>
 	<div id="content">
+		<?php include("../includes/logo.html");?>
 		<?php include("../includes/navigation.html");?>
 		<div class="hfeed">
 			<article id="ad" class="entry post">
@@ -33,7 +35,8 @@ header("location:../index.html");
 							<div>
 								<div data-type="editable" data-updatable='true'
 									data-for="#recipient"></div>
-								<input id="recipient" type="text" title="Recipient name" name="recipient" />
+								<input id="recipient" type="text" title="Recipient name"
+									name="recipient" />
 								<div class="error"></div>
 							</div>
 						</div>
@@ -49,20 +52,21 @@ header("location:../index.html");
 						</div>
 					</div>
 				</fieldset>
-				<fieldset >
+				<fieldset>
 					<legend>Content</legend>
 					<div class="body-content">
 						<div class="editable-text">
 							<div>
-								<pre id="body-div" data-type="editable"
-									data-updatable='true' data-for="#message-body"></pre>
+								<pre id="body-div" data-type="editable" data-updatable='true'
+									data-for="#message-body"></pre>
 							</div>
 						</div>
 					</div>
 					<textarea id="message-body" rows="25" name="description"></textarea>
 				</fieldset>
 				<div id="send-div">
-					<input id="send" type="submit" onclick="sendMessage();" value="Send">
+					<input class="button" id="send" type="submit" onclick="sendMessage();"
+						value="Send">
 				</div>
 			</article>
 		</div>
@@ -77,7 +81,7 @@ header("location:../index.html");
 	<script src="../script/general.js"></script>
 	<script src="../script/navigation.js"></script>
 	<script src="../script/messages/new-message.js"></script>
-	
+
 	<script src="../script/jquery.editable-1.0.1.js"></script>
 
 </body>

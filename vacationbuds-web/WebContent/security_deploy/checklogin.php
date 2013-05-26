@@ -7,7 +7,7 @@ $username=$_POST['username'];
 $password=$_POST['password']; 
 
 
-$url = 'http://' . $_SERVER['SERVER_NAME'] . '/vacationbuds-webservice/rest/dao/login';
+$url = 'http://' . $_SERVER['SERVER_NAME'] . ':10385/vacationbuds-webservice/rest/dao/login';
 $data = array('username' => $username, 'password' => $password);
 
 $options = array('http' => array('header'  => "Content-Type: application/json", 'method'  => 'POST','content' => http_build_query($data)));
@@ -33,7 +33,7 @@ header("location:../profile/profile.php");
 }
 else {
 echo "Wrong Username or Password";
-header("location:../index.html");
+header("location:../index.php");
 }
 
 ob_end_flush();

@@ -3,7 +3,7 @@
 ob_start();
 session_start();
 if ( !isset( $_SESSION['userid']) && !isset( $_SESSION['profileId'])){
-	header("location:../index.html");
+	header("location:../index.php");
 }
 try {
 	$data=$_POST['img']; 
@@ -15,7 +15,7 @@ try {
 			$img['user'] = array('id' => $_SESSION['userid']);
 		}
 		$content = json_encode($img);
-		$url = 'http://' . $_SERVER['SERVER_NAME'] . '/vacationbuds-webservice/rest/dao/deleteProfileImage';
+		$url = 'http://' . $_SERVER['SERVER_NAME'] . ':10385/vacationbuds-webservice/rest/dao/deleteProfileImage';
     	$curl = curl_init($url);
     	curl_setopt($curl, CURLOPT_HEADER, false);
     	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);

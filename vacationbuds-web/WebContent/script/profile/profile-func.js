@@ -1,5 +1,13 @@
 var lastImg;
 
+$(document).ready(function() {
+	
+	if ($.browser.msie) {
+	$('#profile').css('border-style','none');
+	}
+});
+
+
 function showAvatar() {
 	$('#avatar').removeClass('hidden');
 	$('#avatar-postit').addClass('hidden');
@@ -104,10 +112,8 @@ function addPicture() {
 					this.previewsContainer.appendChild(file.previewTemplate);
 				},
 				success : function(file, response) {
-					var img = $($(this)[0].previewsContainer).find('img');
-
+					var img = $('.image[src=""]').last();
 					saveProfileImage(response, img);
-
 					img[0].src = response;
 					if ($(img).hasClass('hidden')) {
 						if ($('#pictures .postit:visible').size() == 1) {
@@ -116,11 +122,10 @@ function addPicture() {
 						$(img).removeClass('hidden');
 						$(img).siblings(0).addClass('hidden');
 					}
-					img.draggable({
+					$(img).draggable({
 						revert : 'invalid',
 						sroll : false
 					});
-
 				},
 				complete : function() {
 					$('.file-preview').remove();
@@ -146,6 +151,7 @@ function addPicture() {
 				}
 			});
 
+	//workaround for ie
 	$(dropzone).find('form').submit(function() {
 		$(this).ajaxSubmit({
 			success : function(response) {

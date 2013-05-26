@@ -34,12 +34,11 @@ public class User {
 		this.id = id;
 	}
 
-	public User(Long id, String username, /*String password,*/ boolean active,
+	public User(Long id, String username, boolean active,
 			Date birthday, String avatar, String country, String description,
 			String email, String gender) {
 		this.id = id;
 		this.username = username;
-		//this.password = password;
 		this.active = active;
 		this.birthday=birthday;
 		this.avatar = avatar;
@@ -78,10 +77,6 @@ public class User {
 	private String gender;
 
 	private boolean active;
-
-	/*@OneToMany
-	@JsonIgnore
-	private List<Favorite> favorites = new ArrayList<Favorite>();*/
 
 	public boolean isActive() {
 		return active;
@@ -165,14 +160,5 @@ public class User {
 		this.gender = gender;
 	}
 
-	/*public List<Favorite> getFavorites() {
-		return favorites;
-	}
-
-	public void setFavorites(List<Favorite> favorites) {
-		this.favorites = favorites;
-	}*/
-
-	
 
 }

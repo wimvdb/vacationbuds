@@ -3,14 +3,14 @@
 ob_start();
 session_start();
 if ( !isset( $_SESSION['userid'])){
-	header("location:../index.html");
+	header("location:../index.php");
 }
 try {
 	$data=$_POST['message']; 
 	$message= json_decode(utf8_encode($data),true);
 	$message['sender'] = array('id' => $_SESSION['userid']);
 	$content = json_encode($message);
-	$url = 'http://' . $_SERVER['SERVER_NAME'] . '/vacationbuds-webservice/rest/dao/saveOrUpdateMessage';
+	$url = 'http://' . $_SERVER['SERVER_NAME'] . ':10385/vacationbuds-webservice/rest/dao/saveOrUpdateMessage';
 	$curl = curl_init($url);
 	curl_setopt($curl, CURLOPT_HEADER, false);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, false);

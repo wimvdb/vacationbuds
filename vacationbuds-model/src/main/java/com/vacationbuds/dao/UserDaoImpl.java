@@ -74,7 +74,6 @@ public class UserDaoImpl implements UserDao {
 
 	public boolean validateUsername(String username) {
 		List<String> users =   entityManager.createQuery("select username from User  where lower(username) = :username",String.class).setParameter("username", username.toLowerCase()).getResultList();
-		//List<User> users = entityManager.createQuery("select new User(id, username) from User u where u.username='wim321'",User.class).setParameter("username", username).getResultList();
 		return users.size() != 0;
 
 	}

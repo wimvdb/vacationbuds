@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+	<tx:annotation-driven />
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="persistenceUnit" />
+	</bean>
+
+
+
+
+
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		lazy-init="true">
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql://127.0.0.1/vacationbuds" />
+		<!-- <property name="username" value="postgres" />
+		<property name="password" value="vacationpost" />  -->
+		 <property name="username" value="buduser" />  
+ <property name="password" value="Vacationuser123" /> 
+	</bean>
+
+
+	<bean id="adDaoImpl" class="com.vacationbuds.dao.AdDaoImpl">
+
+	</bean>
+	<bean id="imageDaoImpl" class="com.vacationbuds.dao.ImageDaoImpl">
+
+	</bean>
+	<bean id="messageDaoImpl" class="com.vacationbuds.dao.MessageDaoImpl">
+
+	</bean>
+
+	<bean id="reviewDaoImpl" class="com.vacationbuds.dao.ReviewDaoImpl">
+
+	</bean>
+	<bean id="userDaoImpl" class="com.vacationbuds.dao.UserDaoImpl">
+
+	</bean>
+
+	<bean id="favoriteDaoImpl" class="com.vacationbuds.dao.FavoriteDaoImpl">
+
+	</bean>
+
+
+
+
+
+
+
+
+
+
+
+
+</beans>
+

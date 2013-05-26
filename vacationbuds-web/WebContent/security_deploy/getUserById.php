@@ -3,7 +3,7 @@
 ob_start();
 session_start();
 if ( !isset( $_SESSION['userid'])){
-	header("location:../index.html");
+	header("location:../index.php");
 }
 try {
 
@@ -19,7 +19,7 @@ try {
 
 
 
-	$url = 'http://' . $_SERVER['SERVER_NAME'] . '/vacationbuds-webservice/rest/dao/getUserById';
+	$url = 'http://' . $_SERVER['SERVER_NAME'] . ':10385/vacationbuds-webservice/rest/dao/getUserById';
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_HEADER, false);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);

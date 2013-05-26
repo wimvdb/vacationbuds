@@ -3,7 +3,7 @@
 
 session_start();
 if ( !isset( $_SESSION['userid'])){
-header("location:../index.html");
+header("location:../index.php");
 }
 ?>
 
@@ -13,6 +13,7 @@ header("location:../index.html");
 <meta charset="ISO-8859-1">
 <title>My Profile</title>
 <link rel="stylesheet" href="../css/profile/profile.css">
+<link rel="stylesheet" href="../css/logo.css">
 <link rel="stylesheet" href="../css/navigation.css">
 <link href='http://fonts.googleapis.com/css?family=Crafty+Girls'
 	rel='stylesheet' type='text/css'>
@@ -20,8 +21,8 @@ header("location:../index.html");
 <body>
 
 	<div id="content">
+		<?php include("../includes/logo.html");?>
 
-		
 		<?php include("../includes/navigation.html");?>
 
 		<div id="photos-right"></div>

@@ -22,9 +22,6 @@ html,body,#content,#create-profile,#drag-area {
 
 
 
-
-
-
 .highlight {
 	background-color: #FFFACD;
 	/* border: 1px dashed #b5c051;
@@ -101,7 +98,7 @@ pre {
 	
 }
 .paper {
-	min-height: 700px;
+	min-height: 650px;
 	font-family: 'Crafty Girls', cursive;
 	/*float: left;*/ /* float containment */
 	min-width: 600px;
@@ -116,6 +113,7 @@ pre {
 	background: url(../images/paperlines.gif) #FBFBF9; /* IE, old FF */
 	background:
 		url(../images/paperlines.gif) #FBFBF9;
+		border-style : solid;
 	-moz-background-size: auto, auto, auto, auto, auto, auto 1.6em;
 	-webkit-background-size: auto, auto, auto, auto, auto, auto 1.6em;
 	background-size: auto, auto, auto, auto, auto, auto 1.6em;

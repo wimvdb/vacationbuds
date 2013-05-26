@@ -3,7 +3,7 @@
 ob_start();
 session_start();
 if ( !isset( $_SESSION['userid'])){
-	header("location:../index.html");
+	header("location:../index.php");
 }
 try {
 $data=$_POST['userid']; 

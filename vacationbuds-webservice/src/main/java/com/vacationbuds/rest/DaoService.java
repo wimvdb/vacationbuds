@@ -29,6 +29,7 @@ import com.vacationbuds.model.Message;
 import com.vacationbuds.model.Review;
 import com.vacationbuds.model.User;
 import com.vacationbuds.util.SearchCriteria;
+import com.vacationbuds.util.MailUtil;
 
 @Path("/dao")
 public class DaoService {
@@ -56,14 +57,13 @@ public class DaoService {
 	@Autowired
 	private FavoriteDao favoriteDao;
 
+	private MailUtil sendMail = new MailUtil();
+
 	@POST
 	@Path("getUserById")
 	@Produces("application/json")
 	public User getUserById(Long id) {
-		// UserDao dao = new UserDaoImpl();
-		// User user =dao.getUserById(id);
 		User user = userDao.getUserById(id);
-		// Hibernate.initialize(user);
 		return user;
 	}
 
@@ -71,10 +71,7 @@ public class DaoService {
 	@Path("getImageById/{id}")
 	@Produces("application/json")
 	public String getImageById(@PathParam("id") Long id) {
-		// UserDao dao = new UserDaoImpl();
-		// User user =dao.getUserById(id);
 		Image image = imageDao.getImageById(id);
-		// Hibernate.initialize(user);
 		return image.getImage();
 	}
 
@@ -82,43 +79,57 @@ public class DaoService {
 	@Path("getProfileImages")
 	@Produces("application/json")
 	public List<Image> getProfileImages(Long id) {
-		// UserDao dao = new UserDaoImpl();
-		// User user =dao.getUserById(id);
 		return imageDao.getImagesByUserId(id);
-
-		// Hibernate.initialize(user);
-
 	}
 
 	@POST
 	@Path("getAdImages")
 	@Produces("application/json")
 	public List<Image> getAdImages(Long id) {
-		// UserDao dao = new UserDaoImpl();
-		// User user =dao.getUserById(id);
 		return imageDao.getImagesByAdId(id);
-
-		// Hibernate.initialize(user);
-
 	}
 
-	/*
-	 * @GET
-	 * 
-	 * @Path("getImageById2/{id}")
-	 * 
-	 * @Produces("application/json") public Response
-	 * getImageById2(@PathParam("id") Long id) throws FileNotFoundException { //
-	 * UserDao dao = new UserDaoImpl(); // User user =dao.getUserById(id); //
-	 * Hibernate.initialize(user); File f = new File(
-	 * "C:\\Users\\Wim\\git\\vacationbuds\\vacationbuds-webservice\\src\\main\\resources\\avatar.jpg"
-	 * ); //return f; //BufferedImage image = ...; //ByteArrayOutputStream baos
-	 * = new ByteArrayOutputStream(); //ImageIO.write(image, "png", baos);
-	 * //byte[] imageData = baos.toByteArray(); //return
-	 * Response.ok(imageData).build(); return Response.ok(new
-	 * FileInputStream(f)).build(); }
-	 */
-
+	@POST
+	@Path("createUser")
+	@Consumes("application/json")
+	public void createUser(User user) throws Exception {
+		if (user.getId() == null
+				&& (user.getUsername() == null || user.getUsername().length() < 2)) {
+			throw new Exception(
+					"Invalid username. minimun 3 characters required.");
+		}
+		if (user.getId() == null
+				&& (user.getPassword() == null || user.getPassword().length() < 2)) {
+			throw new Exception(
+					"Invalid password. minimun 3 characters required.");
+		}
+		if (user.getEmail() == null
+				|| !rfc2822.matcher(user.getEmail()).matches()) {
+			throw new Exception("Invalid email.");
+		}
+		if (user.getGender() == null || !(user.getGender().length() == 1)) {
+			throw new Exception("Gender is a required field.");
+		}
+		user.setActive(true);
+		userDao.saveOrUpdate(user);
+		
+			try {
+				sendMail.sendMail(
+						"noreply@vacationbuds.com",
+						user.getEmail(),
+						"Welcome to vacationbuds",
+						"Hello "
+								+ user.getUsername()
+								+ ",\n\n"
+								+ "You registered at vacationbuds.com with : \n\nUsername : "
+								+ user.getUsername() + "\nPassword : "
+								+ user.getPassword() + "\n");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+	}
+	
 	@POST
 	@Path("saveOrUpdateUser")
 	@Consumes("application/json")
@@ -141,12 +152,9 @@ public class DaoService {
 			throw new Exception("Gender is a required field.");
 		}
 		user.setActive(true);
-		/*
-		 * Set<Image> images = user.getProfile().getImages(); for (Image image :
-		 * images) { imageDao.saveOrUpdate(image); }
-		 */
 		userDao.saveOrUpdate(user);
 	}
+	
 
 	@POST
 	@Path("saveOrUpdateAd")
@@ -172,14 +180,11 @@ public class DaoService {
 		long adId = -1;
 		image.setDiscriminator('A');
 		Ad ad = image.getAd();
-
 		ad.setActive(false);
-		// image.setAd(ad);
 		adId = adDao.saveOrUpdate(ad);
 		long imgId = imageDao.saveOrUpdate(image);
 		String result = "{ \"adId\" : " + adId + " , \"imgId\" : " + imgId
 				+ " }";
-		// System.out.println(" saveAdImage result : " + result);
 		return result;
 	}
 
@@ -235,7 +240,8 @@ public class DaoService {
 				imageFileLoc = "C:\\Users\\Wim\\git\\vacationbuds\\vacationbuds-web\\WebContent\\images\\user-pics\\"
 						+ dirPieces[3] + "\\" + dirPieces[4];
 			} else {
-				imageFileLoc = "/home/vacation/public_html/main/images/user-pics/" + dirPieces[3] + "/" + dirPieces[4];
+				imageFileLoc = "/home/vacation/public_html/main/images/user-pics/"
+						+ dirPieces[3] + "/" + dirPieces[4];
 			}
 			if (dirPieces[3].equals("default")
 					|| dirPieces[3].equals(image.getUser().getId().toString())) {
@@ -249,7 +255,7 @@ public class DaoService {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void deleteAdImageFile(Image image) {
 		try {
 			String[] dirPieces = image.getImage().split("/");
@@ -258,10 +264,12 @@ public class DaoService {
 				imageFileLoc = "C:\\Users\\Wim\\git\\vacationbuds\\vacationbuds-web\\WebContent\\images\\user-pics\\"
 						+ dirPieces[3] + "\\" + dirPieces[4];
 			} else {
-				imageFileLoc = "/home/vacation/public_html/main/images/user-pics/" + dirPieces[3] + "/" + dirPieces[4];
+				imageFileLoc = "/home/vacation/public_html/main/images/user-pics/"
+						+ dirPieces[3] + "/" + dirPieces[4];
 			}
 			if (dirPieces[3].equals("default")
-					|| dirPieces[3].equals(image.getAd().getUser().getId().toString())) {
+					|| dirPieces[3].equals(image.getAd().getUser().getId()
+							.toString())) {
 				File imageFile = new File(imageFileLoc);
 				imageFile.delete();
 			} else {
@@ -271,7 +279,7 @@ public class DaoService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@POST
@@ -294,22 +302,6 @@ public class DaoService {
 	public void addToFavorites(Ad ad) {
 		favoriteDao.addToFavorites(ad, ad.getUser().getId());
 	}
-
-	/*
-	 * public String saveOrUpdateUser(User user) throws Exception {
-	 * 
-	 * if(user.getUsername() == null || ! (user.getUsername().length() > 2)){
-	 * return "Invalid username. minimun 3 characters required."; }
-	 * if(user.getPassword() == null || ! (user.getPassword().length() > 2)){
-	 * return "Invalid password. minimun 3 characters required."; }
-	 * if(user.getEmail() == null ||
-	 * !rfc2822.matcher(user.getEmail()).matches()) { return "Invalid email."; }
-	 * if(user.getGender() == null || ! (user.getGender().length() == 1)){
-	 * return "Gender is a required field."; } Set<Image> images =
-	 * user.getProfile().getImages(); for (Image image : images) {
-	 * imageDao.saveOrUpdate(image); } userDao.saveOrUpdate(user); return "ok";
-	 * }
-	 */
 
 	@POST
 	@Path("login")
@@ -385,11 +377,26 @@ public class DaoService {
 			message.setRecipient(userDao.getUserByUsername(username));
 			message.setSendDate(new Date());
 			messageDao.saveOrUpdate(message);
+			try {
+				sendMail.sendMail(
+						"noreply@vacationbuds.com",
+						message.getRecipient().getEmail(),
+						"You received a message from "
+								+ userDao.getUserById(message.getSender().getId()).getUsername(),
+						"Hello "
+								+ message.getRecipient().getUsername()
+								+ ",\n\n"
+								+ "You received a message on vacationbuds.com with title : "
+								+ message.getTitle()
+								+ "\n\n Read the full message at http://www.vacationbuds.com/main/messages/inbox.php");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			result = e.getMessage();
 		}
-		System.out.println(result);
 		return result;
 	}
 
@@ -420,21 +427,6 @@ public class DaoService {
 	public List<Ad> getFavAdsByUserId(Long userId) {
 		return favoriteDao.getFavAdsByUserId(userId);
 	}
-
-	/*
-	 * @POST
-	 * 
-	 * @Path("getProfileImages/{id}")
-	 * 
-	 * @Produces("application/json") public List<Image>
-	 * getProfileImages(@PathParam("id") Long id) { // UserDao dao = new
-	 * UserDaoImpl(); // User user =dao.getUserById(id); return
-	 * imageDao.getImagesByUserId(id);
-	 * 
-	 * // Hibernate.initialize(user);
-	 * 
-	 * }
-	 */
 
 	@GET
 	@Path("getAdById/{id}")

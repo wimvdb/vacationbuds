@@ -40,16 +40,14 @@ public class AdDaoImpl implements AdDao {
 						"select new Ad(a.id, a.active, a.adtype, a.city,a.country, a.departure, a.duration, a.expenses,a.expireOn, a.placeOn, a.text, a.title) from Ad a where a.user.id =:id and a.active=true")
 				.setParameter("id", id).getResultList();
 	}
-	
-	
 
 	public void deletaAd(long adId, long userId) {
 		Query deleteFavAdsQuery = entityManager
 				.createQuery("DELETE FROM Favorite f where f.ad.id =:adId and f.user.id=:userId ");
-		deleteFavAdsQuery.setParameter("adId", adId).setParameter(
-				"userId", userId);
+		deleteFavAdsQuery.setParameter("adId", adId).setParameter("userId",
+				userId);
 		deleteFavAdsQuery.executeUpdate();
-		
+
 		Query deleteAdImagesQuery = entityManager
 				.createQuery("DELETE FROM Image i  where id in (select id from Image where i.ad.id=:adId and i.ad.user.id = :userId) ");
 		deleteAdImagesQuery.setParameter("adId", adId);
@@ -65,7 +63,13 @@ public class AdDaoImpl implements AdDao {
 	}
 
 	public List<Ad> search(SearchCriteria searchCriteria) {
-		String queryString = "select a from Ad a where ((soundex(a.country) =soundex(:country) and not a.country = '') or (soundex(a.city)=soundex(:city) and not a.city = '')) and a.adtype=:type and now() > a.placeOn and  now() < a.expireOn ";
+		String queryString = "select a from Ad a where ";
+		if (searchCriteria.getDestination() != null
+				&& !searchCriteria.getDestination().trim().equals("")) {
+			queryString += "((soundex(a.country) =soundex(:country) and not a.country = '') or (soundex(a.city)=soundex(:city) and not a.city = '')) and ";
+		}
+		queryString += " a.adtype=:type and now() > a.placeOn and  now() < a.expireOn ";
+
 		switch (searchCriteria.getAge()) {
 		case 1:
 			queryString += " and EXTRACT(year from AGE(NOW(), a.user.birthday)) < 20 ";
@@ -103,15 +107,19 @@ public class AdDaoImpl implements AdDao {
 		default:
 			break;
 		}
-		if(searchCriteria.getSex() != 'E'){
+		if (searchCriteria.getSex() != 'E') {
 			queryString += " and a.user.gender =:sex ";
 		}
 		Query query = entityManager.createQuery(queryString)
-				.setParameter("country", searchCriteria.getDestination())
-				.setParameter("city", searchCriteria.getDestination())
+				
 				.setParameter("type", searchCriteria.getType());
-		if(searchCriteria.getSex() != 'E'){
-			query.setParameter("sex", ""+searchCriteria.getSex());
+		if (searchCriteria.getDestination() != null
+				&& !searchCriteria.getDestination().trim().equals("")) {
+			query.setParameter("country", searchCriteria.getDestination());
+			query.setParameter("city", searchCriteria.getDestination());
+		}
+		if (searchCriteria.getSex() != 'E') {
+			query.setParameter("sex", "" + searchCriteria.getSex());
 		}
 		return query.getResultList();
 

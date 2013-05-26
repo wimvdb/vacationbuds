@@ -148,7 +148,7 @@ function validateInput() {
 	} else if (validateDate(dateOfBirth.text())) {
 		valid = false;
 		dateOfBirth.siblings('div.error').show().text(
-				'Date of birth not in format dd-MM-yyyy');
+				'Format dd-MM-yyyy');
 	}else {
 		dateOfBirth.siblings('div.error').hide();
 	}
@@ -179,9 +179,7 @@ function validateEmail(email) {
 function validateDate(dateString) {
 	try {
 		var dateArray = dateString.split('-');
-		return isNaN(Date.parse(dateArray[1] + '-' + dateArray[0] + '-'
-				+ dateArray[2]));
-		return true;
+		return isNaN(new Date(Date.fromISO(dateArray[2] + '-' + dateArray[1] + '-' + dateArray[0])));
 	} catch (e) {
 		return false;
 	}

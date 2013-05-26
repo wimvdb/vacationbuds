@@ -2,7 +2,7 @@
 
 session_start();
 if ( !isset( $_SESSION['userid'])){
-header("location:../index.html");
+header("location:../index.php");
 }
 unset($_SESSION['adId']);
 ?>
@@ -10,20 +10,25 @@ unset($_SESSION['adId']);
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>New Advertisement</title>
-
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="../css/logo.css">
 <link rel="stylesheet" href="../css/sda/sda.css">
 <link rel="stylesheet" href="../css/navigation.css">
 <link rel="stylesheet" href="../css/sda/new-da.css">
 <link href='http://fonts.googleapis.com/css?family=Special+Elite'
 	rel='stylesheet' type='text/css'>
 
+<title>New Advertisement</title>
+<meta name="keywords"
+	content="create travel advertisement,create hosting advertisement" />
+<meta name="description"
+	content="Create travel advertisements to find a companion to travel with. Create a hosting advertisement to get in touch with people that need a place to stay in your country.">
 </head>
 <body>
 	<div id="drag-area">
 		<div id="content">
+			<?php include("../includes/logo.html");?>
 			<?php include("../includes/navigation.html");?>
 			<div class="hfeed">
 				<article id="ad" class="entry post">
@@ -100,7 +105,7 @@ unset($_SESSION['adId']);
 							<div class="editable-text">
 								<div>
 									<div data-type="editable" data-updatable='true'
-										data-for="#country">Anywhere but here!</div>
+										data-for="#country">Anywhere but here</div>
 									<input id="country" type="text" title="Country" name="country" />
 								</div>
 							</div>
@@ -110,7 +115,7 @@ unset($_SESSION['adId']);
 							<div class="editable-text">
 								<div>
 									<div data-type="editable" data-updatable='true'
-										data-for="#city">Anywhere!</div>
+										data-for="#city">Anywhere</div>
 									<input id="city" type="text" title="city" name="city" />
 								</div>
 							</div>
@@ -120,7 +125,7 @@ unset($_SESSION['adId']);
 							<div class="editable-text">
 								<div>
 									<div data-type="editable" data-updatable='true'
-										data-for="#dateOfDeparture">I' m Flexible!</div>
+										data-for="#dateOfDeparture">I' m Flexible</div>
 									<input id="dateOfDeparture" type="text" title="Duration"
 										name="dateOfDeparture" />
 								</div>
@@ -131,7 +136,7 @@ unset($_SESSION['adId']);
 							<div class="editable-text">
 								<div>
 									<div data-type="editable" data-updatable='true'
-										data-for="#duration">2 weeks!</div>
+										data-for="#duration">2 weeks</div>
 									<input id="duration" type="text" title="Duration"
 										name="duration" />
 								</div>
@@ -142,12 +147,12 @@ unset($_SESSION['adId']);
 							<div class="editable-text">
 								<div>
 									<div data-type="editable" data-updatable='true'
-										data-for="#vacation-expenses">I will pay my fair share!</div>
+										data-for="#vacation-expenses">I will pay my fair share</div>
 									<select id="vacation-expenses" title="Expenses"
 										name="vacation-expenses">
-										<option value="50">I will pay my fair share!</option>
-										<option value="100">I will pay for everything!</option>
-										<option value="0">My company is payment enough! :-)</option>
+										<option value="50">I will pay my fair share</option>
+										<option value="100">I will pay for everything</option>
+										<option value="0">My company is payment enough :-)</option>
 									</select>
 								</div>
 							</div>
@@ -209,7 +214,7 @@ unset($_SESSION['adId']);
 						<textarea id="description" rows="5" name="description"></textarea>
 					</fieldset>
 					<div id="save-div">
-						<input id="save" type="submit" onclick="saveAd();" value="Save">
+						<input id="save" class="button" type="submit" onclick="saveAd();" value="Save">
 					</div>
 				</article>
 			</div>
@@ -229,7 +234,7 @@ unset($_SESSION['adId']);
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
 	<script
 		src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.js"></script>
-		<script src="../script/jquery.form.js"></script>
+	<script src="../script/jquery.form.js"></script>
 	<script src="../script/dropzone.js"></script>
 
 	<script src="../script/general.js"></script>

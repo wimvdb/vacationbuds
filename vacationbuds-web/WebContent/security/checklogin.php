@@ -28,12 +28,12 @@ $_SESSION['userid'] = $user_id;
 $_SESSION['username'] = $username;
 $_SESSION['password'] = $password;
 
-header("location:../profile/profile.php");
+header("location:../search/search.php");
 
 }
 else {
 echo "Wrong Username or Password";
-header("location:../index.html");
+header("location:../index.php");
 }
 
 ob_end_flush();

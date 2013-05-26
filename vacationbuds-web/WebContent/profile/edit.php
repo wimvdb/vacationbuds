@@ -2,7 +2,7 @@
 
 session_start();
 if ( !isset( $_SESSION['userid'])){
-header("location:../index.html");
+header("location:../index.php");
 }
 //unset($_SESSION['profileId']);
 ?>
@@ -12,6 +12,7 @@ header("location:../index.html");
 <meta charset="ISO-8859-1">
 <title>Edit Profile</title>
 <link rel="stylesheet" href="../css/profile/edit-profile.css">
+<link rel="stylesheet" href="../css/logo.css">
 <link rel="stylesheet" href="../css/profile/edit.css">
 <link rel="stylesheet" href="../css/navigation.css">
 <link href='http://fonts.googleapis.com/css?family=Crafty+Girls'
@@ -20,6 +21,7 @@ header("location:../index.html");
 <body>
 	<div id="drag-area">
 		<div id="content">
+			<?php include("../includes/logo.html");?>
 			<?php include("../includes/navigation.html");?>
 
 			<ul id="create-profile-nav">
@@ -35,8 +37,9 @@ header("location:../index.html");
 						<div id="avatar-postit" class="postit">
 							<span class="dragNdropMessage">Drag &amp; drop your photo
 								here!</span>
-							<form class="fallback ie-form-avatar" encType="multipart/form-data"
-								method="POST" action="../security/file-upload.php">
+							<form class="fallback ie-form-avatar"
+								encType="multipart/form-data" method="POST"
+								action="../security/file-upload.php">
 								<input class="ie-file-avatar" name="userfile" type="file">
 							</form>
 						</div>
@@ -109,16 +112,15 @@ header("location:../index.html");
 								<div class="postit moveUp">
 									<span class="dragNdropMessage">Drag &amp; drop your
 										photo here!</span>
-									<form class="fallback ie-form"
-										encType="multipart/form-data" method="POST"
-										action="../security/file-upload.php">
+									<form class="fallback ie-form" encType="multipart/form-data"
+										method="POST" action="../security/file-upload.php">
 										<input class="ie-file" name="userfile" type="file">
 									</form>
-									
+
 								</div>
 								<img src="" title="Drag your picture here!" height="187"
 									class="hidden image moveUp">
-								
+
 							</div>
 
 							<div class="picture-text">
@@ -144,11 +146,11 @@ header("location:../index.html");
 										method="POST" action="../security/file-upload.php">
 										<input class="ie-file" name="userfile" type="file">
 									</form>
-									
+
 								</div>
 								<img src="" title="Drag your picture here!" height="187"
 									class="hidden image moveUp">
-								
+
 							</div>
 
 							<div class="picture-text">
@@ -168,7 +170,7 @@ header("location:../index.html");
 					</div>
 
 				</div>
-				<input id="save" type="submit" onclick="saveOrUpdateUser();"
+				<input id="save" class="button" type="submit" onclick="saveOrUpdateUser();"
 					value="Save">
 			</div>
 

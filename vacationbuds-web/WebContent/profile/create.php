@@ -12,6 +12,7 @@ session_destroy();
 <meta charset="ISO-8859-1">
 <title>Create Profile</title>
 <link rel="stylesheet" href="../css/profile/edit-profile.css">
+<link rel="stylesheet" href="../css/logo.css">
 <link rel="stylesheet" href="../css/profile/create.css">
 <link href='http://fonts.googleapis.com/css?family=Crafty+Girls'
 	rel='stylesheet' type='text/css'>
@@ -19,7 +20,7 @@ session_destroy();
 <body>
 	<div id="drag-area">
 		<div id="content">
-
+			<?php include("../includes/logo.html");?>
 			<ul id="create-profile-nav">
 				<li><a id="profile-link" href="#profile">Profile</a></li>
 				<li><a id="pictures-link" href="#pictures-frame">Pictures</a></li>
@@ -33,10 +34,11 @@ session_destroy();
 						<div id="avatar-postit" class="postit">
 							<span class="dragNdropMessage">Drag &amp; drop your photo
 								here!</span>
-							<form class="fallback ie-form-avatar" encType="multipart/form-data"
-								method="POST" action="../security/file-upload.php">
+							<form class="fallback ie-form-avatar"
+								encType="multipart/form-data" method="POST"
+								action="../security/file-upload.php">
 								<input class="ie-file-avatar" name="userfile" type="file">
-								
+
 							</form>
 						</div>
 						<img id="avatar" src="" title="Drag your picture here!"
@@ -135,9 +137,8 @@ session_destroy();
 								<div class="postit moveUp">
 									<span class="dragNdropMessage">Drag &amp; drop your
 										photo here!</span>
-									<form class="fallback ie-form"
-										encType="multipart/form-data" method="POST"
-										action="../security/file-upload.php">
+									<form class="fallback ie-form" encType="multipart/form-data"
+										method="POST" action="../security/file-upload.php">
 										<input class="ie-file" name="userfile" type="file">
 									</form>
 
@@ -202,8 +203,8 @@ session_destroy();
 		</div>
 	</div>
 	<div class="modal"></div>
-	
-	
+
+
 
 	<script
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>

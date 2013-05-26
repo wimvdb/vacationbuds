@@ -109,7 +109,6 @@ $(document)
 									this.previewsContainer
 											.appendChild(file.previewTemplate);
 								},
-								
 								success : function(file, response) {
 									var img = $('#image-drop-zone').children(
 											'#new-image').first().clone();
@@ -196,9 +195,9 @@ $(document)
 															'hidden');
 												}
 
-												img.click(function() {
-													$(".ie-file").click();
-												});
+												//img.click(function() {
+												//	$(".ie-file").click();
+												//});
 
 												img.draggable({
 													revert : 'invalid',
